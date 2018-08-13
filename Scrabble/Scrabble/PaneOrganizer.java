@@ -19,8 +19,8 @@ import javafx.scene.control.*;
 import javafx.scene.effect.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 
-public class PaneOrganizer {	
-//ORIGINAL CONENT
+public class PaneOrganizer {
+	// ORIGINAL CONENT
 	private App _appClass;
 	private Stage _stage;
 	private Referee _referee;
@@ -29,7 +29,7 @@ public class PaneOrganizer {
 	private Playable _playerTwo;
 	private ShiftDisplayHandler _rotatePencil;
 	private ShiftConcealHandler _revertPencil;
-//BASE TYPES
+	// BASE TYPES
 	private int _enterInt;
 	private int _oneScore;
 	private int _twoScore;
@@ -41,11 +41,11 @@ public class PaneOrganizer {
 	private boolean _isShiftDown;
 	private String _playerOneType;
 	private String _playerTwoType;
-//DATA STRUCTURES
+	// DATA STRUCTURES
 	private ArrayList<Label> _playedWords;
-	
+
 	private InputStream _fontStream;
-	
+
 	private Pane _root;
 	private Pane _boardPane;
 	private Pane _wordContainer1;
@@ -77,7 +77,7 @@ public class PaneOrganizer {
 	private ImageView _playerOneIcon;
 	private ImageView _playerTwoIcon;
 	private ImageView _background;
-	
+
 	private Timeline _aiRotate;
 
 	private FadeTransition _circleFade;
@@ -92,7 +92,7 @@ public class PaneOrganizer {
 	private RotateTransition _rotateNCheck;
 	private RotateTransition _rotateI2;
 	private RotateTransition _rotateI2Check;
-	
+
 	private ScaleTransition _aiShrink;
 	private ScaleTransition _aiExpand;
 	private ScaleTransition _circleExpand;
@@ -104,7 +104,7 @@ public class PaneOrganizer {
 	private ScaleTransition _scaleNCheck;
 	private ScaleTransition _scaleI2;
 	private ScaleTransition _scaleI2Check;
-	
+
 	private TranslateTransition _moveHi;
 	private TranslateTransition _moveLeft;
 	private TranslateTransition _moveRight;
@@ -116,13 +116,13 @@ public class PaneOrganizer {
 	private TranslateTransition _moveNCheck;
 	private TranslateTransition _moveI2;
 	private TranslateTransition _moveI2Check;
-	
+
 	public PaneOrganizer(App appClass, Stage appStage) {
 		_root = new Pane();
 		@SuppressWarnings("unused")
 		Constants constants = new Constants();
-		
-//FONT LOADING
+
+		// FONT LOADING
 		String path = "/FONTS/domesticmanners.ttf";
 		_fontStream = this.getClass().getResourceAsStream(path);
 		if (_fontStream == null) {
@@ -135,9 +135,9 @@ public class PaneOrganizer {
 		_isShiftDown = false;
 		_playerOneType = Constants.PLAYER_ONE_START_STATE;
 		_playerTwoType = Constants.PLAYER_TWO_START_STATE;
-		
+
 		this.setUpDesk();
-		
+
 		_boardPane = new Pane();
 		_boardPane.requestFocus();
 		_boardPane.setFocusTraversable(true);
@@ -161,7 +161,7 @@ public class PaneOrganizer {
 		_oneScore = 0;
 		_twoScore = 0;
 		_playedWords = new ArrayList<Label>();
-		
+
 		this.setUpIntroSequence();
 
 	}
@@ -169,7 +169,7 @@ public class PaneOrganizer {
 	public Boolean getDisplayMultipliers() {
 		return _displayMultipliers;
 	}
-	
+
 	public void rotateBag() {
 		_rtBag.play();
 	}
@@ -209,41 +209,41 @@ public class PaneOrganizer {
 		_s2.setFocusTraversable(false);
 		_scorePane.getChildren().addAll(_s1, _s2);
 	}
-	
+
 	private void setUpIntroSequence() {
-		_leftHalf = new ImageView(new Image("introLeft.jpg"));
+		_leftHalf = new ImageView(new Image("Images/Main Theme and GUI/introLeft.jpg"));
 		_leftHalf.setPreserveRatio(true);
 		_leftHalf.setCache(true);
-		_leftHalf.setFitWidth(Constants.SCENE_WIDTH/2);
+		_leftHalf.setFitWidth(Constants.SCENE_WIDTH / 2);
 		_leftHalf.setLayoutX(0);
 		_leftHalf.setLayoutY(-100);
 		_leftHalf.setOpacity(0);
-		_rightHalf = new ImageView(new Image("introRight.jpg"));
+		_rightHalf = new ImageView(new Image("Images/Main Theme and GUI/introRight.jpg"));
 		_rightHalf.setPreserveRatio(true);
 		_rightHalf.setCache(true);
-		_rightHalf.setFitWidth(Constants.SCENE_WIDTH/2);
-		_rightHalf.setLayoutX(Constants.SCENE_WIDTH/2);
+		_rightHalf.setFitWidth(Constants.SCENE_WIDTH / 2);
+		_rightHalf.setLayoutX(Constants.SCENE_WIDTH / 2);
 		_rightHalf.setLayoutY(-100);
 		_rightHalf.setOpacity(0);
-		_background = new ImageView(new Image("intro.jpg"));
+		_background = new ImageView(new Image("Images/Main Theme and GUI/intro.jpg"));
 		_background.setPreserveRatio(true);
 		_background.setCache(true);
 		_background.setFitWidth(Constants.SCENE_WIDTH);
 		_background.setLayoutX(0);
 		_background.setLayoutY(-100);
 		_moveLeft = new TranslateTransition(Duration.seconds(2), _leftHalf);
-		_moveLeft.setByX(-1 * Constants.SCENE_WIDTH/2 - 2);
+		_moveLeft.setByX(-1 * Constants.SCENE_WIDTH / 2 - 2);
 		_moveRight = new TranslateTransition(Duration.seconds(2), _rightHalf);
-		_moveRight.setByX(Constants.SCENE_WIDTH/2 + 2);
-		_human = new Image("human.png");
-		_ai = new Image("ai.png");
+		_moveRight.setByX(Constants.SCENE_WIDTH / 2 + 2);
+		_human = new Image("Images/AI/human.png");
+		_ai = new Image("Images/AI/ai.png");
 		_playerOneIcon = new ImageView(_ai);
 		_playerOneIcon.setOpacity(0.0);
 		_playerOneIcon.setPreserveRatio(true);
 		_playerOneIcon.setCache(true);
 		_playerOneIcon.setFitWidth(Constants.GRID_FACTOR * 3);
 		_playerOneIcon.setLayoutX(200);
-		_playerOneIcon.setLayoutY(Constants.SCENE_HEIGHT/2 - Constants.GRID_FACTOR * 1.5);
+		_playerOneIcon.setLayoutY(Constants.SCENE_HEIGHT / 2 - Constants.GRID_FACTOR * 1.5);
 		_playerOneIcon.setOnMouseClicked(new TogglePlayer(1));
 		_playerOneIcon.setOnMouseEntered(new ScaleIcon(1, "IN"));
 		_playerOneIcon.setOnMouseExited(new ScaleIcon(1, "OUT"));
@@ -253,7 +253,7 @@ public class PaneOrganizer {
 		_playerTwoIcon.setCache(true);
 		_playerTwoIcon.setFitWidth(Constants.GRID_FACTOR * 3);
 		_playerTwoIcon.setLayoutX(Constants.SCENE_WIDTH - 200 - Constants.GRID_FACTOR * 3);
-		_playerTwoIcon.setLayoutY(Constants.SCENE_HEIGHT/2 - Constants.GRID_FACTOR * 1.5);
+		_playerTwoIcon.setLayoutY(Constants.SCENE_HEIGHT / 2 - Constants.GRID_FACTOR * 1.5);
 		_playerTwoIcon.setOnMouseClicked(new TogglePlayer(2));
 		_playerTwoIcon.setOnMouseEntered(new ScaleIcon(2, "IN"));
 		_playerTwoIcon.setOnMouseExited(new ScaleIcon(2, "OUT"));
@@ -267,7 +267,7 @@ public class PaneOrganizer {
 		m.add(_root, x, y, _scrabbleGame, "NONE");
 		m.getTileViewer().setOpacity(0.0);
 		m.setCheckLoc(x, y);
-		
+
 		_scaleM = new ScaleTransition(Duration.seconds(0.6), m.getTileViewer());
 		_scaleM.setByX(-0.60);
 		_scaleM.setByY(-0.60);
@@ -297,13 +297,13 @@ public class PaneOrganizer {
 		PauseTransition removeM = new PauseTransition(Duration.seconds(6.5));
 		removeM.setOnFinished(new PlayFadeHandler(fadeOutM));
 		removeM.play();
-		
+
 		Tile i1 = new Tile(9);
 		x = Constants.X4 - 0.35;
 		i1.add(_root, x, y, _scrabbleGame, "NONE");
 		i1.getTileViewer().setOpacity(0.0);
 		i1.setCheckLoc(x, y);
-		
+
 		_scaleI1 = new ScaleTransition(Duration.seconds(0.6), i1.getTileViewer());
 		_scaleI1.setByX(-0.60);
 		_scaleI1.setByY(-0.60);
@@ -333,13 +333,13 @@ public class PaneOrganizer {
 		PauseTransition removeI1 = new PauseTransition(Duration.seconds(7));
 		removeI1.setOnFinished(new PlayFadeHandler(fadeOutI1));
 		removeI1.play();
-		
+
 		Tile n = new Tile(14);
 		x = Constants.X5 - 0.35;
 		n.add(_root, x, y, _scrabbleGame, "NONE");
 		n.getTileViewer().setOpacity(0.0);
 		n.setCheckLoc(x, y);
-		
+
 		_scaleN = new ScaleTransition(Duration.seconds(0.6), n.getTileViewer());
 		_scaleN.setByX(-0.60);
 		_scaleN.setByY(-0.60);
@@ -369,13 +369,13 @@ public class PaneOrganizer {
 		PauseTransition removeN = new PauseTransition(Duration.seconds(7.5));
 		removeN.setOnFinished(new PlayFadeHandler(fadeOutN));
 		removeN.play();
-		
+
 		Tile i2 = new Tile(9);
 		x = Constants.X6 - 0.35;
 		i2.add(_root, x, y, _scrabbleGame, "NONE");
 		i2.getTileViewer().setOpacity(0.0);
 		i2.setCheckLoc(x, y);
-		
+
 		_scaleI2 = new ScaleTransition(Duration.seconds(0.6), i2.getCheckViewer());
 		_scaleI2.setByX(-0.60);
 		_scaleI2.setByY(-0.60);
@@ -403,23 +403,23 @@ public class PaneOrganizer {
 		fadeOutI2.setOnFinished(new TileRemover(i2));
 		PauseTransition animateI2 = new PauseTransition(Duration.seconds(5));
 		animateI2.setOnFinished(new PlayFadeHandler(fadeI2));
-		animateI2.play();		
+		animateI2.play();
 		PauseTransition removeI2 = new PauseTransition(Duration.seconds(8));
 		removeI2.setOnFinished(new PlayFadeHandler(fadeOutI2));
 		removeI2.play();
-		
+
 		PauseTransition setUpPlayers = new PauseTransition(Duration.seconds(9));
 		setUpPlayers.setOnFinished(new SetUpPlayers());
 		setUpPlayers.play();
-		
+
 		PauseTransition enterable = new PauseTransition(Duration.seconds(9.5));
 		enterable.setOnFinished(new Enterable());
 		enterable.play();
-		
+
 	}
-	
+
 	private class TileAnimator implements EventHandler<ActionEvent> {
-		
+
 		@Override
 		public void handle(ActionEvent event) {
 			_scaleM.play();
@@ -450,14 +450,14 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class TileRemover implements EventHandler<ActionEvent> {
 		private Tile _toRemove;
-		
+
 		public TileRemover(Tile toRemove) {
 			_toRemove = toRemove;
 		}
-		
+
 		@Override
 		public void handle(ActionEvent event) {
 			_root.getChildren().remove(_toRemove.getTileViewer());
@@ -465,9 +465,9 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class Enterable implements EventHandler<ActionEvent> {
-	
+
 		@Override
 		public void handle(ActionEvent event) {
 			_enterable = true;
@@ -475,16 +475,16 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class ScaleIcon implements EventHandler<MouseEvent> {
 		private int _id;
 		private String _direction;
-		
+
 		private ScaleIcon(int id, String direction) {
 			_id = id;
 			_direction = direction;
 		}
-		
+
 		@Override
 		public void handle(MouseEvent event) {
 			if (_id == 1) {
@@ -508,44 +508,44 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class TogglePlayer implements EventHandler<MouseEvent> {
 		private int _id;
-		
+
 		public TogglePlayer(int id) {
 			_id = id;
 		}
-		
+
 		@Override
 		public void handle(MouseEvent event) {
 			if (_id == 1) {
 				if (_playerOneType == "HUMAN") {
-					 _playerOneType = "COMPUTER";
-					 _playerOneIcon.setImage(_ai);
-					 System.out.println(_playerOneType);
-				 } else if (_playerOneType == "COMPUTER") {
-					 _playerOneType = "HUMAN";
-					 _playerOneIcon.setImage(_human);
-					 System.out.println(_playerOneType);
-				 }
+					_playerOneType = "COMPUTER";
+					_playerOneIcon.setImage(_ai);
+					System.out.println(_playerOneType);
+				} else if (_playerOneType == "COMPUTER") {
+					_playerOneType = "HUMAN";
+					_playerOneIcon.setImage(_human);
+					System.out.println(_playerOneType);
+				}
 			} else if (_id == 2) {
 				if (_playerTwoType == "HUMAN") {
-					 _playerTwoType = "COMPUTER";
-					 _playerTwoIcon.setImage(_ai);
-					 System.out.println(_playerTwoType);
-				 } else if (_playerTwoType == "COMPUTER") {
-					 _playerTwoType = "HUMAN";
-					 _playerTwoIcon.setImage(_human);
-					 System.out.println(_playerTwoType);
-				 }
+					_playerTwoType = "COMPUTER";
+					_playerTwoIcon.setImage(_ai);
+					System.out.println(_playerTwoType);
+				} else if (_playerTwoType == "COMPUTER") {
+					_playerTwoType = "HUMAN";
+					_playerTwoIcon.setImage(_human);
+					System.out.println(_playerTwoType);
+				}
 			}
 			event.consume();
 		}
 
 	}
-	
+
 	private class SetUpPlayers implements EventHandler<ActionEvent> {
-		
+
 		@Override
 		public void handle(ActionEvent event) {
 			FadeTransition fadeInOne = new FadeTransition(Duration.seconds(0.6), _playerOneIcon);
@@ -560,14 +560,14 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class PlayFadeHandler implements EventHandler<ActionEvent> {
 		private FadeTransition _fade;
-		
+
 		public PlayFadeHandler(FadeTransition fade) {
 			_fade = fade;
 		}
-			
+
 		@Override
 		public void handle(ActionEvent event) {
 			_fade.play();
@@ -575,7 +575,7 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class FadeHalvesHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -593,7 +593,7 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class RemoveIntroHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -603,7 +603,7 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	public void displayScoreLabels() {
 		_playerOneScore.setOpacity(1.0);
 		_playerOneScore.setOpacity(2.0);
@@ -641,11 +641,11 @@ public class PaneOrganizer {
 			}
 		}
 	}
-	
+
 	public void addAIGraphics() {
-		_accept = new Image("aiaccept.png");
-		_reject = new Image("aireject.png");
-		_thinking = new Image("aithinking.png");
+		_accept = new Image("Images/AI/aiaccept.png");
+		_reject = new Image("Images/AI/aireject.png");
+		_thinking = new Image("Images/AI/aithinking.png");
 		_aiViewer = new ImageView(_thinking);
 		_aiViewer.setOpacity(0.0);
 		_aiViewer.setCache(true);
@@ -660,38 +660,38 @@ public class PaneOrganizer {
 		_aiCircle.setLayoutY(Constants.GRID_FACTOR * 17.2 + Constants.GRID_FACTOR * 0.6 + 3);
 		_aiCircle.setOpacity(0.0);
 		_boardPane.getChildren().addAll(_aiCircle, _aiViewer);
-		
+
 		_aiExpand = new ScaleTransition(Duration.seconds(Constants.PLACEMENT_DURATION), _aiViewer);
-		_aiExpand.setFromX(1/4);
-		_aiExpand.setFromY(1/4);
+		_aiExpand.setFromX(1 / 4);
+		_aiExpand.setFromY(1 / 4);
 		_aiExpand.setToX(1);
 		_aiExpand.setToY(1);
 		_aiExpand.setCycleCount(1);
-		
+
 		_aiShrink = new ScaleTransition(Duration.seconds(Constants.PLACEMENT_DURATION), _aiViewer);
 		_aiShrink.setFromX(1);
 		_aiShrink.setFromY(1);
-		_aiShrink.setToX(1/4);
-		_aiShrink.setToY(1/4);
+		_aiShrink.setToX(1 / 4);
+		_aiShrink.setToY(1 / 4);
 		_aiShrink.setCycleCount(1);
 		_aiShrink.setOnFinished(new ResetAIHandler());
-		
+
 		_aiRotate = new Timeline();
 		KeyFrame rotate = new KeyFrame(Duration.seconds(Constants.AI_ROTATE_DURATION), new RotateHandler());
 		_aiRotate.getKeyFrames().add(rotate);
 		_aiRotate.setCycleCount(Animation.INDEFINITE);
-		
+
 		_circleExpand = new ScaleTransition(Duration.seconds(Constants.PLACEMENT_DURATION), _aiCircle);
 		_circleExpand.setFromX(0.5);
 		_circleExpand.setFromY(0.5);
 		_circleExpand.setToX(1.2);
 		_circleExpand.setToY(1.2);
-		
+
 		_circleFade = new FadeTransition(Duration.seconds(Constants.PLACEMENT_DURATION), _aiCircle);
 		_circleFade.setFromValue(1.0);
 		_circleFade.setToValue(0.0);
 	}
-	
+
 	public void fadeInAI() {
 		FadeTransition aiFade = new FadeTransition(Duration.seconds(0.05), _aiViewer);
 		aiFade.setFromValue(0.0);
@@ -701,7 +701,7 @@ public class PaneOrganizer {
 		_aiViewer.setOpacity(0);
 		_aiExpand.play();
 	}
-	
+
 	public void showAIOutcome(String id) {
 		if (id == "ACCEPT") {
 			_aiCircle.setFill(Constants.GREEN);
@@ -725,22 +725,22 @@ public class PaneOrganizer {
 			_aiViewer.setScaleY(1);
 		}
 	}
-	
+
 	public void fadeOutAI() {
 		_aiShrink.play();
 	}
-	
+
 	private class AnimateAIHandler implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent event) {
-			//system.out.println("ANIMATE HANDLED");
+			// system.out.println("ANIMATE HANDLED");
 			_aiRotate.play();
 			event.consume();
 		}
 
 	}
-	
+
 	private class RotateHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -750,20 +750,20 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class IntroFlashHandler implements EventHandler<ActionEvent> {
 		private Tile _tileM;
 		private Tile _tileI1;
 		private Tile _tileN;
 		private Tile _tileI2;
-		
+
 		private IntroFlashHandler(Tile tileM, Tile tileI1, Tile tileN, Tile tileI2) {
 			_tileM = tileM;
 			_tileI1 = tileI1;
 			_tileN = tileN;
 			_tileI2 = tileI2;
 		}
-		
+
 		@Override
 		public void handle(ActionEvent event) {
 			_tileM.playFlash("ADDED");
@@ -774,7 +774,7 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	private class ResetAIHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -787,7 +787,7 @@ public class PaneOrganizer {
 	}
 
 	public void addPostIts() {
-		_postItOneViewer = new ImageView(new Image("greenpostit.png"));
+		_postItOneViewer = new ImageView(new Image("Images/Main Theme and GUI/greenpostit.png"));
 		_postItOneViewer.setCache(true);
 		_postItOneViewer.setPreserveRatio(true);
 		_postItOneViewer.setFitWidth(Constants.GRID_FACTOR * 4);
@@ -795,7 +795,7 @@ public class PaneOrganizer {
 		_postItOneViewer.setLayoutY(Constants.GRID_FACTOR * 5);
 		_postItOneViewer.setOnMousePressed(new ScorePaneHandler("IN"));
 		_postItOneViewer.setOnMouseReleased(new ScorePaneHandler("OUT"));
-		_postItTwoViewer = new ImageView(new Image("bluepostit.png"));
+		_postItTwoViewer = new ImageView(new Image("Images/Main Theme and GUI/bluepostit.png"));
 		_postItTwoViewer.setCache(true);
 		_postItTwoViewer.setPreserveRatio(true);
 		_postItTwoViewer.setFitWidth(Constants.GRID_FACTOR * 4);
@@ -806,14 +806,14 @@ public class PaneOrganizer {
 		_playerOneScore = new Label();
 		_playerOneScore.setOpacity(1.0);
 		_playerOneScore.setTextFill(Constants.GRAPHITE);
-//		System.out.println(16);
+		// System.out.println(16);
 		_playerOneScore.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_POST_IT));
 		_playerOneScore.setLayoutY(Constants.GRID_FACTOR * 6.1);
 		_playerOneScore.setLayoutX(Constants.GRID_FACTOR * 5.7);
 		// _playerOneScore.setRotate(-15);
 		_playerOneScore.setOnMousePressed(new ScorePaneHandler("IN"));
 		_playerOneScore.setOnMouseReleased(new ScorePaneHandler("OUT"));
-		_playerOneHi = new ImageView(new Image("highlight.png"));
+		_playerOneHi = new ImageView(new Image("Images/Main Theme and GUI/highlight.png"));
 		_playerOneHi.setPreserveRatio(true);
 		_playerOneHi.setCache(true);
 		_playerOneHi.setFitWidth(90);
@@ -831,7 +831,7 @@ public class PaneOrganizer {
 		_playerTwoScore.setLayoutX(Constants.GRID_FACTOR * 7.9);
 		_playerTwoScore.setOnMousePressed(new ScorePaneHandler("IN"));
 		_playerTwoScore.setOnMouseReleased(new ScorePaneHandler("OUT"));
-		_playerTwoHi = new ImageView(new Image("highlight.png"));
+		_playerTwoHi = new ImageView(new Image("Images/Main Theme and GUI/highlight.png"));
 		_playerTwoHi.setPreserveRatio(true);
 		_playerTwoHi.setCache(true);
 		_playerTwoHi.setFitWidth(90);
@@ -840,7 +840,7 @@ public class PaneOrganizer {
 		_playerTwoHi.setOpacity(0.0);
 		_playerTwoHi.setOnMousePressed(new ScorePaneHandler("IN"));
 		_playerTwoHi.setOnMouseReleased(new ScorePaneHandler("OUT"));
-		_pencilViewer = new ImageView(new Image("pencil.png"));
+		_pencilViewer = new ImageView(new Image("Images/Main Theme and GUI/pencil.png"));
 		_pencilViewer.setCache(true);
 		_pencilViewer.setPreserveRatio(true);
 		_pencilViewer.setFitWidth(Constants.GRID_FACTOR * 4);
@@ -857,13 +857,13 @@ public class PaneOrganizer {
 		pieceShadow.setWidth(25);
 		pieceShadow.setBlurType(BlurType.GAUSSIAN);
 		_pencilViewer.setEffect(pieceShadow);
-//		_pencilViewer.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
-//		_pencilViewer.addEventHandler(KeyEvent.KEY_RELEASED, new KeyHandler());
+		// _pencilViewer.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
+		// _pencilViewer.addEventHandler(KeyEvent.KEY_RELEASED, new KeyHandler());
 		_rtPencil = new RotateTransition(Duration.millis(190), _pencilViewer);
 		_rtPencil.setByAngle(15);
 		_rtPencil.setCycleCount(2);
 		_rtPencil.setAutoReverse(true);
-		_hiViewer = new ImageView(new Image("hi.png"));
+		_hiViewer = new ImageView(new Image("Images/Main Theme and GUI/hi.png"));
 		_hiViewer.setCache(true);
 		_hiViewer.setPreserveRatio(true);
 		_hiViewer.setFitWidth(Constants.GRID_FACTOR * 1.4);
@@ -882,17 +882,17 @@ public class PaneOrganizer {
 		_hiViewer.setEffect(hiShadow);
 		_moveHi = new TranslateTransition(Duration.seconds(Constants.PLACEMENT_DURATION), _hiViewer);
 		_moveHi.setByX(400);
-		_boardPane.getChildren().addAll(_postItOneViewer, _postItTwoViewer, _playerOneHi, _playerTwoHi, _pencilViewer, _playerOneScore,
-				_playerTwoScore, _hiViewer);
+		_boardPane.getChildren().addAll(_postItOneViewer, _postItTwoViewer, _playerOneHi, _playerTwoHi, _pencilViewer,
+				_playerOneScore, _playerTwoScore, _hiViewer);
 	}
-	
+
 	private class HighlightHandler implements EventHandler<ActionEvent> {
 		private String _winner;
-		
+
 		public HighlightHandler(String winner) {
 			_winner = winner;
 		}
-		
+
 		@Override
 		public void handle(ActionEvent event) {
 			if (_winner == "PLAYER ONE") {
@@ -905,7 +905,7 @@ public class PaneOrganizer {
 			}
 			event.consume();
 		}
-		
+
 	}
 
 	public void addBag() {
@@ -1002,7 +1002,10 @@ public class PaneOrganizer {
 			if (keyPressed == KeyCode.Q) { // Quits game with "Q"
 				System.exit(0);
 			} else if (keyPressed == KeyCode.ESCAPE) { // Quits game with "Q"
-				if (_referee != null && _referee.getCurrentPlayer().getPlayerType() == "HUMAN" /*&& _referee.firstMoveMade() != false*/ && event.isMetaDown()) {
+				if (_referee != null
+						&& _referee.getCurrentPlayer()
+								.getPlayerType() == "HUMAN" /* && _referee.firstMoveMade() != false */
+						&& event.isMetaDown()) {
 					_referee.nextMove();
 				}
 			} else if (keyPressed == KeyCode.SPACE) { // Quits game with "Q"
@@ -1019,10 +1022,10 @@ public class PaneOrganizer {
 					_moveLeft.play();
 					_moveRight.play();
 					TranslateTransition moveLeftIcon = new TranslateTransition(Duration.seconds(2), _playerOneIcon);
-					moveLeftIcon.setByX(-1 * Constants.SCENE_WIDTH/2 - 2);
+					moveLeftIcon.setByX(-1 * Constants.SCENE_WIDTH / 2 - 2);
 					moveLeftIcon.play();
 					TranslateTransition moveRightIcon = new TranslateTransition(Duration.seconds(2), _playerTwoIcon);
-					moveRightIcon.setByX(Constants.SCENE_WIDTH/2 + 2);
+					moveRightIcon.setByX(Constants.SCENE_WIDTH / 2 + 2);
 					moveRightIcon.play();
 					ScaleTransition scaleOne = new ScaleTransition(Duration.seconds(0.15), _playerOneIcon);
 					scaleOne.setByX(0.3);
@@ -1039,11 +1042,11 @@ public class PaneOrganizer {
 					FadeTransition fadeLeft = new FadeTransition(Duration.seconds(1), _leftHalf);
 					fadeLeft.setFromValue(1.0);
 					fadeLeft.setToValue(0.0);
-					//fadeLeft.play();
+					// fadeLeft.play();
 					FadeTransition fadeRight = new FadeTransition(Duration.seconds(1), _rightHalf);
 					fadeRight.setFromValue(1.0);
 					fadeRight.setToValue(0.0);
-					//fadeRight.play();
+					// fadeRight.play();
 					_scrabbleGame.startGamePlay();
 					if (_playerOneType == "HUMAN") {
 						_playerOne = new HumanPlayer("PLAYER ONE", _scrabbleGame);
@@ -1064,7 +1067,7 @@ public class PaneOrganizer {
 					System.out.printf("\nHANDLE, ENTER INT = %s\n", _enterInt);
 					Word newestWord = _referee.getCurrentPlayer().getNewestWord();
 					if (newestWord.isPlayable()) {
-						//system.out.printf("ADDING TO BOARD on enterInt %s\n", _enterInt);
+						// system.out.printf("ADDING TO BOARD on enterInt %s\n", _enterInt);
 						newestWord.addToBoard();
 						if (_referee.firstMoveMade() == false) {
 							_referee.setFirstMoveIsMade();
@@ -1103,8 +1106,10 @@ public class PaneOrganizer {
 							Word thisCross = crosses.get(i);
 							Label newCrossWord = new Label(thisCross.getLetters());
 							newCrossWord.setTextFill(Constants.GREEN);
-							newCrossWord.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
-							newCrossWord.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
+							newCrossWord
+									.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+							newCrossWord
+									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossWord.setLayoutX(15);
 							_playedWords.add(newCrossWord);
 							int crossValue = thisCross.getValue();
@@ -1117,8 +1122,10 @@ public class PaneOrganizer {
 							Label newCrossValue = new Label(String.valueOf(crossValue));
 							_playedWords.add(newCrossValue);
 							newCrossValue.setTextFill(Constants.GREEN);
-							newCrossValue.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
-							newCrossValue.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
+							newCrossValue
+									.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+							newCrossValue
+									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossValue.setLayoutX(315 - 15 - 25 * digitmult);
 							if (_referee.currentPlayer() == "PLAYER ONE") {
 								_wordContainer1.getChildren().addAll(newCrossWord, newCrossValue);
@@ -1169,7 +1176,8 @@ public class PaneOrganizer {
 									} else {
 										validity = "FAILED";
 									}
-									PauseTransition delayFlash = new PauseTransition(Duration.seconds(Constants.FLASH_SPACING_DURATION * (i + 1)));
+									PauseTransition delayFlash = new PauseTransition(
+											Duration.seconds(Constants.FLASH_SPACING_DURATION * (i + 1)));
 									delayFlash.setOnFinished(new PlayFlashHandler(crosses.get(i), validity));
 									delayFlash.play();
 								}
@@ -1203,25 +1211,25 @@ public class PaneOrganizer {
 				}
 			} else if (keyPressed == KeyCode.S) {
 			} else if (keyPressed == KeyCode.DIGIT1) {
-				 if (_playerOneType == "HUMAN") {
-					 _playerOneType = "COMPUTER";
-					 _playerOneIcon.setImage(_ai);
-					 System.out.println(_playerOneType);
-				 } else if (_playerOneType == "COMPUTER") {
-					 _playerOneType = "HUMAN";
-					 _playerOneIcon.setImage(_human);
-					 System.out.println(_playerOneType);
-				 }
+				if (_playerOneType == "HUMAN") {
+					_playerOneType = "COMPUTER";
+					_playerOneIcon.setImage(_ai);
+					System.out.println(_playerOneType);
+				} else if (_playerOneType == "COMPUTER") {
+					_playerOneType = "HUMAN";
+					_playerOneIcon.setImage(_human);
+					System.out.println(_playerOneType);
+				}
 			} else if (keyPressed == KeyCode.DIGIT2) {
-				 if (_playerTwoType == "HUMAN") {
-					 _playerTwoType = "COMPUTER";
-					 _playerTwoIcon.setImage(_ai);
-					 System.out.println(_playerTwoType);
-				 } else if (_playerTwoType == "COMPUTER") {
-					 _playerTwoType = "HUMAN";
-					 _playerTwoIcon.setImage(_human);
-					 System.out.println(_playerTwoType);
-				 }
+				if (_playerTwoType == "HUMAN") {
+					_playerTwoType = "COMPUTER";
+					_playerTwoIcon.setImage(_ai);
+					System.out.println(_playerTwoType);
+				} else if (_playerTwoType == "COMPUTER") {
+					_playerTwoType = "HUMAN";
+					_playerTwoIcon.setImage(_human);
+					System.out.println(_playerTwoType);
+				}
 			} else if (keyPressed == KeyCode.C) { // Quits game with "Q"
 				_scrabbleGame.getReferee().getCurrentPlayer().getNewestWord().clear();
 				_scrabbleGame.resetRackOne();
@@ -1232,9 +1240,9 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	public void addWordAI(Word newestWord) {
-		//system.out.printf("ADDING TO BOARD on enterInt %s\n", _enterInt);
+		// system.out.printf("ADDING TO BOARD on enterInt %s\n", _enterInt);
 		newestWord.addToBoardAI();
 		_referee.incrementWordsPlayedBy(1);
 		PaneOrganizer.this.updateLabels();
@@ -1264,7 +1272,7 @@ public class PaneOrganizer {
 		} else if (_referee.currentPlayer() == "PLAYER TWO") {
 			_wordContainer2.getChildren().addAll(word, value);
 		}
-		
+
 		ArrayList<Word> crosses = newestWord.getAllCrosses();
 		if (crosses != null && crosses.size() > 0) {
 			for (int i = 0; i < crosses.size(); i++) {
@@ -1277,7 +1285,8 @@ public class PaneOrganizer {
 				newCrossWord.setLayoutX(15);
 				_playedWords.add(newCrossWord);
 				int crossValue = thisCross.getValue();
-				//system.out.printf("\nCROSS %s = %s with a value of %s and size %s\n\n", i + 1, thisCross.getLetters(), crossValue, thisCross.getTiles().size());
+				// system.out.printf("\nCROSS %s = %s with a value of %s and size %s\n\n", i +
+				// 1, thisCross.getLetters(), crossValue, thisCross.getTiles().size());
 				_referee.addToScore(crossValue);
 				if (crossValue > 9) {
 					digitmult = 2;
@@ -1298,7 +1307,8 @@ public class PaneOrganizer {
 			}
 			_referee.incrementWordsPlayedBy(crosses.size());
 			for (int i = 0; i < crosses.size(); i++) {
-				PauseTransition delayFlash = new PauseTransition(Duration.seconds(Constants.FLASH_SPACING_DURATION * (i + 1)));
+				PauseTransition delayFlash = new PauseTransition(
+						Duration.seconds(Constants.FLASH_SPACING_DURATION * (i + 1)));
 				delayFlash.setOnFinished(new PlayFlashHandler(crosses.get(i), "ADDED"));
 				delayFlash.play();
 			}
@@ -1318,7 +1328,7 @@ public class PaneOrganizer {
 		newestWord.playFlashes("ADDED");
 		_referee.nextMove();
 	}
-	
+
 	private class PlayFlashHandler implements EventHandler<ActionEvent> {
 		private Word _word;
 		private String _id;
@@ -1351,33 +1361,43 @@ public class PaneOrganizer {
 					_s2.setVvalue(0);
 					_scorePane.setVisible(true);
 					_scrabbleGame.pauseGamePlay();
-					FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION), _scorePane);
+					FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
+							_scorePane);
 					fadeIn.setFromValue(0.0);
 					fadeIn.setToValue(1.0);
 					fadeIn.play();
-					// // FadeTransition fadeIn1 = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION), _playerOneScore);
+					// // FadeTransition fadeIn1 = new
+					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
+					// _playerOneScore);
 					// fadeIn1.setFromValue(0.0);
 					// fadeIn1.setToValue(1.0);
 					// fadeIn1.play();
-					// // FadeTransition fadeIn2 = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION), _playerTwoScore);
+					// // FadeTransition fadeIn2 = new
+					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
+					// _playerTwoScore);
 					// fadeIn2.setFromValue(0.0);
 					// fadeIn2.setToValue(1.0);
 					// fadeIn2.play();
 				} else if (_id == "OUT") {
 					_olds1 = _s1.getVvalue();
 					_olds2 = _s2.getVvalue();
-					//system.out.printf("olds1 = %s, olds2 = %s\n", _olds1, _olds2);
+					// system.out.printf("olds1 = %s, olds2 = %s\n", _olds1, _olds2);
 					_scrabbleGame.startGamePlay();
-					FadeTransition fadeOut = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION), _scorePane);
+					FadeTransition fadeOut = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
+							_scorePane);
 					fadeOut.setFromValue(1.0);
 					fadeOut.setToValue(0.0);
 					fadeOut.setOnFinished(new ScorePaneRemoveHandler());
 					fadeOut.play();
-					// FadeTransition fadeOut1 = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION), _playerOneScore);
+					// FadeTransition fadeOut1 = new
+					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
+					// _playerOneScore);
 					// fadeOut1.setFromValue(1.0);
 					// fadeOut1.setToValue(0.0);
 					// fadeOut1.play();
-					// FadeTransition fadeOut2 = new FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION), _playerTwoScore);
+					// FadeTransition fadeOut2 = new
+					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
+					// _playerTwoScore);
 					// fadeOut2.setFromValue(1.0);
 					// fadeOut2.setToValue(0.0);
 					// // fadeOut2.play();
@@ -1392,26 +1412,26 @@ public class PaneOrganizer {
 
 		@Override
 		public void handle(MouseEvent event) {
-			//system.out.println("HANDLE");
+			// system.out.println("HANDLE");
 			_s1.setVvalue(_olds1);
-			//system.out.printf("%s\n", _s1.getVvalue());
+			// system.out.printf("%s\n", _s1.getVvalue());
 			event.consume();
 		}
 
 	}
-	
+
 	private class ScrollTwoRecallHandler implements EventHandler<MouseEvent> {
 
 		@Override
 		public void handle(MouseEvent event) {
-			//system.out.println("HANDLE");
+			// system.out.println("HANDLE");
 			_s2.setVvalue(_olds2);
-			//system.out.printf("%s\n", _s2.getVvalue());
+			// system.out.printf("%s\n", _s2.getVvalue());
 			event.consume();
 		}
 
 	}
-	
+
 	private class ScorePaneRemoveHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -1496,7 +1516,7 @@ public class PaneOrganizer {
 		}
 
 	}
-	
+
 	public void moveHi(String winner) {
 		_moveHi.setOnFinished(new HighlightHandler(winner));
 		_moveHi.play();

@@ -348,7 +348,7 @@ public class ScrabbleGame {
 		// Middle
 		_boardArray[7][7].setID("DOUBLE WORD SCORE");
 		// _boardArray[7][7].removeLabel();
-		_diamondViewer = new ImageView(new Image("diamond.png"));
+		_diamondViewer = new ImageView(new Image("Images/Main Theme and GUI/diamond.png"));
 		_diamondViewer.setCache(true);
 		_diamondViewer.setPreserveRatio(true);
 		_diamondViewer.setFitWidth(Constants.GRID_FACTOR - 2 * Constants.TILE_PADDING);

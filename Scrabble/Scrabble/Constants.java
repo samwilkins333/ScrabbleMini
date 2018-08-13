@@ -109,10 +109,10 @@ public class Constants {
 	
 	public static final double FONT_SIZE_POST_IT = 40;
 	public static final double FONT_SIZE_WORD_LIST = 35;
-	public static final String DOMESTIC_MANNERS = "file:FONTS/domesticmanners.ttf";
-	public static final String BROWN_BAG_LUNCH = "file:FONTS/BrownBagLunch.ttf";
-	public static final String ALPHABETIZED_CASSETTE_TAPES = "file:FONTS/alphabetizedcassettetapes.ttf";
-	public static final String NEWS_GOTHIC_STANDARD = "file:FONTS/NewsGothicStd.otf";
+	public static final String DOMESTIC_MANNERS = "file:Fonts/domesticmanners.ttf";
+	public static final String BROWN_BAG_LUNCH = "file:Fonts/BrownBagLunch.ttf";
+	public static final String ALPHABETIZED_CASSETTE_TAPES = "file:Fonts/alphabetizedcassettetapes.ttf";
+	public static final String NEWS_GOTHIC_STANDARD = "file:Fonts/NewsGothicStd.otf";
 		
 	public static final double PLACEMENT_DURATION = 0.6;
 	public static final boolean PRINT_STATUS = false;

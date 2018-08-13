@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 
 /**
  * 
- * @author swilkinss2012
+ * @author samwilkins333
  *
  */
 public class App extends Application {

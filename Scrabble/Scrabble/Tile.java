@@ -66,137 +66,137 @@ public class Tile {
 		case 0:
 			_letter = "BLANK";
 			_value = 0;
-			_tileViewer.setImage(new Image("blank.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/blank.png"));
 			break;
 		case 1:
 			_letter = "A";
 			_value = 1;
-			_tileViewer.setImage(new Image("a.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/a.png"));
 			break;
 		case 2:
 			_letter = "B";
 			_value = 3;
-			_tileViewer.setImage(new Image("b.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/b.png"));
 			break;
 		case 3:
 			_letter = "C";
 			_value = 3;
-			_tileViewer.setImage(new Image("c.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/c.png"));
 			break;
 		case 4:
 			_letter = "D";
 			_value = 2;
-			_tileViewer.setImage(new Image("d.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/d.png"));
 			break;
 		case 5:
 			_letter = "E";
 			_value = 1;
-			_tileViewer.setImage(new Image("e.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/e.png"));
 			break;
 		case 6:
 			_letter = "F";
 			_value = 4;
-			_tileViewer.setImage(new Image("f.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/f.png"));
 			break;
 		case 7:
 			_letter = "G";
 			_value = 2;
-			_tileViewer.setImage(new Image("g.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/g.png"));
 			break;
 		case 8:
 			_letter = "H";
 			_value = 4;
-			_tileViewer.setImage(new Image("h.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/h.png"));
 			break;
 		case 9:
 			_letter = "I";
 			_value = 1;
-			_tileViewer.setImage(new Image("i.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/i.png"));
 			break;
 		case 10:
 			_letter = "J";
 			_value = 8;
-			_tileViewer.setImage(new Image("j.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/j.png"));
 			break;
 		case 11:
 			_letter = "K";
 			_value = 5;
-			_tileViewer.setImage(new Image("k.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/k.png"));
 			break;
 		case 12:
 			_letter = "L";
 			_value = 1;
-			_tileViewer.setImage(new Image("l.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/l.png"));
 			break;
 		case 13:
 			_letter = "M";
 			_value = 3;
-			_tileViewer.setImage(new Image("m.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/m.png"));
 			break;
 		case 14:
 			_letter = "N";
 			_value = 1;
-			_tileViewer.setImage(new Image("n.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/n.png"));
 			break;
 		case 15:
 			_letter = "O";
 			_value = 1;
-			_tileViewer.setImage(new Image("o.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/o.png"));
 			break;
 		case 16:
 			_letter = "P";
 			_value = 3;
-			_tileViewer.setImage(new Image("p.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/p.png"));
 			break;
 		case 17:
 			_letter = "Q";
 			_value = 10;
-			_tileViewer.setImage(new Image("q.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/q.png"));
 			break;
 		case 18:
 			_letter = "R";
 			_value = 1;
-			_tileViewer.setImage(new Image("r.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/r.png"));
 			break;
 		case 19:
 			_letter = "S";
 			_value = 1;
-			_tileViewer.setImage(new Image("s.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/s.png"));
 			break;
 		case 20:
 			_letter = "T";
 			_value = 1;
-			_tileViewer.setImage(new Image("t.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/t.png"));
 			break;
 		case 21:
 			_letter = "U";
 			_value = 1;
-			_tileViewer.setImage(new Image("u.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/u.png"));
 			break;
 		case 22:
 			_letter = "V";
 			_value = 4;
-			_tileViewer.setImage(new Image("v.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/v.png"));
 			break;
 		case 23:
 			_letter = "W";
 			_value = 4;
-			_tileViewer.setImage(new Image("w.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/w.png"));
 			break;
 		case 24:
 			_letter = "X";
 			_value = 8;
-			_tileViewer.setImage(new Image("x.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/x.png"));
 			break;
 		case 25:
 			_letter = "Y";
 			_value = 4;
-			_tileViewer.setImage(new Image("y.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/y.png"));
 			break;
 		case 26:
 			_letter = "Z";
 			_value = 10;
-			_tileViewer.setImage(new Image("z.png"));
+			_tileViewer.setImage(new Image("Images/Scrabble Tiles/z.png"));
 			break;
 		case 27:
 			_letter = "TRANSPARENT";
@@ -726,7 +726,7 @@ public class Tile {
 	}
 
 	public void setUpFlash() {
-		_checkViewer = new ImageView(new Image("greencheck.png"));
+		_checkViewer = new ImageView(new Image("Images/Interaction Feedback/greencheck.png"));
 		_checkViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
 		_checkViewer.setLayoutX(Constants.GRID_FACTOR * 5);
 		_checkViewer.setLayoutY(Constants.GRID_FACTOR * 4);
@@ -743,7 +743,7 @@ public class Tile {
 		_addedFlash.setCycleCount(1);
 		_addedFlash.setOnFinished(new RemoveIconsHandler("ADDED"));
 
-		_xViewer = new ImageView(new Image("redx.png"));
+		_xViewer = new ImageView(new Image("Images/Interaction Feedback/redx.png"));
 		_xViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
 		_xViewer.setLayoutX(Constants.GRID_FACTOR * 5);
 		_xViewer.setLayoutY(Constants.GRID_FACTOR * 4);
@@ -760,7 +760,7 @@ public class Tile {
 		_failedFlash.setCycleCount(1);
 		_failedFlash.setOnFinished(new RemoveIconsHandler("FAILED"));
 
-		_minusViewer = new ImageView(new Image("yellowminus.png"));
+		_minusViewer = new ImageView(new Image("Images/Interaction Feedback/yellowminus.png"));
 		_minusViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
 		_minusViewer.setLayoutX(Constants.GRID_FACTOR * 5);
 		_minusViewer.setLayoutY(Constants.GRID_FACTOR * 4);
