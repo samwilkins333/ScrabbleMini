@@ -9,7 +9,6 @@ import javafx.stage.Stage;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import javafx.animation.*;
@@ -43,8 +42,6 @@ public class PaneOrganizer {
 	private String _playerTwoType;
 	// DATA STRUCTURES
 	private ArrayList<Label> _playedWords;
-
-	private InputStream _fontStream;
 
 	private Pane _root;
 	private Pane _boardPane;
@@ -121,13 +118,6 @@ public class PaneOrganizer {
 		_root = new Pane();
 		@SuppressWarnings("unused")
 		Constants constants = new Constants();
-
-		// FONT LOADING
-		String path = "/FONTS/domesticmanners.ttf";
-		_fontStream = this.getClass().getResourceAsStream(path);
-		if (_fontStream == null) {
-			System.out.println("INPUT STREAM NULL");
-		}
 
 		_enterInt = 0;
 		_enterable = false;
@@ -1106,8 +1096,7 @@ public class PaneOrganizer {
 							Word thisCross = crosses.get(i);
 							Label newCrossWord = new Label(thisCross.getLetters());
 							newCrossWord.setTextFill(Constants.GREEN);
-							newCrossWord
-									.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+							newCrossWord.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
 							newCrossWord
 									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossWord.setLayoutX(15);
@@ -1122,8 +1111,7 @@ public class PaneOrganizer {
 							Label newCrossValue = new Label(String.valueOf(crossValue));
 							_playedWords.add(newCrossValue);
 							newCrossValue.setTextFill(Constants.GREEN);
-							newCrossValue
-									.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+							newCrossValue.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
 							newCrossValue
 									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossValue.setLayoutX(315 - 15 - 25 * digitmult);
