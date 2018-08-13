@@ -909,7 +909,7 @@ public class PaneOrganizer {
 	}
 
 	public void addBag() {
-		_bagViewer = new ImageView(new Image("bag.png"));
+		_bagViewer = new ImageView(new Image("Images/Main Theme and GUI/bag.png"));
 		_bagViewer.setCache(true);
 		_bagViewer.setPreserveRatio(true);
 		_bagViewer.setFitWidth(Constants.GRID_FACTOR * 7);
@@ -960,7 +960,7 @@ public class PaneOrganizer {
 		// Constants.GRID_FACTOR, Constants.GRID_FACTOR * 15, Constants.GRID_FACTOR *
 		// 15);
 		// backgroundRect.setFill(Color.web("#CC2244"));
-		_leatherViewer = new ImageView(new Image("leatherframe.png"));
+		_leatherViewer = new ImageView(new Image("Images/Main Theme and GUI/leatherframe - Original.png"));
 		_leatherViewer.setCache(true);
 		_leatherViewer.setPreserveRatio(false);
 		_leatherViewer.setFitWidth(Constants.GRID_FACTOR * 15.5);
@@ -977,7 +977,7 @@ public class PaneOrganizer {
 		pieceShadow.setWidth(25);
 		pieceShadow.setBlurType(BlurType.GAUSSIAN);
 		_leatherViewer.setEffect(pieceShadow);
-		ImageView deskViewer = new ImageView(new Image("desktop.jpg"));
+		ImageView deskViewer = new ImageView(new Image("Images/Main Theme and GUI/desktop.jpg"));
 		deskViewer.setCache(true);
 		deskViewer.setPreserveRatio(true);
 		deskViewer.setFitWidth(Constants.SCENE_WIDTH);
