@@ -110,7 +110,7 @@ public class Constants {
 	public static final double FONT_SIZE_POST_IT = 40;
 	public static final double FONT_SIZE_WORD_LIST = 35;
 	public static final String DOMESTIC_MANNERS = ClassLoader.getSystemResource("Fonts/domesticmanners.ttf").toExternalForm();
-	//public static final String BROWN_BAG_LUNCH = ClassLoader.getSystemResource("Fonts/BrownBagLunch.ttf").toExternalForm();
+	public static final String BROWN_BAG_LUNCH = ClassLoader.getSystemResource("Fonts/brownbaglunch.ttf").toExternalForm();
 	public static final String ALPHABETIZED_CASSETTE_TAPES = ClassLoader.getSystemResource("Fonts/alphabetizedcassettetapes.ttf").toExternalForm();
 	public static final String NEWS_GOTHIC_STANDARD = ClassLoader.getSystemResource("Fonts/NewsGothicStd.otf").toExternalForm();
 		
