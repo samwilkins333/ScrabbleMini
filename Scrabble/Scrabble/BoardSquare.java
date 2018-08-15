@@ -17,14 +17,14 @@ import javafx.scene.text.Font;
  * move AI move calculation and human player score assignment.
  * 
  */
-public class BoardSquare {
+class BoardSquare {
 	private Rectangle _square;
 	private Label _label;
 	private ScrabbleGame _scrabbleGame;
 	
 	private int _x;
 	private int _y;
-	private String _id;
+	private SquareIdentity _identity;
 	
 	private Pane _boardPane;
 	private Pane _labelPane;
@@ -47,10 +47,10 @@ public class BoardSquare {
 	 * @param labelPane - the pane displaying the identifying white text of each board square 
 	 * 
 	 */
-	public BoardSquare(int x, int y, String id, Pane boardPane, Pane labelPane) {
+	BoardSquare(int x, int y, SquareIdentity id, Pane boardPane, Pane labelPane) {
 		_x = x;
 		_y = y;
-		_id = id;
+		_identity = id;
 		
 		_boardPane = boardPane;
 		_labelPane = labelPane;
@@ -75,17 +75,16 @@ public class BoardSquare {
 	 * receives its normal value
 	 * 
 	 */
-	public boolean isAlreadyPlayed() {
+	boolean isAlreadyPlayed() {
 		return _alreadyPlayed;
 	}
 	
 	/**
-	 * 
-	 * @param status - the assertion that the score multiplier has or has not already been used
+	 *
 	 * 
 	 */
-	public void setAlreadyPlayed(boolean status) {
-		_alreadyPlayed = status;
+	void setAlreadyPlayed() {
+		_alreadyPlayed = true;
 	}
 
 	/**
@@ -93,7 +92,7 @@ public class BoardSquare {
 	 * @return whether or not the board square exists as a double word multiplier
 	 * 
 	 */
-	public Boolean is2W() {
+	Boolean is2W() {
 		return _is2W;
 	}
 
@@ -102,7 +101,7 @@ public class BoardSquare {
 	 * @return whether or not the board square exists as a double letter multiplier
 	 * 
 	 */
-	public Boolean is2L() {
+	Boolean is2L() {
 		return _is2L;
 	}
 
@@ -111,7 +110,7 @@ public class BoardSquare {
 	 * @return whether or not the board square exists as a triple word multiplier
 	 * 
 	 */
-	public Boolean is3W() {
+	Boolean is3W() {
 		return _is3W;
 	}
 
@@ -120,7 +119,7 @@ public class BoardSquare {
 	 * @return whether or not the board square exists as a triple letter multiplier
 	 * 
 	 */
-	public Boolean is3L() {
+	Boolean is3L() {
 		return _is3L;
 	}
 
@@ -129,17 +128,17 @@ public class BoardSquare {
 	 * @return whether or not the board square has no affiliated score multiplier
 	 * 
 	 */
-	public Boolean isNormal() {
+	Boolean isNormal() {
 		return _isNormal;
 	}
 
 	/**
 	 * 
-	 * The de facto "constructor" of the graphical board square, which relies on the 
+	 * The de-facto "constructor" of the graphical board square, which relies on the
 	 * constants class for formatting before adding the square to the board pane
 	 * 
 	 */
-	public void formatSquare() {
+	private void formatSquare() {
 		_square = new Rectangle(_x, _y, Constants.GRID_FACTOR, Constants.GRID_FACTOR);
 		_square.setFill(Constants.BOARD_FILL);
 		_square.setStroke(Color.BLACK);
@@ -150,47 +149,57 @@ public class BoardSquare {
 	/**
 	 *
 	 * Called post initialization to establish score multiplier squares 
-	 * @param id - the specific nature of the multiplier
+	 * @param identity - the specific nature of the multiplier
 	 * 
 	 */
-	public void setID(String id) {
+	void setID(SquareIdentity identity) {
 		_isNormal = false;
 		_alreadyPlayed = false;
-		_id = id;
-		if (_id == "DOUBLE LETTER SCORE") {
-			_square.setFill(Constants.DOUBLE_LETTER_SCORE);
-			_square.setOpacity(Constants.BOARD_OPACITY);
-			_label = new Label("Lx2");
-			_label.setLayoutX(_x + 8);
-			_label.setLayoutY(_y + 12);
-			_is2L = true;
-		} else if (_id == "DOUBLE WORD SCORE") {
-			_square.setFill(Constants.DOUBLE_WORD_SCORE);
-			_square.setOpacity(Constants.BOARD_OPACITY);
-			_label = new Label("Wx2");
-			_label.setLayoutX(_x + 7);
-			_label.setLayoutY(_y + 12);
-			_is2W = true;
-		} else if (_id == "TRIPLE LETTER SCORE") {
-			_square.setFill(Constants.TRIPLE_LETTER_SCORE);
-			_square.setOpacity(Constants.BOARD_OPACITY);
-			_label = new Label("Lx3");
-			_label.setLayoutX(_x + 8);
-			_label.setLayoutY(_y + 12);
-			_is3L = true;
-		} else if (_id == "TRIPLE WORD SCORE") {
-			_square.setFill(Constants.TRIPLE_WORD_SCORE);
-			_square.setOpacity(Constants.BOARD_OPACITY);
-			_label = new Label("Wx3");
-			_label.setLayoutX(_x + 7);
-			_label.setLayoutY(_y + 12);
-			_is3W = true;
-		} 
-		// Exists only as a transparent square to "cover" the diamond above the middle-most square
-		else if (_id == "GHOST") {
-			_square.setFill(Color.BLACK);
-			_square.setOpacity(0.0);
+		_identity = identity;
+
+		switch (_identity) {
+
+			case Normal:
+				break;
+			case DoubleLetterScore:
+				_square.setFill(Constants.DOUBLE_LETTER_SCORE);
+				_square.setOpacity(Constants.BOARD_OPACITY);
+				_label = new Label("Lx2");
+				_label.setLayoutX(_x + 8);
+				_label.setLayoutY(_y + 12);
+				_is2L = true;
+				break;
+			case TripleLetterScore:
+				_square.setFill(Constants.TRIPLE_LETTER_SCORE);
+				_square.setOpacity(Constants.BOARD_OPACITY);
+				_label = new Label("Lx3");
+				_label.setLayoutX(_x + 8);
+				_label.setLayoutY(_y + 12);
+				_is3L = true;
+				break;
+			case DoubleWordScore:
+				_square.setFill(Constants.DOUBLE_WORD_SCORE);
+				_square.setOpacity(Constants.BOARD_OPACITY);
+				_label = new Label("Wx2");
+				_label.setLayoutX(_x + 7);
+				_label.setLayoutY(_y + 12);
+				_is2W = true;
+				break;
+			case TripleWordScore:
+				_square.setFill(Constants.TRIPLE_WORD_SCORE);
+				_square.setOpacity(Constants.BOARD_OPACITY);
+				_label = new Label("Wx3");
+				_label.setLayoutX(_x + 7);
+				_label.setLayoutY(_y + 12);
+				_is3W = true;
+				break;
+			// Exists only as a transparent square to "cover" the diamond above the middle-most square
+			case Ghost:
+				_square.setFill(Color.BLACK);
+				_square.setOpacity(0.0);
+				break;
 		}
+
 		if (_label != null) {
 			_label.setTextFill(Color.WHITE);
 			_label.setOpacity(0.0);
@@ -203,16 +212,14 @@ public class BoardSquare {
 	 * Uses a fade transition to display the multiplier text label
 	 * 
 	 */
-	public void showText() {
-		if (_label != null) {
-			if (!_labelPane.getChildren().contains(_label)) {
-				_labelPane.getChildren().add(_label);	
-			}
-			FadeTransition fadeInLabel = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _label);
-			fadeInLabel.setFromValue(0.0);
-			fadeInLabel.setToValue(1.0);
-			fadeInLabel.play();	
-		}
+	void showText() {
+		if (_label == null) return;
+		if (!_labelPane.getChildren().contains(_label)) _labelPane.getChildren().add(_label);
+
+		FadeTransition fadeInLabel = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _label);
+		fadeInLabel.setFromValue(0.0);
+		fadeInLabel.setToValue(1.0);
+		fadeInLabel.play();
 	}
 
 	/**
@@ -220,14 +227,14 @@ public class BoardSquare {
 	 * Uses a fade transition to conceal the multiplier text label
 	 * 
 	 */
-	public void concealText() {
-		if (_label != null) {
-			FadeTransition fadeOutLabel = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _label);
-			fadeOutLabel.setFromValue(1.0);
-			fadeOutLabel.setToValue(0.0);
-			fadeOutLabel.setOnFinished(new LabelFadeHandler());
-			fadeOutLabel.play();
-		}
+	void concealText() {
+		if (_label == null) return;
+
+		FadeTransition fadeOutLabel = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _label);
+		fadeOutLabel.setFromValue(1.0);
+		fadeOutLabel.setToValue(0.0);
+		fadeOutLabel.setOnFinished(new LabelFadeHandler());
+		fadeOutLabel.play();
 	}
 
 	/**
@@ -235,18 +242,8 @@ public class BoardSquare {
 	 * @return - the nature of the score multiplier
 	 * 
 	 */
-	public String getID() {
-		return _id;
-	}
-
-	/**
-	 * 
-	 * Mutator that sets the board square to the specified fill
-	 * @param color
-	 * 
-	 */
-	public void setFill(Color color) {
-		_square.setFill(color);
+	SquareIdentity getIdentity() {
+		return _identity;
 	}
 
 	/**
@@ -254,15 +251,16 @@ public class BoardSquare {
 	 * @return the underlying rectangle, called when displaying and concealing certain board squares
 	 * 
 	 */
-	public Rectangle getSquare() {
+	Rectangle getSquare() {
 		return _square;
 	}
 
 	/**
-	 * 
-	 * @param scrabbleGame
+	 *
+	 * @param scrabbleGame - stored association, establishes the necessary event handlers
+	 *
 	 */
-	public void setUpHoverResponse(ScrabbleGame scrabbleGame) {
+	void setUpHoverResponse(ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_square.addEventHandler(MouseEvent.MOUSE_PRESSED, new DisplayHandler());
 		_square.addEventHandler(MouseEvent.MOUSE_RELEASED, new ConcealHandler());
@@ -273,7 +271,7 @@ public class BoardSquare {
 		@Override
 		public void handle(MouseEvent event) {
 			if (_scrabbleGame.getIsShiftDown() && !_scrabbleGame.getReferee().isThinking()) {
-				_scrabbleGame.fadeOutOtherSquares(_id);	
+				_scrabbleGame.fadeOutOtherSquares(_identity);
 				_labelIsShown = true;
 			}
 			event.consume();
@@ -285,9 +283,7 @@ public class BoardSquare {
 
 		@Override
 		public void handle(MouseEvent event) {
-			if (_labelIsShown == true) {
-				_scrabbleGame.fadeInOtherSquares(_id);
-			}
+			if (_labelIsShown) _scrabbleGame.fadeInOtherSquares(_identity);
 			_labelIsShown = false;
 			event.consume();
 		} 

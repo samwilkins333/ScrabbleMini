@@ -13,7 +13,7 @@ import javafx.event.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 
-public class ScrabbleGame {
+class ScrabbleGame {
 	private PaneOrganizer _organizer;
 	private Pane _root;
 	private Pane _boardPane;
@@ -27,41 +27,40 @@ public class ScrabbleGame {
 	private ArrayList<BoardSquare> _doubleWordScores;
 	private ArrayList<BoardSquare> _tripleLetterScores;
 	private ArrayList<BoardSquare> _tripleWordScores;
-	private Scanner _scanner;
-	private Word _playerOneBest;
-	private Word _playerTwoBest;
-	private ArrayList<FadeTransition> _fadeIns;
-	private ArrayList<FadeTransition> _fadeOuts;
 	private Tile[][] _tileArray;
 	private ArrayList<Tile> _tilesOnBoard;
 	private ArrayList<BoardSquare> _specialSquares;
 	private ImageView _diamondViewer;
 	private Boolean _gameIsPlaying;
 	private Referee _referee;
-	private ArrayList<Tile> _endGame;
 	private boolean _autoReset;
 
 	ScrabbleGame(PaneOrganizer organizer, Pane root, Pane boardPane) {
 		_organizer = organizer;
 		_root = root;
+
 		_boardPane = boardPane;
 		_labelPane = new Pane();
+
 		_tileBag = new TileBag(this);
 		_tileArray = new Tile[15][15];
-		_playerOneRack = new ArrayList<Tile>();
-		_playerTwoRack = new ArrayList<Tile>();
+
+		_playerOneRack = new ArrayList<>();
+		_playerTwoRack = new ArrayList<>();
+
 		_boardArray = new BoardSquare[15][15];
-		_dictionary = new HashSet<String>();
-		_fadeOuts = new ArrayList<FadeTransition>();
-		_fadeIns = new ArrayList<FadeTransition>();
-		_tilesOnBoard = new ArrayList<Tile>();
-		_doubleLetterScores = new ArrayList<BoardSquare>();
-		_doubleWordScores = new ArrayList<BoardSquare>();
-		_tripleLetterScores = new ArrayList<BoardSquare>();
-		_tripleWordScores = new ArrayList<BoardSquare>();
-		_specialSquares = new ArrayList<BoardSquare>();
+		_dictionary = new HashSet<>();
+		_tilesOnBoard = new ArrayList<>();
+
+		_doubleLetterScores = new ArrayList<>();
+		_doubleWordScores = new ArrayList<>();
+		_tripleLetterScores = new ArrayList<>();
+		_tripleWordScores = new ArrayList<>();
+		_specialSquares = new ArrayList<>();
+
 		_gameIsPlaying = false;
 		_autoReset = false;
+
 		this.setUpBoard();
 		this.setUpTiles();
 		this.setUpDictionary();
@@ -72,11 +71,7 @@ public class ScrabbleGame {
 	}
 
 	String getRackAsString() {
-		if (_referee.getCurrentPlayer() == "PLAYER ONE") {
-			return this.tilesToString(_playerOneRack);
-		} else {
-			return this.tilesToString(_playerTwoRack);
-		}
+		return this.tilesToString(_referee.getCurrentPlayer() == PlayerNum.One ? _playerOneRack : _playerTwoRack);
 	}
 	
 	boolean tileBagIsEmpty() {
@@ -85,18 +80,6 @@ public class ScrabbleGame {
 	
 	void setAutoReset(boolean status) {
 		_autoReset = status;
-	}
-
-	public String getPlayerOneString() {
-		return this.tilesToString(_playerOneRack);
-	}
-
-	public String getPlayerTwoString() {
-		return this.tilesToString(_playerTwoRack);
-	}
-	
-	Boolean bagEmpty() {
-		return _tileBag.isEmpty();
 	}
 
 	int getRackSize(PlayerNum num) {
@@ -119,24 +102,14 @@ public class ScrabbleGame {
 		_gameIsPlaying = false;
 	}
 
-	void fadeRacks(int player, String direction) {
-		ArrayList<Tile> tileList = null;
-		double from = 0;
-		double to = 0;
-		if (player == 1) {
-			tileList = _playerOneRack;
-		} else if (player == 2) {
-			tileList = _playerTwoRack;
-		}
-		if (direction == "IN") {
-			from = Constants.FADED_TILE_OPACITY;
-			to = 1.0;
-		} else if (direction == "OUT") {
-			from = 1.0;
-			to = Constants.FADED_TILE_OPACITY;
-		}
-		for (int i = 0; i < tileList.size(); i++) {
-			Tile thisTile = tileList.get(i);
+	void fadeRacks(PlayerNum player, Direction direction) {
+		ArrayList<Tile> tileList = player == PlayerNum.One ? _playerOneRack : _playerTwoRack;
+
+		boolean in = direction == Direction.In;
+		double from = in ? Constants.FADED_TILE_OPACITY : 1.0;
+		double to = in ? 1.0 : Constants.FADED_TILE_OPACITY;
+
+		for (Tile thisTile : tileList) {
 			FadeTransition fade = new FadeTransition(Duration.seconds(0.5), thisTile.getTileViewer());
 			fade.setFromValue(from);
 			fade.setToValue(to);
@@ -149,7 +122,7 @@ public class ScrabbleGame {
 			for (int j = 0; j < _boardArray[1].length; j++) {
 				int xLayout = (i + Constants.ZEROETH_COLUMN_OFFSET) * Constants.GRID_FACTOR;
 				int yLayout = (j + Constants.ZEROETH_ROW_OFFSET) * Constants.GRID_FACTOR;
-				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, "NORMAL", _boardPane, _labelPane);
+				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, SquareIdentity.Normal, _boardPane, _labelPane);
 				_boardArray[i][j] = boardSquare;
 			}
 		}
@@ -174,15 +147,11 @@ public class ScrabbleGame {
 	}
 
 	void resetRackOne() {
-		for (int i = 0; i < _playerOneRack.size(); i++) {
-			_playerOneRack.get(i).reset();
-		}
+		for (Tile a_playerOneRack : _playerOneRack) a_playerOneRack.reset();
 	}
 
 	void resetRackTwo() {
-		for (int i = 0; i < _playerTwoRack.size(); i++) {
-			_playerTwoRack.get(i).reset();
-		}
+		for (Tile a_playerTwoRack : _playerTwoRack) a_playerTwoRack.reset();
 	}
 
 	private void setUpSpecialBoardSquares() {
@@ -190,42 +159,42 @@ public class ScrabbleGame {
 		// DOUBLE LETTER SCORES (BLUE)
 
 		// Central square
-		_boardArray[6][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[6][8].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][8].setID("DOUBLE LETTER SCORE");
+		_boardArray[6][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[6][8].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][8].setID(SquareIdentity.DoubleLetterScore);
 
 		// Horizontal Outer solos
-		_boardArray[3][0].setID("DOUBLE LETTER SCORE");
-		_boardArray[11][0].setID("DOUBLE LETTER SCORE");
-		_boardArray[3][14].setID("DOUBLE LETTER SCORE");
-		_boardArray[11][14].setID("DOUBLE LETTER SCORE");
+		_boardArray[3][0].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[11][0].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[3][14].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[11][14].setID(SquareIdentity.DoubleLetterScore);
 
 		// Vertical Outer solos
-		_boardArray[0][3].setID("DOUBLE LETTER SCORE");
-		_boardArray[0][11].setID("DOUBLE LETTER SCORE");
-		_boardArray[14][3].setID("DOUBLE LETTER SCORE");
-		_boardArray[14][11].setID("DOUBLE LETTER SCORE");
+		_boardArray[0][3].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[0][11].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[14][3].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[14][11].setID(SquareIdentity.DoubleLetterScore);
 
 		// Lower blue trio
-		_boardArray[7][11].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][12].setID("DOUBLE LETTER SCORE");
-		_boardArray[6][12].setID("DOUBLE LETTER SCORE");
+		_boardArray[7][11].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][12].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[6][12].setID(SquareIdentity.DoubleLetterScore);
 
 		// Left blue trio
-		_boardArray[3][7].setID("DOUBLE LETTER SCORE");
-		_boardArray[2][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[2][8].setID("DOUBLE LETTER SCORE");
+		_boardArray[3][7].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[2][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[2][8].setID(SquareIdentity.DoubleLetterScore);
 
 		// Right blue trio
-		_boardArray[11][7].setID("DOUBLE LETTER SCORE");
-		_boardArray[12][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[12][8].setID("DOUBLE LETTER SCORE");
+		_boardArray[11][7].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[12][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[12][8].setID(SquareIdentity.DoubleLetterScore);
 
 		// Upper blue trio
-		_boardArray[7][3].setID("DOUBLE LETTER SCORE");
-		_boardArray[6][2].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][2].setID("DOUBLE LETTER SCORE");
+		_boardArray[7][3].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[6][2].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][2].setID(SquareIdentity.DoubleLetterScore);
 
 		_doubleLetterScores.add(_boardArray[6][6]);
 		_doubleLetterScores.add(_boardArray[6][8]);
@@ -261,28 +230,28 @@ public class ScrabbleGame {
 		// DOUBLE WORD SCORES (RED)
 
 		// Northwest
-		_boardArray[1][1].setID("DOUBLE WORD SCORE");
-		_boardArray[2][2].setID("DOUBLE WORD SCORE");
-		_boardArray[3][3].setID("DOUBLE WORD SCORE");
-		_boardArray[4][4].setID("DOUBLE WORD SCORE");
+		_boardArray[1][1].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[2][2].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[3][3].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[4][4].setID(SquareIdentity.DoubleWordScore);
 
 		// Southeast
-		_boardArray[10][10].setID("DOUBLE WORD SCORE");
-		_boardArray[11][11].setID("DOUBLE WORD SCORE");
-		_boardArray[12][12].setID("DOUBLE WORD SCORE");
-		_boardArray[13][13].setID("DOUBLE WORD SCORE");
+		_boardArray[10][10].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[11][11].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[12][12].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[13][13].setID(SquareIdentity.DoubleWordScore);
 
 		// Southwest
-		_boardArray[1][13].setID("DOUBLE WORD SCORE");
-		_boardArray[2][12].setID("DOUBLE WORD SCORE");
-		_boardArray[3][11].setID("DOUBLE WORD SCORE");
-		_boardArray[4][10].setID("DOUBLE WORD SCORE");
+		_boardArray[1][13].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[2][12].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[3][11].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[4][10].setID(SquareIdentity.DoubleWordScore);
 
 		// Northeast
-		_boardArray[13][1].setID("DOUBLE WORD SCORE");
-		_boardArray[12][2].setID("DOUBLE WORD SCORE");
-		_boardArray[11][3].setID("DOUBLE WORD SCORE");
-		_boardArray[10][4].setID("DOUBLE WORD SCORE");
+		_boardArray[13][1].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[12][2].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[11][3].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[10][4].setID(SquareIdentity.DoubleWordScore);
 
 		_doubleWordScores.add(_boardArray[1][1]);
 		_doubleWordScores.add(_boardArray[2][2]);
@@ -307,22 +276,22 @@ public class ScrabbleGame {
 		// TRIPLE LETTER SCORES (GREEN)
 
 		// Central square
-		_boardArray[5][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[5][9].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][9].setID("TRIPLE LETTER SCORE");
+		_boardArray[5][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[5][9].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][9].setID(SquareIdentity.TripleLetterScore);
 
 		// Horizontal Outer Solos
-		_boardArray[1][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[1][9].setID("TRIPLE LETTER SCORE");
-		_boardArray[13][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[13][9].setID("TRIPLE LETTER SCORE");
+		_boardArray[1][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[1][9].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[13][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[13][9].setID(SquareIdentity.TripleLetterScore);
 
 		// Vertical Outer Solos
-		_boardArray[5][1].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][1].setID("TRIPLE LETTER SCORE");
-		_boardArray[5][13].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][13].setID("TRIPLE LETTER SCORE");
+		_boardArray[5][1].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][1].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[5][13].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][13].setID(SquareIdentity.TripleLetterScore);
 
 		_tripleLetterScores.add(_boardArray[5][5]);
 		_tripleLetterScores.add(_boardArray[5][9]);
@@ -342,8 +311,9 @@ public class ScrabbleGame {
 		// TRIPLE WORD SCORES (ORANGE)
 
 		// Middle
-		_boardArray[7][7].setID("DOUBLE WORD SCORE");
-		// _boardArray[7][7].removeLabel();
+		_boardArray[7][7].setID(SquareIdentity.DoubleWordScore);
+
+		// Create and graphically add diamond image view
 		_diamondViewer = new ImageView(new Image("Images/Main Theme and GUI/diamond.png"));
 		_diamondViewer.setCache(true);
 		_diamondViewer.setPreserveRatio(true);
@@ -351,23 +321,25 @@ public class ScrabbleGame {
 		_diamondViewer.setLayoutX(20 * Constants.GRID_FACTOR + 4);
 		_diamondViewer.setLayoutY(10 * Constants.GRID_FACTOR + 13);
 		_labelPane.getChildren().add(_diamondViewer);
+
+		// Create and add ghost or transparent overlay square for middle of board
 		int xLayout = Constants.X7 * Constants.GRID_FACTOR;
 		int yLayout = Constants.Y7 * Constants.GRID_FACTOR;
-		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, "NORMAL", _boardPane, _labelPane);
-		ghostSquare.setID("GHOST");
+		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, SquareIdentity.Normal, _boardPane, _labelPane);
+		ghostSquare.setID(SquareIdentity.Ghost);
 		ghostSquare.setUpHoverResponse(this);
 
 		// Corners
-		_boardArray[0][0].setID("TRIPLE WORD SCORE");
-		_boardArray[14][14].setID("TRIPLE WORD SCORE");
-		_boardArray[14][0].setID("TRIPLE WORD SCORE");
-		_boardArray[0][14].setID("TRIPLE WORD SCORE");
+		_boardArray[0][0].setID(SquareIdentity.TripleWordScore);
+		_boardArray[14][14].setID(SquareIdentity.TripleWordScore);
+		_boardArray[14][0].setID(SquareIdentity.TripleWordScore);
+		_boardArray[0][14].setID(SquareIdentity.TripleWordScore);
 
 		// Edge midpoints
-		_boardArray[7][0].setID("TRIPLE WORD SCORE");
-		_boardArray[7][14].setID("TRIPLE WORD SCORE");
-		_boardArray[0][7].setID("TRIPLE WORD SCORE");
-		_boardArray[14][7].setID("TRIPLE WORD SCORE");
+		_boardArray[7][0].setID(SquareIdentity.TripleWordScore);
+		_boardArray[7][14].setID(SquareIdentity.TripleWordScore);
+		_boardArray[0][7].setID(SquareIdentity.TripleWordScore);
+		_boardArray[14][7].setID(SquareIdentity.TripleWordScore);
 
 		_tripleWordScores.add(_boardArray[7][7]);
 
@@ -381,59 +353,82 @@ public class ScrabbleGame {
 		_tripleWordScores.add(_boardArray[0][7]);
 		_tripleWordScores.add(_boardArray[14][7]);
 
-		for (int i = 0; i < _doubleLetterScores.size(); i++) {
-			_specialSquares.add(_doubleLetterScores.get(i));
-		}
+		_specialSquares.addAll(_doubleLetterScores);
+		_specialSquares.addAll(_doubleWordScores);
+		_specialSquares.addAll(_tripleLetterScores);
+		_specialSquares.addAll(_tripleWordScores);
 
-		for (int i = 0; i < _doubleWordScores.size(); i++) {
-			_specialSquares.add(_doubleWordScores.get(i));
-		}
-
-		for (int i = 0; i < _tripleLetterScores.size(); i++) {
-			_specialSquares.add(_tripleLetterScores.get(i));
-		}
-
-		for (int i = 0; i < _tripleWordScores.size(); i++) {
-			_specialSquares.add(_tripleWordScores.get(i));
-		}
 		this.setUpHovers();
 	}
 
 	private void setUpHovers() {
-		for (int i = 0; i < _specialSquares.size(); i++) {
-			_specialSquares.get(i).setUpHoverResponse(this);
+		for (BoardSquare _specialSquare : _specialSquares) _specialSquare.setUpHoverResponse(this);
+	}
+
+	void fadeInOtherSquares(SquareIdentity identity) {
+		if (_organizer.getDisplayMultipliers()) return;
+
+		if (identity.equals(SquareIdentity.Ghost)) {
+			for (BoardSquare _specialSquare : _specialSquares) _specialSquare.concealText();
+		} else {
+			for (BoardSquare thisSquare : _specialSquares) {
+				if (thisSquare.getIdentity().equals(identity)) thisSquare.concealText();
+				else {
+					Color toColor = null;
+					switch (thisSquare.getIdentity()) {
+						case DoubleLetterScore:
+							toColor = Constants.DOUBLE_LETTER_SCORE;
+							break;
+						case TripleLetterScore:
+							toColor = Constants.TRIPLE_LETTER_SCORE;
+							break;
+						case DoubleWordScore:
+							toColor = Constants.DOUBLE_WORD_SCORE;
+							break;
+						case TripleWordScore:
+							toColor = Constants.TRIPLE_WORD_SCORE;
+							break;
+					}
+					FillTransition restoreColors = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION), thisSquare.getSquare(), Constants.BOARD_FILL, toColor);
+					restoreColors.play();
+					
+				}
+				if (identity != SquareIdentity.TripleWordScore) {
+					FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _diamondViewer);
+					fadeDiamond.setFromValue(0.0);
+					fadeDiamond.setToValue(1.0);
+					fadeDiamond.play();
+				}
+			}
 		}
 	}
 
-	void fadeOutOtherSquares(String id) {
-		if (_organizer.getDisplayMultipliers() == false) {
-			if (id == "GHOST") {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					_specialSquares.get(i).showText();
-				}
-			} else {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					BoardSquare thisSquare = _specialSquares.get(i);
-					if (thisSquare.getID() != id) {
-						Color fromColor = null;
-						if (thisSquare.getID() == "DOUBLE LETTER SCORE") {
+	void fadeOutOtherSquares(SquareIdentity identity) {
+		if (_organizer.getDisplayMultipliers()) return;
+
+		if (identity.equals(SquareIdentity.Ghost))
+			for (BoardSquare _specialSquare : _specialSquares) _specialSquare.showText();
+		else {
+			for (BoardSquare thisSquare : _specialSquares) {
+				if (thisSquare.getIdentity().equals(identity)) thisSquare.showText();
+				else {
+					Color fromColor = null;
+					switch (thisSquare.getIdentity()) {
+						case DoubleLetterScore:
 							fromColor = Constants.DOUBLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "DOUBLE WORD SCORE") {
-							fromColor = Constants.DOUBLE_WORD_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE LETTER SCORE") {
+							break;
+						case TripleLetterScore:
 							fromColor = Constants.TRIPLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE WORD SCORE") {
+							break;
+						case DoubleWordScore:
+							fromColor = Constants.DOUBLE_WORD_SCORE;
+							break;
+						case TripleWordScore:
 							fromColor = Constants.TRIPLE_WORD_SCORE;
-						}
-						FillTransition fadeWhite = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION),
-								thisSquare.getSquare(), fromColor, Constants.BOARD_FILL);
-						fadeWhite.play();
-					} else {
-						thisSquare.showText();
+							break;
 					}
-					// if (id != "TRIPLE WORD SCORE") {
-					// this.fadeDiamond("OUT");
-					// }
+					FillTransition fadeWhite = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION), thisSquare.getSquare(), fromColor, Constants.BOARD_FILL);
+					fadeWhite.play();
 				}
 			}
 		}
@@ -467,56 +462,16 @@ public class ScrabbleGame {
 
 	}
 
-	void fadeInOtherSquares(String id) {
-		if (_organizer.getDisplayMultipliers() == false) {
-			if (id == "GHOST") {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					_specialSquares.get(i).concealText();
-				}
-			} else {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					BoardSquare thisSquare = _specialSquares.get(i);
-					if (thisSquare.getID() != id) {
-						Color toColor = null;
-						if (thisSquare.getID() == "DOUBLE LETTER SCORE") {
-							toColor = Constants.DOUBLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "DOUBLE WORD SCORE") {
-							toColor = Constants.DOUBLE_WORD_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE LETTER SCORE") {
-							toColor = Constants.TRIPLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE WORD SCORE") {
-							toColor = Constants.TRIPLE_WORD_SCORE;
-						}
-						FillTransition restoreColors = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION),
-								thisSquare.getSquare(), Constants.BOARD_FILL, toColor);
-						restoreColors.play();
-					} else {
-						thisSquare.concealText();
-					}
-					if (id != "TRIPLE WORD SCORE") {
-						FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION),
-								_diamondViewer);
-						fadeDiamond.setFromValue(0.0);
-						fadeDiamond.setToValue(1.0);
-						fadeDiamond.play();
-					}
-				}
-			}
-		}
-	}
-
 	private void setUpTiles() {
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
-					this, "PLAYER ONE");
+			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET, this, PlayerNum.One);
 			_playerOneRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
 		}
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
-					this, "PLAYER TWO");
+			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET, this, PlayerNum.Two);
 			_playerTwoRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
 		}
@@ -551,9 +506,7 @@ public class ScrabbleGame {
 		}
 
 		// If all tiles have been drawn, update GUI
-		if (_tileBag.isEmpty()) {
-			_organizer.removeBag();
-		}
+		if (_tileBag.isEmpty()) _organizer.removeBag();
 	}
 
 	private class PlayFadeHandler implements EventHandler<ActionEvent> {
@@ -573,128 +526,120 @@ public class ScrabbleGame {
 
 	private void setUpDictionary() {
 		InputStream dictionaryText = this.getClass().getResourceAsStream("dictionary.txt");
-		_scanner = new Scanner(dictionaryText);
+		Scanner _scanner = new Scanner(dictionaryText);
 		while (_scanner.hasNext()) {
 			_dictionary.add(_scanner.next());
 		}
 	}
 
 	String tilesToString(ArrayList<Tile> playerRack) {
-		String resultant = "";
-		for (int i = 0; i < playerRack.size(); i++) {
-			resultant += playerRack.get(i).getLetter();
-		}
-		return resultant;
+		StringBuilder resultant = new StringBuilder();
+		for (Tile aPlayerRack : playerRack) resultant.append(aPlayerRack.getLetter());
+		return resultant.toString();
 	}
 
 	Boolean tilesToDictBool(ArrayList<Tile> tiles) {
-		Boolean status = false;
+		boolean status = false;
+
 		String word = this.tilesToString(tiles);
-		if (_dictionary.contains(word)) {
+		if (_dictionary.contains(word))
 			status = true;
-		}
+
 		return status;
 	}
 
-	void collectPermutations(String word, ArrayList<String> validWords, int permutationCap, String id) {
-		//_permutations = 0;
-		if (word.length() > 15) {
-			//system.out.println("Word exceeds 15 letters - not equipped to permute");
-		} else if (word.length() == 0) {
-			if (Constants.PRINT_STATUS) {
-				//system.out.println("No word to permute");
-			}
-		} else if (word.length() > 0 && word.length() <= 15) {
-			
-			for (int i = 0; i < word.length(); i++) {
-				String oneLetter = String.valueOf(word.charAt(i));
-				this.conditionalAdd(oneLetter, validWords, id);
-				if (word.length() > 1 && permutationCap >= 1) {
-					
-					for (int j = 0; j < word.length(); j++) {
-						if (j != i) {
-							String twoLetter = oneLetter + String.valueOf(word.charAt(j));
-							this.conditionalAdd(twoLetter, validWords, id);
-							if (word.length() > 2 && permutationCap >= 2) {
-								
-								for (int k = 0; k < word.length(); k++) {
-									if (k != i && k != j) {
-										String threeLetter = twoLetter + String.valueOf(word.charAt(k));
-										this.conditionalAdd(threeLetter, validWords, id);
-										if (word.length() > 3 && permutationCap >= 3) {
-											
-											for (int l = 0; l < word.length(); l++) {
-												if (l != i && l != j && l != k) {
-													String fourLetter = threeLetter + String.valueOf(word.charAt(l));
-													this.conditionalAdd(fourLetter, validWords, id);
-													if (word.length() > 4 && permutationCap >= 4) {
-														
-														for (int m = 0; m < word.length(); m++) {
-															if (m != i && m != j && m != k && m != l) {
-																String fiveLetter = fourLetter + String.valueOf(word.charAt(m));
-																this.conditionalAdd(fiveLetter, validWords, id);
-																if (word.length() > 5 && permutationCap >= 5) {
-																	
-																	for (int n = 0; n < word.length(); n++) {
-																		if (n != i && n != j && n != k && n != l && n != m) {
-																			String sixLetter = fiveLetter + String.valueOf(word.charAt(n));
-																			this.conditionalAdd(sixLetter, validWords, id);
-																			if (word.length() > 6 && permutationCap >= 6) {
-																				
-																				for (int o = 0; o < word.length(); o++) {
-																					if (o != i && o != j && o != k && o != l && o != m && o != n) {
-																						String sevenLetter = sixLetter + String.valueOf(word.charAt(o));
-																						this.conditionalAdd(sevenLetter, validWords, id);
-																						if (word.length() > 7 && permutationCap >= 7) {
-																							
-																							for (int p = 0; p < word.length(); p++) {
-																								if (p != i && p != j && p != k && p != l && p != m && p != n && p != o) {
-																									String eightLetter = sevenLetter + String.valueOf(word.charAt(p));
-																									this.conditionalAdd(eightLetter, validWords, id);
-																									if (word.length() > 8 && permutationCap >= 8) {
-																										
-																										for (int q = 0; q < word.length(); q++) {
-																											if (q != i && q != j && q != k && q != l && q != m && q != n && q != o && q != p) {
-																												String nineLetter = eightLetter + String.valueOf(word.charAt(q));
-																												this.conditionalAdd(nineLetter, validWords, id);
-																												if (word.length() > 9 && permutationCap >= 9) {
-																													
-																													for (int r = 0; r < word.length(); r++) {
-																														if (r != i && r != j && r != k && r != l && r != m && r != n && r != o && r != p && r != q) {
-																															String tenLetter = nineLetter + String.valueOf(word.charAt(r));
-																															this.conditionalAdd(tenLetter, validWords, id);
-																															if (word.length() > 10 && permutationCap >= 10) {
-																																
-																																for (int s = 0; s < word.length(); s++) {
-																																	if (s != i && s != j && s != k && s != l && s != m && s != n && s != o && s != p && s != q && s != r) {
-																																		String elevenLetter = tenLetter + String.valueOf(word.charAt(s));
-																																		this.conditionalAdd(elevenLetter, validWords, id);
-																																		if (word.length() > 11 && permutationCap >= 11) {
-																																			
-																																			for (int t = 0; t < word
-																																					.length(); t++) {
-																																				if (t != i && t != j && t != k && t != l && t != m && t != n && t != o && t != p && t != q && t != r && t != s) {
-																																					String twelveLetter = elevenLetter + String.valueOf(word.charAt(t));
-																																					this.conditionalAdd(twelveLetter, validWords, id);
-																																					if (word.length() > 12 && permutationCap >= 12) {
-																																						
-																																						for (int u = 0; u < word.length(); u++) {
-																																							if (u != i && u != j && u != k && u != l && u != m && u != n && u != o && u != p && u != q && u != r && u != s && u != t) {
-																																								String thirteenLetter = twelveLetter + String.valueOf(word.charAt(u));
-																																								this.conditionalAdd(thirteenLetter, validWords, id);
-																																								if (word.length() > 13 && permutationCap >= 13) {
-																																									
-																																									for (int v = 0; v < word.length(); v++) {
-																																										if (v != i && v != j && v != k && v != l && v != m && v != n && v != o && v != p && v != q && v != r && v != s && v != t && v != u) {
-																																											String fourteenLetter = thirteenLetter + String.valueOf(word.charAt(v));
-																																											this.conditionalAdd(fourteenLetter, validWords, id);
-																																											if (word.length() > 14 && permutationCap >= 14) {
-																																												
-																																												for (int w = 0; w < word.length(); w++) {
-																																													if (w != i && w != j && w != k && w != l && w != m && w != n && w != o && w != p && w != q && w != r && w != s && w != t && w != u && w != v) {
-																																														String fifteenLetter = fourteenLetter + String.valueOf(word.charAt(w));
-																																														this.conditionalAdd(fifteenLetter, validWords, id);
-																																													}
+	void collectPermutations(String word, ArrayList<String> validWords) {
+
+		if (word.length() > 15 || word.length() <= 0) return;
+
+		for (int i = 0; i < word.length(); i++) {
+			String oneLetter = String.valueOf(word.charAt(i));
+			this.conditionalAdd(oneLetter, validWords);
+			if (word.length() > 1) {
+
+				for (int j = 0; j < word.length(); j++) {
+					if (j != i) {
+						String twoLetter = oneLetter + String.valueOf(word.charAt(j));
+						this.conditionalAdd(twoLetter, validWords);
+						if (word.length() > 2) {
+
+							for (int k = 0; k < word.length(); k++) {
+								if (k != i && k != j) {
+									String threeLetter = twoLetter + String.valueOf(word.charAt(k));
+									this.conditionalAdd(threeLetter, validWords);
+									if (word.length() > 3) {
+
+										for (int l = 0; l < word.length(); l++) {
+											if (l != i && l != j && l != k) {
+												String fourLetter = threeLetter + String.valueOf(word.charAt(l));
+												this.conditionalAdd(fourLetter, validWords);
+												if (word.length() > 4) {
+
+													for (int m = 0; m < word.length(); m++) {
+														if (m != i && m != j && m != k && m != l) {
+															String fiveLetter = fourLetter + String.valueOf(word.charAt(m));
+															this.conditionalAdd(fiveLetter, validWords);
+															if (word.length() > 5) {
+
+																for (int n = 0; n < word.length(); n++) {
+																	if (n != i && n != j && n != k && n != l && n != m) {
+																		String sixLetter = fiveLetter + String.valueOf(word.charAt(n));
+																		this.conditionalAdd(sixLetter, validWords);
+																		if (word.length() > 6) {
+
+																			for (int o = 0; o < word.length(); o++) {
+																				if (o != i && o != j && o != k && o != l && o != m && o != n) {
+																					String sevenLetter = sixLetter + String.valueOf(word.charAt(o));
+																					this.conditionalAdd(sevenLetter, validWords);
+																					if (word.length() > 7) {
+
+																						for (int p = 0; p < word.length(); p++) {
+																							if (p != i && p != j && p != k && p != l && p != m && p != n && p != o) {
+																								String eightLetter = sevenLetter + String.valueOf(word.charAt(p));
+																								this.conditionalAdd(eightLetter, validWords);
+																								if (word.length() > 8) {
+
+																									for (int q = 0; q < word.length(); q++) {
+																										if (q != i && q != j && q != k && q != l && q != m && q != n && q != o && q != p) {
+																											String nineLetter = eightLetter + String.valueOf(word.charAt(q));
+																											this.conditionalAdd(nineLetter, validWords);
+																											if (word.length() > 9) {
+
+																												for (int r = 0; r < word.length(); r++) {
+																													if (r != i && r != j && r != k && r != l && r != m && r != n && r != o && r != p && r != q) {
+																														String tenLetter = nineLetter + String.valueOf(word.charAt(r));
+																														this.conditionalAdd(tenLetter, validWords);
+																														if (word.length() > 10) {
+
+																															for (int s = 0; s < word.length(); s++) {
+																																if (s != i && s != j && s != k && s != l && s != m && s != n && s != o && s != p && s != q && s != r) {
+																																	String elevenLetter = tenLetter + String.valueOf(word.charAt(s));
+																																	this.conditionalAdd(elevenLetter, validWords);
+																																	if (word.length() > 11) {
+
+																																		for (int t = 0; t < word
+																																				.length(); t++) {
+																																			if (t != i && t != j && t != k && t != l && t != m && t != n && t != o && t != p && t != q && t != r && t != s) {
+																																				String twelveLetter = elevenLetter + String.valueOf(word.charAt(t));
+																																				this.conditionalAdd(twelveLetter, validWords);
+																																				if (word.length() > 12) {
+
+																																					for (int u = 0; u < word.length(); u++) {
+																																						if (u != i && u != j && u != k && u != l && u != m && u != n && u != o && u != p && u != q && u != r && u != s && u != t) {
+																																							String thirteenLetter = twelveLetter + String.valueOf(word.charAt(u));
+																																							this.conditionalAdd(thirteenLetter, validWords);
+																																							if (word.length() > 13) {
+
+																																								for (int v = 0; v < word.length(); v++) {
+																																									if (v != i && v != j && v != k && v != l && v != m && v != n && v != o && v != p && v != q && v != r && v != s && v != t && v != u) {
+																																										String fourteenLetter = thirteenLetter + String.valueOf(word.charAt(v));
+																																										this.conditionalAdd(fourteenLetter, validWords);
+																																										if (word.length() > 14) {
+
+																																											for (int w = 0; w < word.length(); w++) {
+																																												if (w != i && w != j && w != k && w != l && w != m && w != n && w != o && w != p && w != q && w != r && w != s && w != t && w != u && w != v) {
+																																													String fifteenLetter = fourteenLetter + String.valueOf(word.charAt(w));
+																																													this.conditionalAdd(fifteenLetter, validWords);
 																																												}
 																																											}
 																																										}
@@ -738,9 +683,6 @@ public class ScrabbleGame {
 				}
 			}
 		}
-		if (id == "VALID") {
-			//system.out.printf("\nBEST WORD = %s\n", this.getBestWord(validWords));
-		}
 	}
 
 	void collectPrefixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
@@ -751,10 +693,10 @@ public class ScrabbleGame {
 			if (invalidCross.size() > 0) {
 				crossOne = invalidCross.get(1).contains(oneLetter);
 			}
-			if (crossOne == false && !validWords.contains(oneLetter)) {
+			if (!crossOne && !validWords.contains(oneLetter)) {
 				validWords.add(oneLetter);
 			}
-			if (word.length() > 1 && permutationCap > 1 && crossOne == false) {
+			if (word.length() > 1 && permutationCap > 1 && !crossOne) {
 				
 				for (int j = 0; j < word.length(); j++) {
 					if (j != i) {
@@ -763,10 +705,10 @@ public class ScrabbleGame {
 						if (invalidCross.size() > 1) {
 							crossTwo = invalidCross.get(2).contains(String.valueOf(word.charAt(j)));
 						}
-						if (crossTwo == false && !validWords.contains(twoLetter)) {
+						if (!crossTwo && !validWords.contains(twoLetter)) {
 							validWords.add(twoLetter);
 						}
-						if (word.length() > 2 && permutationCap > 2 && crossTwo == false) {
+						if (word.length() > 2 && permutationCap > 2 && !crossTwo) {
 							
 							for (int k = 0; k < word.length(); k++) {
 								if (k != i && k != j) {
@@ -775,10 +717,10 @@ public class ScrabbleGame {
 									if (invalidCross.size() > 2) {
 										crossThree = invalidCross.get(3).contains(String.valueOf(word.charAt(k)));
 									}
-									if (crossThree == false && !validWords.contains(threeLetter)) {
+									if (!crossThree && !validWords.contains(threeLetter)) {
 										validWords.add(threeLetter);
 									}
-									if (word.length() > 3 && permutationCap > 3 && crossThree == false) {
+									if (word.length() > 3 && permutationCap > 3 && !crossThree) {
 										
 										for (int l = 0; l < word.length(); l++) {
 											if (l != i && l != j && l != k) {
@@ -787,10 +729,10 @@ public class ScrabbleGame {
 												if (invalidCross.size() > 3) {
 													crossFour = invalidCross.get(4).contains(String.valueOf(word.charAt(l)));
 												}
-												if (crossFour == false && !validWords.contains(fourLetter)) {
+												if (!crossFour && !validWords.contains(fourLetter)) {
 													validWords.add(fourLetter);
 												}
-												if (word.length() > 4 && permutationCap > 4 && crossFour == false) {
+												if (word.length() > 4 && permutationCap > 4 && !crossFour) {
 													
 													for (int m = 0; m < word.length(); m++) {
 														if (m != i && m != j && m != k && m != l) {
@@ -799,10 +741,10 @@ public class ScrabbleGame {
 															if (invalidCross.size() > 4) {
 																crossFive = invalidCross.get(5).contains(String.valueOf(word.charAt(m)));
 															}
-															if (crossFive == false && !validWords.contains(fiveLetter)) {
+															if (!crossFive && !validWords.contains(fiveLetter)) {
 																validWords.add(fiveLetter);
 															}
-															if (word.length() > 5 && permutationCap > 5 && crossFive == false) {
+															if (word.length() > 5 && permutationCap > 5 && !crossFive) {
 																
 																for (int n = 0; n < word.length(); n++) {
 																	if (n != i && n != j && n != k && n != l && n != m) {
@@ -811,10 +753,10 @@ public class ScrabbleGame {
 																		if (invalidCross.size() > 5) {
 																			crossSix = invalidCross.get(6).contains(String.valueOf(word.charAt(n)));
 																		}
-																		if (crossSix == false && !validWords.contains(sixLetter)) {
+																		if (!crossSix && !validWords.contains(sixLetter)) {
 																			validWords.add(sixLetter);
 																		}
-																		if (word.length() > 6 && permutationCap > 6 && crossSix == false) {
+																		if (word.length() > 6 && permutationCap > 6 && !crossSix) {
 																			
 																			for (int o = 0; o < word.length(); o++) {
 																				if (o != i && o != j && o != k && o != l && o != m && o != n) {
@@ -823,7 +765,7 @@ public class ScrabbleGame {
 																					if (invalidCross.size() > 6) {
 																						crossSeven = invalidCross.get(7).contains(String.valueOf(word.charAt(o)));
 																					}
-																					if (crossSeven == false && !validWords.contains(sevenLetter)) {
+																					if (!crossSeven && !validWords.contains(sevenLetter)) {
 																						validWords.add(sevenLetter);
 																					}
 																				}
@@ -856,10 +798,10 @@ public class ScrabbleGame {
 			if (invalidCross.size() > 0) {
 				crossOne = invalidCross.get(1).contains(oneLetter);
 			}
-			if (crossOne == false && !validWords.contains(oneLetter)) {
+			if (!crossOne && !validWords.contains(oneLetter)) {
 				validWords.add(oneLetter);
 			}
-			if (word.length() > 1 && permutationCap > 1 && crossOne == false) {
+			if (word.length() > 1 && permutationCap > 1 && !crossOne) {
 				
 				for (int j = 0; j < word.length(); j++) {
 					if (j != i) {
@@ -868,10 +810,10 @@ public class ScrabbleGame {
 						if (invalidCross.size() > 1) {
 							crossTwo = invalidCross.get(2).contains(String.valueOf(word.charAt(j)));
 						}
-						if (crossTwo == false && !validWords.contains(twoLetter)) {
+						if (!crossTwo && !validWords.contains(twoLetter)) {
 							validWords.add(twoLetter);
 						}
-						if (word.length() > 2 && permutationCap > 2 && crossTwo == false) {
+						if (word.length() > 2 && permutationCap > 2 && !crossTwo) {
 							
 							for (int k = 0; k < word.length(); k++) {
 								if (k != i && k != j) {
@@ -880,10 +822,10 @@ public class ScrabbleGame {
 									if (invalidCross.size() > 2) {
 										crossThree = invalidCross.get(3).contains(String.valueOf(word.charAt(k)));
 									}
-									if (crossThree == false && !validWords.contains(threeLetter)) {
+									if (!crossThree && !validWords.contains(threeLetter)) {
 										validWords.add(threeLetter);
 									}
-									if (word.length() > 3 && permutationCap > 3 && crossThree == false) {
+									if (word.length() > 3 && permutationCap > 3 && !crossThree) {
 										
 										for (int l = 0; l < word.length(); l++) {
 											if (l != i && l != j && l != k) {
@@ -892,10 +834,10 @@ public class ScrabbleGame {
 												if (invalidCross.size() > 3) {
 													crossFour = invalidCross.get(4).contains(String.valueOf(word.charAt(l)));
 												}
-												if (crossFour == false && !validWords.contains(fourLetter)) {
+												if (!crossFour && !validWords.contains(fourLetter)) {
 													validWords.add(fourLetter);
 												}
-												if (word.length() > 4 && permutationCap > 4 && crossFour == false) {
+												if (word.length() > 4 && permutationCap > 4 && !crossFour) {
 													
 													for (int m = 0; m < word.length(); m++) {
 														if (m != i && m != j && m != k && m != l) {
@@ -904,10 +846,10 @@ public class ScrabbleGame {
 															if (invalidCross.size() > 4) {
 																crossFive = invalidCross.get(5).contains(String.valueOf(word.charAt(m)));
 															}
-															if (crossFive == false && !validWords.contains(fiveLetter)) {
+															if (!crossFive && !validWords.contains(fiveLetter)) {
 																validWords.add(fiveLetter);
 															}
-															if (word.length() > 5 && permutationCap > 5 && crossFive == false) {
+															if (word.length() > 5 && permutationCap > 5 && !crossFive) {
 																
 																for (int n = 0; n < word.length(); n++) {
 																	if (n != i && n != j && n != k && n != l && n != m) {
@@ -916,10 +858,10 @@ public class ScrabbleGame {
 																		if (invalidCross.size() > 5) {
 																			crossSix = invalidCross.get(6).contains(String.valueOf(word.charAt(n)));
 																		}
-																		if (crossSix == false && !validWords.contains(sixLetter)) {
+																		if (!crossSix && !validWords.contains(sixLetter)) {
 																			validWords.add(sixLetter);
 																		}
-																		if (word.length() > 6 && permutationCap > 6 && crossSix == false) {
+																		if (word.length() > 6 && permutationCap > 6 && !crossSix) {
 																			
 																			for (int o = 0; o < word.length(); o++) {
 																				if (o != i && o != j && o != k && o != l && o != m && o != n) {
@@ -928,7 +870,7 @@ public class ScrabbleGame {
 																					if (invalidCross.size() > 6) {
 																						crossSeven = invalidCross.get(7).contains(String.valueOf(word.charAt(o)));
 																					}
-																					if (crossSeven == false && !validWords.contains(sevenLetter)) {
+																					if (!crossSeven && !validWords.contains(sevenLetter)) {
 																						validWords.add(sevenLetter);
 																					}
 																				}
@@ -952,56 +894,28 @@ public class ScrabbleGame {
 		}
 	}
 	
-	private void conditionalAdd(String word, ArrayList<String> validWords, String id) {
-		//_permutations++;
-		if (id == "VALID") {
-			if (_dictionary.contains(word) && !validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("%s - %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		} else if (id == "PREF") {
-			if (!validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("Prefix %s: %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		} else if (id == "SUFF") {
-			if (!validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("Suffix %s: %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		} else if (id == "NEW SUFF") {
-			if (!validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("New suffix %s: %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		}
+	private void conditionalAdd(String word, ArrayList<String> validWords) {
+		if (_dictionary.contains(word) && !validWords.contains(word)) validWords.add(word);
 	}
 
 	// *** @AI ***
 	ArrayList<Tile> transferTilesFromRack(String word, ArrayList<Tile> rack) {
-		ArrayList<Tile> result = new ArrayList<Tile>();
+		ArrayList<Tile> result = new ArrayList<>();
+
 		for (int i = 0; i < word.length(); i++) {
 			for (int j = 0; j < rack.size(); j++) {
 				Tile thisTile = rack.get(j);
 				String thisWordLetter = String.valueOf(word.charAt(i));
 				String thisTileLetter = thisTile.getLetter();
-//				//system.out.printf("Checking word letter %s against tile letter %s\n", thisWordLetter, thisTileLetter);
+
 				if (thisWordLetter.equals(thisTileLetter)) {
-//					//system.out.printf("Yay! A %s / %s tile added to transfers\n", thisTileLetter, thisWordLetter);
 					result.add(thisTile);
 					rack.remove(thisTile);
 					break;
 				}
 			}
 		}
+
 		return result;
 	}
 	
@@ -1017,150 +931,74 @@ public class ScrabbleGame {
 		int isOnADoubleWordScore = 1;
 		int isOnATripleWordScore = 1;
 		int wordValue = 0;
-		for (int i = 0; i < tiles.size(); i++) {
-			Tile thisTile = tiles.get(i);
+		
+		for (Tile thisTile : tiles) {
 			int x = thisTile.getXIndex();
 			int y = thisTile.getYIndex();
+
 			int letterValue = 0;
+
 			BoardSquare thisSquare = _boardArray[x][y];
+			int value = thisTile.getValue();
+
 			if (thisSquare.is2W()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					isOnADoubleWordScore *= 2;
-					//system.out.println("IS ON A DOUBLE WORD SCORE");
-				}
-				letterValue = thisTile.getValue();
+				if (thisSquare.isAlreadyPlayed()) isOnADoubleWordScore *= 2;
+				letterValue = value;
 			} else if (thisSquare.is3W()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					//system.out.println("IS ON A TRIPLE WORD SCORE");
-					isOnATripleWordScore *= 3;
-				}
-				letterValue = thisTile.getValue();
+				if (thisSquare.isAlreadyPlayed()) isOnATripleWordScore *= 3;
+				letterValue = value;
 			} else if (thisSquare.isNormal()) {
-				//system.out.println("IS NORMAL");
-				letterValue = thisTile.getValue();
+				letterValue = value;
 			} else if (thisSquare.is2L()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					//system.out.println("IS ON A DOUBLE LETTER SCORE");
-					letterValue = thisTile.getValue() * 2;
-				} else {
-					letterValue = thisTile.getValue();
-				}
+				if (thisSquare.isAlreadyPlayed()) letterValue = value * 2;
+				else letterValue = value;
 			} else if (thisSquare.is3L()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					//system.out.println("IS ON A TRIPLE LETTER SCORE");
-					letterValue = thisTile.getValue() * 3;
-				} else {
-					letterValue = thisTile.getValue();
-				}
+				if (thisSquare.isAlreadyPlayed()) letterValue = value * 3;
+				else letterValue = value;
 			}
-			wordValue = wordValue + letterValue;
+			wordValue += letterValue;
 		}
 		wordValue = wordValue * isOnADoubleWordScore * isOnATripleWordScore;
 		return wordValue;
 	}
 
 	void updateAlreadyPlayed() {
-		for (int i = 0; i < _tilesOnBoard.size(); i++) {
-			Tile thisTile = _tilesOnBoard.get(i);
+		for (Tile thisTile : _tilesOnBoard) {
 			int x = thisTile.getXIndex();
 			int y = thisTile.getYIndex();
-			_boardArray[x][y].setAlreadyPlayed(true);
+			_boardArray[x][y].setAlreadyPlayed();
 		}
 	}
 
 	void addTileToBoardArrayAt(Tile tile, int x, int y) {
-		if (this.isBetween(0, x, y, 14)) {
-			_tileArray[x][y] = tile;
-		} else {
-			//system.out.printf("Cannot add %s tile at %s, %s\n", tile.getLetter(), x, y);
-		}
+		if (!this.isBetween(x, y)) return;
+		_tileArray[x][y] = tile;
 	}
 
 	ArrayList<Tile> getTilesOnBoard() {
 		return _tilesOnBoard;
 	}
 
-	Boolean boardSquareOccupiedAt(int x, int y) {
-		if (this.isBetween(0, x, y, 14)) {
-			if (_tileArray[x][y] != null) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
+	boolean boardSquareOccupiedAt(int x, int y) {
+		if (!this.isBetween(x, y)) return false;
+		return _tileArray[x][y] != null;
 	}
 
-	private Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
-		Boolean result = false;
-		if (check >= lowerBounds && check <= upperBounds && check2 >= lowerBounds && check2 <= upperBounds) {
+	private boolean isBetween(int check, int check2) {
+		boolean result = false;
+		if (check >= 0 && check <= 14 && check2 >= 0 && check2 <= 14)
 			result = true;
-		}
 		return result;
 	}
 
 	Tile getTileFromArrayAt(int x, int y) {
-		Tile selection = _tileArray[x][y];
-		return selection;
+		return _tileArray[x][y];
 	}
 
 	Tile[][] getTileArray() {
 		return _tileArray;
 	}
 
-	public void animateWords() {
-		if (_playerOneBest != null) {
-			for (int i = 0; i < _playerOneBest.getTiles().size(); i++) {
-				Tile thisTile = _playerOneBest.getTiles().get(i);
-				FadeTransition fadeOut = new FadeTransition(Duration.seconds(Constants.FADE_OUT_DURATION),
-						thisTile.getTileViewer());
-				fadeOut.setFromValue(1.0);
-				fadeOut.setToValue(0.0);
-				FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FADE_IN_DURATION),
-						thisTile.getTileViewer());
-				fadeIn.setFromValue(0.0);
-				fadeIn.setToValue(1.0);
-				_fadeOuts.add(fadeOut);
-				_fadeIns.add(fadeIn);
-			}
-		}
-		if (_playerTwoBest != null) {
-			for (int i = 0; i < _playerTwoBest.getTiles().size(); i++) {
-				Tile thisTile = _playerTwoBest.getTiles().get(i);
-				FadeTransition fadeOut = new FadeTransition(Duration.seconds(Constants.FADE_OUT_DURATION),
-						thisTile.getTileViewer());
-				fadeOut.setFromValue(1.0);
-				fadeOut.setToValue(0.0);
-				FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FADE_IN_DURATION),
-						thisTile.getTileViewer());
-				fadeIn.setFromValue(0.0);
-				fadeIn.setToValue(1.0);
-				_fadeOuts.add(fadeOut);
-				_fadeIns.add(fadeIn);
-			}
-		}
-	}
-
-//	public void addWordsToBoard() {
-//		if (_playerOneBest != null) {
-//			for (int i = 0; i < _playerOneBest.getTiles().size(); i++) {
-//				Tile thisTile = _playerOneBest.getTiles().get(i);
-//				thisTile.placeAtSquare(i, 0);
-//				thisTile.addTo(_tileArray);
-//				thisTile.addTo(_tilesOnBoard);
-//			}
-//		}
-//		if (_playerTwoBest != null) {
-//			for (int i = 0; i < _playerTwoBest.getTiles().size(); i++) {
-//				Tile thisTile = _playerTwoBest.getTiles().get(i);
-//				thisTile.placeAtSquare(i, 1);
-//				thisTile.addTo(_tileArray);
-//				thisTile.addTo(_tilesOnBoard);
-//			}
-//		}
-//	}
-	
 	void aiSequence(int func, String id) {
 		switch (func) {
 			case 1:
@@ -1175,27 +1013,18 @@ public class ScrabbleGame {
 		}
 	}
 
-	void setEnterable(Boolean status) {
-		_organizer.setEnterable(status);
+	void DeclareEnterable() {
+		_organizer.DeclareEnterable();
 	}
 
-	public void hideTiles() {
-		for (int i = 0; i < _tilesOnBoard.size(); i++) {
-			_tilesOnBoard.get(i).hide();
-		}
-	}
+	void shiftTiles(PlayerNum identity) {
+		ArrayList<Tile> rack = identity == PlayerNum.One ? _playerOneRack : _playerTwoRack;
 
-	void shiftTiles(String id) {
-		if (id == "PLAYER ONE" && _playerOneRack.size() > 0) {
-			for (int i = 0; i < _playerOneRack.size(); i++) {
-				Tile thisTile = _playerOneRack.get(i);
-				thisTile.setLoc(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET);
-			}
-		} else if (id == "PLAYER TWO" && _playerTwoRack.size() > 0) {
-			for (int i = 0; i < _playerTwoRack.size(); i++) {
-				Tile thisTile = _playerTwoRack.get(i);
-				thisTile.setLoc(Constants.COLLECTION_TWO_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET);
-			}
+		if (rack.isEmpty()) return;
+
+		for (int i = 0; i < rack.size(); i++) {
+			Tile thisTile = rack.get(i);
+			thisTile.setLoc(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET);
 		}
 	}
 
@@ -1207,71 +1036,36 @@ public class ScrabbleGame {
 		return _playerTwoRack;
 	}
 
-	public void playFadeOuts() {
-		for (int i = 0; i < _fadeOuts.size(); i++) {
-			_fadeOuts.get(i).play();
-		}
-	}
-
-	public void playFadeIns() {
-		for (int i = 0; i < _fadeIns.size(); i++) {
-			_fadeIns.get(i).play();
-		}
-	}
-
-	// *** @AI ***
-	public void printValues() {
-		if (_playerOneBest != null) {
-			//system.out.printf("%s yields %s points\n", _playerOneBest.getLetters(), _playerOneBest.getValue());
-		}
-		if (_playerTwoBest != null) {
-			//system.out.printf("%s yields %s points\n", _playerTwoBest.getLetters(), _playerTwoBest.getValue());
-		}
-	}
-
-	void collectAdjacents(String id, Tile thisTile, ArrayList<Tile> tiles) {
+	void collectAdjacents(CollectionOrientation orientation, Tile thisTile, ArrayList<Tile> tiles) {
 		int x = thisTile.getXIndex();
 		int y = thisTile.getYIndex();
 		int i = 1;
-		if (!tiles.contains(thisTile)) {
-			tiles.add(thisTile);
-		}
-		// //system.out.printf("Added %s tile to %s cross\n", thisTile.getLetter(), id);
-		if (id == "HORIZONTALLY") {
+
+		if (!tiles.contains(thisTile)) tiles.add(thisTile);
+
+		if (orientation == CollectionOrientation.Horizontal) {
 			while (x - i >= 0 && _tileArray[x - i][y] != null && _tileArray[x - i][y].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to horizontal cross\n", _tileArray[x -
-				// i][y].getLetter());
-				if (!tiles.contains(_tileArray[x - i][y])) {
-					tiles.add(_tileArray[x - i][y]);
-				}
+				Tile t = _tileArray[x - i][y];
+				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
 			i = 1;
 			while (x + i <= 14 && _tileArray[x + i][y] != null && _tileArray[x + i][y].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to horizontal cross\n", _tileArray[x +
-				// i][y].getLetter());
-				if (!tiles.contains(_tileArray[x + i][y])) {
-					tiles.add(_tileArray[x + i][y]);
-				}
+				Tile t = _tileArray[x + i][y];
+				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
-		} else if (id == "VERTICALLY") {
+		} else if (orientation == CollectionOrientation.Vertical) {
 			i = 1;
 			while (y - i >= 0 && _tileArray[x][y - i] != null && _tileArray[x][y - i].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to vertical cross\n", _tileArray[x][y -
-				// i].getLetter());
-				if (!tiles.contains(_tileArray[x][y - i])) {
-					tiles.add(_tileArray[x][y - i]);
-				}
+				Tile t = _tileArray[x][y - i];
+				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
 			i = 1;
 			while (y + i <= 14 && _tileArray[x][y + i] != null && _tileArray[x][y + i].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to vertical cross\n", _tileArray[x][y +
-				// i].getLetter());
-				if (!tiles.contains(_tileArray[x][y + i])) {
-					tiles.add(_tileArray[x][y + i]);
-				}
+				Tile t = _tileArray[x][y + i];
+				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
 		}
@@ -1282,220 +1076,207 @@ public class ScrabbleGame {
 	}
 
 	boolean dictionaryContains(String string) {
-		if (_dictionary.contains(string)) {
-			return true;
-		} else {
-			return false;
-		}
+		return _dictionary.contains(string);
 	}
 
-	int getValueFromString(String validWord, int firstXIndex, int firstYIndex, String id) {
+	int getValueFromString(String validWord, int firstXIndex, int firstYIndex, WordOrientation orientation) {
 		int wordValue = 0;
-		int x = 0;
-		int y = 0;
+		int x;
+		int y;
+
 		int isOnADoubleWordScore = 1;
 		int isOnATripleWordScore = 1;
+
 		for (int i = 0; i < validWord.length(); i++) {
 			String currentLetter = String.valueOf(validWord.charAt(i));
 			int letterValue = Constants.VALUES.get(currentLetter);
-			if (id == "HORIZONTAL") {
-				x = firstXIndex + i;
-				y = firstYIndex;
-			} else if (id == "VERTICAL") {
-				x = firstXIndex;
-				y = firstYIndex + i;
-			}
-			if (this.isBetween(0, x, y, 14)) {
+
+			boolean horizontal = orientation == WordOrientation.Horizontal;
+			x = horizontal ? firstXIndex + i : firstXIndex;
+			y = horizontal ? firstYIndex : firstYIndex + i;
+
+			if (this.isBetween(x, y)) {
 				BoardSquare thisSquare = _boardArray[x][y];
-				if (thisSquare.is2W() && thisSquare.isAlreadyPlayed() == false) {
-					isOnADoubleWordScore = isOnADoubleWordScore * 2;
-				} else if (thisSquare.is3W() && thisSquare.isAlreadyPlayed() == false) {
-					isOnATripleWordScore = isOnATripleWordScore * 3;
-				} else if (thisSquare.isNormal()) {
-				} else if (thisSquare.is2L() && thisSquare.isAlreadyPlayed() == false) {
-					letterValue = letterValue * 2;
-				} else if (thisSquare.is3L() && thisSquare.isAlreadyPlayed() == false) {
-					letterValue = letterValue * 3;
+				if (thisSquare.is2W() && thisSquare.isAlreadyPlayed()) {
+					isOnADoubleWordScore *= 2;
+				} else if (thisSquare.is3W() && thisSquare.isAlreadyPlayed()) {
+					isOnATripleWordScore *= 3;
+				} else if (thisSquare.is2L() && thisSquare.isAlreadyPlayed()) {
+					letterValue *= 2;
+				} else if (thisSquare.is3L() && thisSquare.isAlreadyPlayed()) {
+					letterValue *= 3;
 				}
-			} else {
-				return 0;
-			}
-			wordValue = wordValue + letterValue;
+			} else return 0;
+
+			wordValue += letterValue;
 		}
-		wordValue = wordValue * isOnADoubleWordScore * isOnATripleWordScore;
+
+		wordValue *= (isOnADoubleWordScore * isOnATripleWordScore);
 		return wordValue;
 	}
 	
-	int getNumPrefixSlots(int x, int y, String direction) {
-		if (direction == "VERTICAL") {
+	int getNumPrefixSlots(int x, int y, CollectionOrientation orientation) {
+		if (orientation == CollectionOrientation.Vertical) {
 			int numPrefixSlots = 1;
 			int i = 1;
 			while (y - i >= 0 && _tileArray[x][y - i] == null) {
-				numPrefixSlots = numPrefixSlots + 1;
-				i = i + 1;
+				numPrefixSlots++;
+				i++;
 			}
 			return numPrefixSlots;
-		} else if (direction == "HORIZONTAL") {
+		} else {
 			int numPrefixSlots = 1;
 			int i = 1;
 			while (x - i >= 0 && _tileArray[x - i][y] == null) {
-				numPrefixSlots = numPrefixSlots + 1;
-				i = i + 1;
+				numPrefixSlots++;
+				i++;
 			}
 			return numPrefixSlots;
-		} else {
-			return 0;
 		}
 	}
 	
-	int getNumSuffixSlots(int x, int y, String direction) {
-		if (direction == "VERTICAL") {
-			if (y > 14) {
-				return 0;
-			}
+	int getNumSuffixSlots(int x, int y, CollectionOrientation orientation) {
+		if (orientation == CollectionOrientation.Vertical) {
+			if (y > 14) return 0;
 			int numSuffixSlots = 1;
 			int i = 1;
 			while (y + i <= 14 && _tileArray[x][y + i] == null) {
-				numSuffixSlots = numSuffixSlots + 1;
-				i = i + 1;
+				numSuffixSlots++;
+				i++;
 			}
 			return numSuffixSlots;
-		} else if (direction == "HORIZONTAL") {
-			if (x > 14) {
-				return 0;
-			}
+		} else {
+			if (x > 14) return 0;
 			int numSuffixSlots = 1;
 			int i = 1;
 			while (x + i <= 14 && _tileArray[x + i][y] == null) {
-				numSuffixSlots = numSuffixSlots + 1;
-				i = i + 1;
+				numSuffixSlots++;
+				i++;
 			}
 			return numSuffixSlots;
-		} else {
-			return 0;
 		}
 	}
 	
-	ArrayList<Tile> getKernelTiles(int x, int y, String direction) {
-		if (direction == "VERTICAL") {
-			ArrayList<Tile> kernelTiles = new ArrayList<Tile>();
+	ArrayList<Tile> getKernelTiles(int x, int y, CollectionOrientation orientation) {
+		if (orientation == CollectionOrientation.Vertical) {
+			ArrayList<Tile> kernelTiles = new ArrayList<>();
 			int i = 1;
 			while (y + i <= 14 && _tileArray[x][y + i] != null) {
 				kernelTiles.add(_tileArray[x][y + i]);
-				i = i + 1;
+				i++;
 			}
 			return kernelTiles;
-		} else if (direction == "HORIZONTAL") {
-			ArrayList<Tile> kernelTiles = new ArrayList<Tile>();
+		} else {
+			ArrayList<Tile> kernelTiles = new ArrayList<>();
 			int i = 1;
 			while (x + i <= 14 && _tileArray[x + i][y] != null) {
 				kernelTiles.add(_tileArray[x + i][y]);
-				i = i + 1;
+				i++;
 			}
 			return kernelTiles;
-		} else {
-			return null;
 		}
 	}
 
-	String getKernelFor(int x, int y, String direction) {
-		if (direction == "VERTICAL") {
-			String kernel = "";
+	String getKernelFor(int x, int y, CollectionOrientation orientation) {
+		if (orientation == CollectionOrientation.Vertical) {
+			StringBuilder kernel = new StringBuilder();
 			int i = 1;
 			while (y + i <= 14 && _tileArray[x][y + i] != null) {
-				kernel = kernel + _tileArray[x][y + i].getLetter();
-				i = i + 1;
+				kernel.append(_tileArray[x][y + i].getLetter());
+				i++;
 			}
-			return kernel;
-		} else if (direction == "HORIZONTAL") {
-			String kernel = "";
+			return kernel.toString();
+		} else {
+			StringBuilder kernel = new StringBuilder();
 			int i = 1;
 			while (x + i <= 14 && _tileArray[x + i][y] != null) {
-				kernel = kernel + _tileArray[x + i][y].getLetter();
-				i = i + 1;
+				kernel.append(_tileArray[x + i][y].getLetter());
+				i++;
 			}
-			return kernel;
-		} else {
-			return "";
+			return kernel.toString();
 		}
 	}
 
 	void mapKernelsForRow(int y, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
-		System.out.printf("Mapping row %s\n", y);
-		HashMap<Integer, String> kernels = new HashMap<Integer, String>();
-		int read = 0;
+		HashMap<Integer, String> kernels = new HashMap<>();
+
+		int read;
 		int kernelNum = 0;
-		String kernel = "";
-		kernels.put(kernelNum, kernel);
+		StringBuilder kernel = new StringBuilder();
+
+		kernels.put(kernelNum, kernel.toString());
+
 		for (int x = 0; x <= 14; x++) {
 			if (_tileArray[x][y] != null) {
 				read = 0;
-				kernel = "";
+				kernel = new StringBuilder();
+
 				while (x + read <= 14 && _tileArray[x + read][y] != null) {
 					Tile thisTile = _tileArray[x + read][y];
-					kernel = kernel + thisTile.getLetter();
+					kernel.append(thisTile.getLetter());
 					read++;
 				}
+
 				kernelNum++;
-				kernels.put(kernelNum, kernel);
-				x = x + read;
+				kernels.put(kernelNum, kernel.toString());
+				x += read;
 			}
 		}
 		kernels.put(kernelNum + 1, "");
-		for (int i = 0; i < kernels.size(); i++) {
-			System.out.printf("Kernel %s = %s\n", i, kernels.get(i));
-		}
+
 		if (kernels.size() > 1) {
 			for (int i = 0; i < kernels.size(); i++) {
 				String thisKernel = kernels.get(i + 1);
 				String precedingKernel = kernels.get(i);
-				System.out.printf("%s precedes %s\n", precedingKernel, thisKernel);
+
 				precedingKernels.put(thisKernel, precedingKernel);
 			}
 			for (int i = 0; i < kernels.size(); i++) {
 				String thisKernel = kernels.get(i);
 				String succeedingKernel = kernels.get(i + 1);
-				System.out.printf("%s succeeds %s\n", succeedingKernel, thisKernel);
+
 				succeedingKernels.put(thisKernel, succeedingKernel);
 			}
 		}
 	}
 
 	void mapKernelsForColumn(int x, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
-		System.out.printf("Mapping column %s\n", x);
-		HashMap<Integer, String> kernels = new HashMap<Integer, String>();
-		int read = 0;
+		HashMap<Integer, String> kernels = new HashMap<>();
+
+		int read;
 		int kernelNum = 0;
-		String kernel = "";
-		kernels.put(kernelNum, kernel);
+		StringBuilder kernel = new StringBuilder();
+
+		kernels.put(kernelNum, kernel.toString());
+
 		for (int y = 0; y <= 14; y++) {
 			if (_tileArray[x][y] != null) {
 				read = 0;
-				kernel = "";
+				kernel = new StringBuilder();
+
 				while (y + read <= 14 && _tileArray[x][y + read] != null) {
-					kernel = kernel + _tileArray[x][y + read].getLetter();
+					kernel.append(_tileArray[x][y + read].getLetter());
 					read++;
 				}
+
 				kernelNum++;
-				kernels.put(kernelNum, kernel);
-				y = y + read;
+				kernels.put(kernelNum, kernel.toString());
+				y += read;
 			}
 		}
 		kernels.put(kernelNum + 1, "");
-		for (int i = 0; i < kernels.size(); i++) {
-			//System.out.printf("Kernel %s = %s\n", i, kernels.get(i));
-		}
+
 		if (kernels.size() > 1) {
 			for (int i = 0; i < kernels.size(); i++) {
 				String thisKernel = kernels.get(i + 1);
 				String precedingKernel = kernels.get(i);
-				//system.out.printf("%s precedes %s\n", precedingKernel, thisKernel);
+
 				precedingKernels.put(thisKernel, precedingKernel);
 			}
 			for (int i = 0; i < kernels.size(); i++) {
 				String thisKernel = kernels.get(i);
 				String succeedingKernel = kernels.get(i + 1);
-				//system.out.printf("%s succeeds %s\n", succeedingKernel, thisKernel);
+
 				succeedingKernels.put(thisKernel, succeedingKernel);
 			}
 		}
@@ -1503,103 +1284,6 @@ public class ScrabbleGame {
 
 	void displayOutcome(Winner winner) {
 		_organizer.moveHi(winner);
-	}
-	
-//	private class ClearHandler implements EventHandler<ActionEvent> {
-//
-//		@Override
-//		public void handle(ActionEvent event) {
-//			ScrabbleGame.this.clearPath();
-//			event.consume();
-//		}
-//
-//	}
-	
-	private class BeginPlacementHandler implements EventHandler<ActionEvent> {
-
-		@Override
-		public void handle(ActionEvent event) {
-			ScrabbleGame.this.placeTiles();
-			event.consume();
-		}
-
-	}
-	
-	private class ResetHandler implements EventHandler<ActionEvent> {
-
-		@Override
-		public void handle(ActionEvent event) {
-			if (_autoReset) {
-				_organizer.reset();
-			}
-			event.consume();
-		}
-
-	}
-	
-	public void clearPath() {
-		int move = 1;
-		for (int loc = 1; loc < 14; loc++) {
-			move = move * -1;
-			for (int j = 0; j < _endGame.size(); j++) {
-				Tile thisTile = _endGame.get(j);
-				int x = thisTile.getXIndex();
-				int y = thisTile.getYIndex();
-				if (x == loc && y == loc) {
-					if (move == 1) {
-						for (int k = 0; k < 15; k++) {
-							if (_tileArray[k][y] == null) {
-								thisTile.placeAtSquare(k, y);
-								break;
-							}
-						}
-					} else if (move == -1) {
-						for (int k = 0; k < 15; k++) {
-							if (_tileArray[x][k] == null) {
-								thisTile.placeAtSquare(x, k);
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		PauseTransition delayPlacement = new PauseTransition(Duration.seconds(2));
-		delayPlacement.setOnFinished(new BeginPlacementHandler());
-		delayPlacement.play();
-	}
-	
-	private void placeTiles() {
-		double delay = 0;
-		for (int i = 0; i < _endGame.size(); i++) {
-			Tile thisTile = _endGame.get(i);
-			delay = delay + Constants.PLACEMENT_DURATION;
-			PauseTransition delayPlacement = new PauseTransition(Duration.seconds(delay));
-			delayPlacement.setOnFinished(new PlaceHandler(i + 1, i + 1, thisTile));
-			delayPlacement.play();
-		}
-		PauseTransition delayReset = new PauseTransition(Duration.seconds(10));
-		delayReset.setOnFinished(new ResetHandler());
-		delayReset.play();
-	}
-	
-	private class PlaceHandler implements EventHandler<ActionEvent> {
-		private int _x;
-		private int _y;
-		private Tile _thisTile;
-		
-		PlaceHandler(int x, int y, Tile thisTile) {
-			_x = x;
-			_y = y;
-			_thisTile = thisTile;
-		}
-		
-		@Override
-		public void handle(ActionEvent event) {
-			_thisTile.placeAtSquare(_x, _y);
-			event.consume();
-		}
-
 	}
 
 	void rotateBag() {

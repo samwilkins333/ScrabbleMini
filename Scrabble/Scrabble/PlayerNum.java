@@ -2,5 +2,6 @@ package Scrabble;
 
 public enum PlayerNum {
     One,
-    Two
+    Two,
+    Neither
 }

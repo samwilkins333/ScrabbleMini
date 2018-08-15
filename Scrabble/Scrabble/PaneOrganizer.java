@@ -112,8 +112,6 @@ class PaneOrganizer {
 
 	PaneOrganizer(App appClass, Stage appStage) {
 		_root = new Pane();
-		@SuppressWarnings("unused")
-		Constants constants = new Constants();
 
 		_enterInt = 0;
 		_enterable = false;
@@ -134,10 +132,13 @@ class PaneOrganizer {
 		_root.getChildren().add(_boardPane);
 		_appClass = appClass;
 		_stage = appStage;
+
 		ShiftDisplayHandler _rotatePencil = new ShiftDisplayHandler();
 		ShiftConcealHandler _revertPencil = new ShiftConcealHandler();
+
 		_boardPane.addEventHandler(KeyEvent.KEY_PRESSED, _rotatePencil);
 		_boardPane.addEventHandler(KeyEvent.KEY_RELEASED, _revertPencil);
+
 		_scrabbleGame = new ScrabbleGame(this, _root, _boardPane);
 
 		this.addPostIts();
@@ -149,7 +150,6 @@ class PaneOrganizer {
 		_playedWords = new ArrayList<>();
 
 		this.setUpIntroSequence();
-
 	}
 
 	Boolean getDisplayMultipliers() {
@@ -166,11 +166,13 @@ class PaneOrganizer {
 		_scorePane.setVisible(false);
 
 		_root.getChildren().addAll(_scorePane);
-		_wordContainer1 = new Pane();
+
 		Rectangle whiteRect1 = new Rectangle(0, 0, 315, 3000);
 		whiteRect1.setFill(Color.WHITE);
 		Rectangle whiteRect2 = new Rectangle(0, 0, 315, 3000);
 		whiteRect2.setFill(Color.WHITE);
+
+		_wordContainer1 = new Pane();
 		_wordContainer1.getChildren().add(whiteRect1);
 
 		_s1 = new ScrollPane();
@@ -226,8 +228,11 @@ class PaneOrganizer {
 		_moveLeft.setByX(-1 * SCENE_WIDTH / 2 - 2);
 		_moveRight = new TranslateTransition(Duration.seconds(2), _rightHalf);
 		_moveRight.setByX(SCENE_WIDTH / 2 + 2);
+
 		_human = new Image("Images/AI/human.png");
 		_ai = new Image("Images/AI/ai.png");
+
+		// Create and format player one's avatar
 		_playerOneIcon = new ImageView(_ai);
 		_playerOneIcon.setOpacity(0.0);
 		_playerOneIcon.setPreserveRatio(true);
@@ -238,6 +243,8 @@ class PaneOrganizer {
 		_playerOneIcon.setOnMouseClicked(new TogglePlayer(PlayerNum.One));
 		_playerOneIcon.setOnMouseEntered(new ScaleIcon(PlayerNum.One, Direction.In));
 		_playerOneIcon.setOnMouseExited(new ScaleIcon(PlayerNum.One, Direction.Out));
+
+		// Create and format player one's avatar
 		_playerTwoIcon = new ImageView(_human);
 		_playerTwoIcon.setOpacity(0.0);
 		_playerTwoIcon.setPreserveRatio(true);
@@ -248,20 +255,27 @@ class PaneOrganizer {
 		_playerTwoIcon.setOnMouseClicked(new TogglePlayer(PlayerNum.Two));
 		_playerTwoIcon.setOnMouseEntered(new ScaleIcon(PlayerNum.Two, Direction.Out));
 		_playerTwoIcon.setOnMouseExited(new ScaleIcon(PlayerNum.Two, Direction.Out));
+
+		// Graphically add all elements
 		_root.getChildren().addAll(_background, _leftHalf, _rightHalf, _playerOneIcon, _playerTwoIcon);
+
 		PauseTransition intro = new PauseTransition(Duration.seconds(2));
 		intro.setOnFinished(new FadeHalvesHandler());
 		intro.play();
+
+		// M TILE - build associated animations
+
 		Tile m = new Tile(13);
 		double x = X3 - 0.3;
 		double y = Y12;
-		m.add(_root, x, y, _scrabbleGame, "NONE");
+		m.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		m.getTileViewer().setOpacity(0.0);
 		m.setCheckLoc(x, y);
 
 		_scaleM = new ScaleTransition(Duration.seconds(0.6), m.getTileViewer());
 		_scaleM.setByX(-0.60);
 		_scaleM.setByY(-0.60);
+
 		_scaleMCheck = new ScaleTransition(Duration.seconds(0.6), m.getCheckViewer());
 		_scaleMCheck.setByX(-0.60);
 		_scaleMCheck.setByY(-0.60);
@@ -287,119 +301,152 @@ class PaneOrganizer {
 		fadeOutM.setFromValue(1.0);
 		fadeOutM.setToValue(0.0);
 		fadeOutM.setOnFinished(new TileRemover(m));
+
 		PauseTransition animateM = new PauseTransition(Duration.seconds(3.5));
 		animateM.setOnFinished(new PlayFadeHandler(fadeM));
 		animateM.play();
+
 		PauseTransition removeM = new PauseTransition(Duration.seconds(6.5));
 		removeM.setOnFinished(new PlayFadeHandler(fadeOutM));
 		removeM.play();
 
+		// FIRST I TILE - build associated animations
+
 		Tile i1 = new Tile(9);
 		x = X4 - 0.35;
-		i1.add(_root, x, y, _scrabbleGame, "NONE");
+		i1.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		i1.getTileViewer().setOpacity(0.0);
 		i1.setCheckLoc(x, y);
 
 		_scaleI1 = new ScaleTransition(Duration.seconds(0.6), i1.getTileViewer());
 		_scaleI1.setByX(-0.60);
 		_scaleI1.setByY(-0.60);
+
 		_scaleI1Check = new ScaleTransition(Duration.seconds(0.6), i1.getCheckViewer());
 		_scaleI1Check.setByX(-0.60);
 		_scaleI1Check.setByY(-0.60);
+
 		_rotateI1 = new RotateTransition(Duration.seconds(0.6), i1.getTileViewer());
 		_rotateI1.setByAngle(14);
 		_rotateI1Check = new RotateTransition(Duration.seconds(0.6), i1.getCheckViewer());
 		_rotateI1Check.setByAngle(14);
+
 		_moveI1 = new TranslateTransition(Duration.seconds(0.6), i1.getTileViewer());
 		_moveI1.setByX(0);
 		_moveI1.setByY(-124);
+
 		_moveI1Check = new TranslateTransition(Duration.seconds(0.6), i1.getCheckViewer());
 		_moveI1Check.setByX(0);
 		_moveI1Check.setByY(-124);
+
 		FadeTransition fadeI1 = new FadeTransition(Duration.seconds(0.6), i1.getTileViewer());
 		fadeI1.setFromValue(0.0);
 		fadeI1.setToValue(1.0);
+
 		FadeTransition fadeOutI1 = new FadeTransition(Duration.seconds(0.6), i1.getTileViewer());
 		fadeOutI1.setFromValue(1.0);
 		fadeOutI1.setToValue(0.0);
 		fadeOutI1.setOnFinished(new TileRemover(i1));
+
 		PauseTransition animateI1 = new PauseTransition(Duration.seconds(4));
 		animateI1.setOnFinished(new PlayFadeHandler(fadeI1));
 		animateI1.play();
+
 		PauseTransition removeI1 = new PauseTransition(Duration.seconds(7));
 		removeI1.setOnFinished(new PlayFadeHandler(fadeOutI1));
 		removeI1.play();
 
+		// N TILE - build associated animations
+
 		Tile n = new Tile(14);
 		x = X5 - 0.35;
-		n.add(_root, x, y, _scrabbleGame, "NONE");
+		n.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		n.getTileViewer().setOpacity(0.0);
 		n.setCheckLoc(x, y);
 
 		_scaleN = new ScaleTransition(Duration.seconds(0.6), n.getTileViewer());
 		_scaleN.setByX(-0.60);
 		_scaleN.setByY(-0.60);
+
 		_scaleNCheck = new ScaleTransition(Duration.seconds(0.6), n.getCheckViewer());
 		_scaleNCheck.setByX(-0.60);
 		_scaleNCheck.setByY(-0.60);
+
 		_rotateN = new RotateTransition(Duration.seconds(0.6), n.getTileViewer());
 		_rotateN.setByAngle(14);
 		_rotateNCheck = new RotateTransition(Duration.seconds(0.6), n.getCheckViewer());
 		_rotateNCheck.setByAngle(14);
+
 		_moveN = new TranslateTransition(Duration.seconds(0.6), n.getTileViewer());
 		_moveN.setByX(-26);
 		_moveN.setByY(-120);
+
 		_moveNCheck = new TranslateTransition(Duration.seconds(0.6), n.getCheckViewer());
 		_moveNCheck.setByX(-26);
 		_moveNCheck.setByY(-120);
+
 		FadeTransition fadeN = new FadeTransition(Duration.seconds(0.6), n.getTileViewer());
 		fadeN.setFromValue(0.0);
 		fadeN.setToValue(1.0);
+
 		FadeTransition fadeOutN = new FadeTransition(Duration.seconds(0.6), n.getTileViewer());
 		fadeOutN.setFromValue(1.0);
 		fadeOutN.setToValue(0.0);
 		fadeOutN.setOnFinished(new TileRemover(n));
+
 		PauseTransition animateN = new PauseTransition(Duration.seconds(4.5));
 		animateN.setOnFinished(new PlayFadeHandler(fadeN));
 		animateN.play();
+
 		PauseTransition removeN = new PauseTransition(Duration.seconds(7.5));
 		removeN.setOnFinished(new PlayFadeHandler(fadeOutN));
 		removeN.play();
 
+		// SECOND I TILE - build associated animations
+
 		Tile i2 = new Tile(9);
 		x = X6 - 0.35;
-		i2.add(_root, x, y, _scrabbleGame, "NONE");
+		i2.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		i2.getTileViewer().setOpacity(0.0);
 		i2.setCheckLoc(x, y);
 
 		_scaleI2 = new ScaleTransition(Duration.seconds(0.6), i2.getCheckViewer());
 		_scaleI2.setByX(-0.60);
 		_scaleI2.setByY(-0.60);
+
 		_scaleI2Check = new ScaleTransition(Duration.seconds(0.6), i2.getTileViewer());
 		_scaleI2Check.setByX(-0.60);
 		_scaleI2Check.setByY(-0.60);
+
 		_rotateI2 = new RotateTransition(Duration.seconds(0.6), i2.getTileViewer());
 		_rotateI2.setByAngle(14);
+
 		_rotateI2Check = new RotateTransition(Duration.seconds(0.6), i2.getCheckViewer());
 		_rotateI2Check.setByAngle(14);
+
 		_moveI2 = new TranslateTransition(Duration.seconds(0.6), i2.getTileViewer());
 		_moveI2.setByX(-51);
 		_moveI2.setByY(-115);
 		_moveI2.setOnFinished(new IntroFlashHandler(m, i1, n, i2));
+
 		_moveI2Check = new TranslateTransition(Duration.seconds(0.6), i2.getCheckViewer());
 		_moveI2Check.setByX(-51);
 		_moveI2Check.setByY(-115);
+
 		FadeTransition fadeI2 = new FadeTransition(Duration.seconds(0.6), i2.getTileViewer());
 		fadeI2.setFromValue(0.0);
 		fadeI2.setToValue(1.0);
 		fadeI2.setOnFinished(new TileAnimator());
+
 		FadeTransition fadeOutI2 = new FadeTransition(Duration.seconds(0.6), i2.getTileViewer());
 		fadeOutI2.setFromValue(1.0);
 		fadeOutI2.setToValue(0.0);
 		fadeOutI2.setOnFinished(new TileRemover(i2));
+
 		PauseTransition animateI2 = new PauseTransition(Duration.seconds(5));
 		animateI2.setOnFinished(new PlayFadeHandler(fadeI2));
 		animateI2.play();
+
 		PauseTransition removeI2 = new PauseTransition(Duration.seconds(8));
 		removeI2.setOnFinished(new PlayFadeHandler(fadeOutI2));
 		removeI2.play();
@@ -411,37 +458,48 @@ class PaneOrganizer {
 		PauseTransition enterable = new PauseTransition(Duration.seconds(9.5));
 		enterable.setOnFinished(new Enterable());
 		enterable.play();
-
 	}
 
 	private class TileAnimator implements EventHandler<ActionEvent> {
 
 		@Override
 		public void handle(ActionEvent event) {
+			// M
 			_scaleM.play();
 			_rotateM.play();
 			_moveM.play();
-			_scaleI1.play();
-			_rotateI1.play();
-			_moveI1.play();
-			_scaleN.play();
-			_rotateN.play();
-			_moveN.play();
-			_scaleI2.play();
-			_rotateI2.play();
-			_moveI2.play();
+
 			_scaleMCheck.play();
 			_rotateMCheck.play();
 			_moveMCheck.play();
+
+			// First I
+			_scaleI1.play();
+			_rotateI1.play();
+			_moveI1.play();
+
 			_scaleI1Check.play();
 			_rotateI1Check.play();
 			_moveI1Check.play();
+
+			// N
+			_scaleN.play();
+			_rotateN.play();
+			_moveN.play();
+
 			_scaleNCheck.play();
 			_rotateNCheck.play();
 			_moveNCheck.play();
+
+			// Second I
+			_scaleI2.play();
+			_rotateI2.play();
+			_moveI2.play();
+
 			_scaleI2Check.play();
 			_rotateI2Check.play();
 			_moveI2Check.play();
+
 			event.consume();
 		}
 
@@ -756,32 +814,49 @@ class PaneOrganizer {
 	}
 
 	private void addPostIts() {
-		ImageView _postItOneViewer = new ImageView(new Image("Images/Main Theme and GUI/greenpostit.png"));
-		_postItOneViewer.setCache(true);
-		_postItOneViewer.setPreserveRatio(true);
-		_postItOneViewer.setFitWidth(GRID_FACTOR * 4);
-		_postItOneViewer.setLayoutX(GRID_FACTOR * 4);
-		_postItOneViewer.setLayoutY(GRID_FACTOR * 5);
-		_postItOneViewer.setOnMousePressed(new ScorePaneHandler(Direction.In));
-		_postItOneViewer.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
-		ImageView _postItTwoViewer = new ImageView(new Image("Images/Main Theme and GUI/bluepostit.png"));
-		_postItTwoViewer.setCache(true);
-		_postItTwoViewer.setPreserveRatio(true);
-		_postItTwoViewer.setFitWidth(GRID_FACTOR * 4);
-		_postItTwoViewer.setLayoutX(GRID_FACTOR * 6);
-		_postItTwoViewer.setLayoutY(GRID_FACTOR * 3);
-		_postItTwoViewer.setOnMousePressed(new ScorePaneHandler(Direction.In));
-		_postItTwoViewer.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
+		// Build green post it to display player one's score
+		ImageView postItOneViewer = new ImageView(new Image("Images/Main Theme and GUI/greenpostit.png"));
+		postItOneViewer.setCache(true);
+		postItOneViewer.setPreserveRatio(true);
+		postItOneViewer.setFitWidth(GRID_FACTOR * 4);
+		postItOneViewer.setLayoutX(GRID_FACTOR * 4);
+		postItOneViewer.setLayoutY(GRID_FACTOR * 5);
+		postItOneViewer.setOnMousePressed(new ScorePaneHandler(Direction.In));
+		postItOneViewer.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
+
+		// Build blue post it to display player two's score
+		ImageView postItTwoViewer = new ImageView(new Image("Images/Main Theme and GUI/bluepostit.png"));
+		postItTwoViewer.setCache(true);
+		postItTwoViewer.setPreserveRatio(true);
+		postItTwoViewer.setFitWidth(GRID_FACTOR * 4);
+		postItTwoViewer.setLayoutX(GRID_FACTOR * 6);
+		postItTwoViewer.setLayoutY(GRID_FACTOR * 3);
+		postItTwoViewer.setOnMousePressed(new ScorePaneHandler(Direction.In));
+		postItTwoViewer.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
+
+		// Set up text for both players' scores
 		_playerOneScore = new Label();
 		_playerOneScore.setOpacity(1.0);
 		_playerOneScore.setTextFill(GRAPHITE);
-		// System.out.println(16);
 		_playerOneScore.setFont(Font.loadFont(DOMESTIC_MANNERS, FONT_SIZE_POST_IT));
 		_playerOneScore.setLayoutY(GRID_FACTOR * 6.1);
 		_playerOneScore.setLayoutX(GRID_FACTOR * 5.7);
-		// _playerOneScore.setRotate(-15);
+
+		_playerTwoScore = new Label();
+		_playerTwoScore.setOpacity(1.0);
+		_playerTwoScore.setTextFill(GRAPHITE);
+		_playerTwoScore.setFont(Font.loadFont(DOMESTIC_MANNERS, FONT_SIZE_POST_IT));
+		_playerTwoScore.setLayoutY(GRID_FACTOR * 4.1);
+		_playerTwoScore.setLayoutX(GRID_FACTOR * 7.9);
+
+		// Add on-pressed and on-released interactions to show or conceal word record
 		_playerOneScore.setOnMousePressed(new ScorePaneHandler(Direction.In));
 		_playerOneScore.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
+
+		_playerTwoScore.setOnMousePressed(new ScorePaneHandler(Direction.In));
+		_playerTwoScore.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
+
+		// Add highlight to potentially cover player one's score if winner
 		_playerOneHi = new ImageView(new Image("Images/Main Theme and GUI/highlight.png"));
 		_playerOneHi.setPreserveRatio(true);
 		_playerOneHi.setCache(true);
@@ -791,15 +866,8 @@ class PaneOrganizer {
 		_playerOneHi.setOpacity(0.0);
 		_playerOneHi.setOnMousePressed(new ScorePaneHandler(Direction.In));
 		_playerOneHi.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
-		_playerTwoScore = new Label();
-		_playerTwoScore.setOpacity(1.0);
-		// _playerTwoScore.setRotate(15);
-		_playerTwoScore.setTextFill(GRAPHITE);
-		_playerTwoScore.setFont(Font.loadFont(DOMESTIC_MANNERS, FONT_SIZE_POST_IT));
-		_playerTwoScore.setLayoutY(GRID_FACTOR * 4.1);
-		_playerTwoScore.setLayoutX(GRID_FACTOR * 7.9);
-		_playerTwoScore.setOnMousePressed(new ScorePaneHandler(Direction.In));
-		_playerTwoScore.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
+
+		// Add highlight to potentially cover player two's score if winner
 		_playerTwoHi = new ImageView(new Image("Images/Main Theme and GUI/highlight.png"));
 		_playerTwoHi.setPreserveRatio(true);
 		_playerTwoHi.setCache(true);
@@ -809,13 +877,17 @@ class PaneOrganizer {
 		_playerTwoHi.setOpacity(0.0);
 		_playerTwoHi.setOnMousePressed(new ScorePaneHandler(Direction.In));
 		_playerTwoHi.setOnMouseReleased(new ScorePaneHandler(Direction.Out));
-		ImageView _pencilViewer = new ImageView(new Image("Images/Main Theme and GUI/pencil.png"));
-		_pencilViewer.setCache(true);
-		_pencilViewer.setPreserveRatio(true);
-		_pencilViewer.setFitWidth(GRID_FACTOR * 4);
-		_pencilViewer.setLayoutX(GRID_FACTOR * 30.4);
-		_pencilViewer.setLayoutY(GRID_FACTOR * 6);
-		_pencilViewer.setRotate(60);
+
+		// Add the yellow short pencil resting on the desk
+		ImageView pencilView = new ImageView(new Image("Images/Main Theme and GUI/pencil.png"));
+		pencilView.setCache(true);
+		pencilView.setPreserveRatio(true);
+		pencilView.setFitWidth(GRID_FACTOR * 4);
+		pencilView.setLayoutX(GRID_FACTOR * 30.4);
+		pencilView.setLayoutY(GRID_FACTOR * 6);
+		pencilView.setRotate(60);
+
+		// Add shadow effect and rotation animation to pencil
 		DropShadow pieceShadow = new DropShadow();
 		pieceShadow.setRadius(120);
 		pieceShadow.setOffsetX(4);
@@ -825,20 +897,23 @@ class PaneOrganizer {
 		pieceShadow.setHeight(25);
 		pieceShadow.setWidth(25);
 		pieceShadow.setBlurType(BlurType.GAUSSIAN);
-		_pencilViewer.setEffect(pieceShadow);
-		// _pencilViewer.addEventHandler(KeyEvent.KEY_PRESSED, new KeyHandler());
-		// _pencilViewer.addEventHandler(KeyEvent.KEY_RELEASED, new KeyHandler());
-		_rtPencil = new RotateTransition(Duration.millis(190), _pencilViewer);
+		pencilView.setEffect(pieceShadow);
+
+		_rtPencil = new RotateTransition(Duration.millis(190), pencilView);
 		_rtPencil.setByAngle(15);
 		_rtPencil.setCycleCount(2);
 		_rtPencil.setAutoReverse(true);
-		ImageView _hiViewer = new ImageView(new Image("Images/Main Theme and GUI/hi.png"));
-		_hiViewer.setCache(true);
-		_hiViewer.setPreserveRatio(true);
-		_hiViewer.setFitWidth(GRID_FACTOR * 1.4);
-		_hiViewer.setLayoutX(GRID_FACTOR * 5 - 400);
-		_hiViewer.setLayoutY(GRID_FACTOR * 7);
-		_hiViewer.setRotate(-39);
+
+		// Add highlighter pen that appears on completion of game
+		ImageView highlightView = new ImageView(new Image("Images/Main Theme and GUI/hi.png"));
+		highlightView.setCache(true);
+		highlightView.setPreserveRatio(true);
+		highlightView.setFitWidth(GRID_FACTOR * 1.4);
+		highlightView.setLayoutX(GRID_FACTOR * 5 - 400);
+		highlightView.setLayoutY(GRID_FACTOR * 7);
+		highlightView.setRotate(-39);
+
+		// Add shadow effect and translation animation to highlighter
 		DropShadow hiShadow = new DropShadow();
 		hiShadow.setRadius(50);
 		hiShadow.setOffsetX(3);
@@ -848,10 +923,22 @@ class PaneOrganizer {
 		hiShadow.setHeight(40);
 		hiShadow.setWidth(40);
 		hiShadow.setBlurType(BlurType.GAUSSIAN);
-		_hiViewer.setEffect(hiShadow);
-		_moveHi = new TranslateTransition(Duration.seconds(PLACEMENT_DURATION), _hiViewer);
+		highlightView.setEffect(hiShadow);
+
+		_moveHi = new TranslateTransition(Duration.seconds(PLACEMENT_DURATION), highlightView);
 		_moveHi.setByX(400);
-		_boardPane.getChildren().addAll(_postItOneViewer, _postItTwoViewer, _playerOneHi, _playerTwoHi, _pencilViewer, _playerOneScore, _playerTwoScore, _hiViewer);
+
+		// Graphically add all elements to GUI
+		_boardPane.getChildren().addAll(
+				postItOneViewer,
+				postItTwoViewer,
+				_playerOneHi,
+				_playerTwoHi,
+				pencilView,
+				_playerOneScore,
+				_playerTwoScore,
+				highlightView
+		);
 	}
 
 	private class HighlightHandler implements EventHandler<ActionEvent> {
@@ -936,8 +1023,8 @@ class PaneOrganizer {
 		_root.getChildren().addAll(deskViewer, _leatherViewer);
 	}
 
-	void setEnterable(Boolean status) {
-		_enterable = status;
+	void DeclareEnterable() {
+		_enterable = true;
 	}
 
 	void resetEnterInt() {
@@ -1024,7 +1111,7 @@ class PaneOrganizer {
 
 					} else if (_enterInt > 0 && event.isShiftDown()) {
 
-						//TODO: Refactor to combine word with crosses
+						//TODO: Combine word with crosses and AI with human word addition to cut back on duplicate code
 
 						Word newestWord = _referee.getCurrentPlayerInstance().getNewestWord();
 
@@ -1168,10 +1255,10 @@ class PaneOrganizer {
 				case M:
 					if (_displayMultipliers) {
 						_scrabbleGame.addDiamond();
-						_scrabbleGame.fadeInOtherSquares("GHOST");
+						_scrabbleGame.fadeInOtherSquares(SquareIdentity.Ghost);
 					} else {
 						_scrabbleGame.removeDiamond();
-						_scrabbleGame.fadeOutOtherSquares("GHOST");
+						_scrabbleGame.fadeOutOtherSquares(SquareIdentity.Ghost);
 					}
 
 					_displayMultipliers = !_displayMultipliers;
@@ -1195,6 +1282,9 @@ class PaneOrganizer {
 	}
 
 	void addWordAI(Word newestWord) {
+
+		//TODO: Combine word with crosses and AI with human word addition to cut back on duplicate code
+
 		newestWord.addToBoardAI();
 
 		// Inform referee of move implications
@@ -1391,9 +1481,7 @@ class PaneOrganizer {
 
 		@Override
 		public void handle(MouseEvent event) {
-			// system.out.println("HANDLE");
 			_s1.setVvalue(_olds1);
-			// system.out.printf("%s\n", _s1.getVvalue());
 			event.consume();
 		}
 
@@ -1403,9 +1491,7 @@ class PaneOrganizer {
 
 		@Override
 		public void handle(MouseEvent event) {
-			// system.out.println("HANDLE");
 			_s2.setVvalue(_olds2);
-			// system.out.printf("%s\n", _s2.getVvalue());
 			event.consume();
 		}
 
@@ -1432,10 +1518,6 @@ class PaneOrganizer {
 			if (event.getCode() == KeyCode.SHIFT) {
 				_isShiftDown = true;
 				_scrabbleGame.removeDiamond();
-				// _rt = new RotateTransition(Duration.millis(190), _pencilViewer);
-				// _rt.setByAngle(5);
-				// _rt.setCycleCount(1);
-				// _rt.play();
 			}
 			event.consume();
 		}
@@ -1449,17 +1531,12 @@ class PaneOrganizer {
 			if (event.getCode() == KeyCode.SHIFT) {
 				_isShiftDown = false;
 				_scrabbleGame.addDiamond();
-				// _rt = new RotateTransition(Duration.millis(190), _pencilViewer);
-				// _rt.setByAngle(-5);
-				// _rt.setCycleCount(1);
-				// _rt.play();
 			}
 		}
 
 	}
 
-	void reset() {
-		// //system.out.print(Constants.ESC + "2J");
+	private void reset() {
 		_appClass.start(_stage);
 	}
 
@@ -1471,7 +1548,7 @@ class PaneOrganizer {
 		}
 
 		// If a rack was refilled and the bag was <not> emptied in the process...
-		if (_justFilled && !_scrabbleGame.bagEmpty()) {
+		if (_justFilled && !_scrabbleGame.tileBagIsEmpty()) {
 			_scrabbleGame.printBagSize();
 			_enterable = false;
 

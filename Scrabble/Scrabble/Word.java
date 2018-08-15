@@ -26,7 +26,7 @@ public class Word {
 	private boolean _prefixExtendedStatus;
 	private boolean _suffixExtendedStatus;
 
-	Word(String letters, String newBoardLetters, int value, int originalValue, String orientation, int firstLetterX, int firstLetterY, boolean prefixExtendedStatus, boolean suffixExtendedStatus) {
+	Word(String letters, String newBoardLetters, int value, int originalValue, WordOrientation orientation, int firstLetterX, int firstLetterY, boolean prefixExtendedStatus, boolean suffixExtendedStatus) {
 		_letters = letters;
 		_newBoardLetters = newBoardLetters;
 		_value = value;
@@ -49,7 +49,7 @@ public class Word {
 		_tiles = new ArrayList<Tile>();
 	}
 	
-	Word(String letters, int value, int firstLetterX, int firstLetterY, String orientation) {
+	Word(String letters, int value, int firstLetterX, int firstLetterY, WordOrientation orientation) {
 		_letters = letters;
 		_value = value;
 		_originalValue = value;

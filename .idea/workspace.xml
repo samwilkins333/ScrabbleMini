@@ -2,19 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc535c14-9aff-47a5-937e-9502eff4984d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/swilkinss2012.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Direction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/PlayerType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Winner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/WordAddition.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/CollectionOrientation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/SquareIdentity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/WordOrientation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/swilkinss2012.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/swilkinss2012.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/BoardSquare.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/BoardSquare.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/HumanPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/HumanPlayer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Playable.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Playable.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Referee.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Referee.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" afterDir="false" />
@@ -39,24 +36,24 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="Learning" value="1" />
-          <entry key="java" value="18" />
+          <entry key="java" value="26" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="18" />
+          <entry key="JAVA" value="26" />
           <entry key="Scratch" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="dummy" value="1" />
-          <entry key="java" value="5712" />
+          <entry key="java" value="9226" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="5712" />
+          <entry key="JAVA" value="9226" />
           <entry key="PLAIN_TEXT" value="1" />
         </counts>
       </usages-collector>
@@ -70,9 +67,13 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Referee.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="170">
-              <caret line="231" column="33" lean-forward="true" selection-start-line="231" selection-start-column="33" selection-end-line="231" selection-end-column="33" />
+            <state relative-caret-position="196">
+              <caret line="200" column="16" lean-forward="true" selection-start-line="200" selection-start-column="16" selection-end-line="200" selection-end-column="16" />
               <folding>
+                <element signature="e#1085#1086#0" expanded="true" />
+                <element signature="e#1159#1160#0" expanded="true" />
+                <element signature="e#1357#1358#0" expanded="true" />
+                <element signature="e#1435#1436#0" expanded="true" />
                 <element signature="e#2393#2394#0" expanded="true" />
                 <element signature="e#2422#2423#0" expanded="true" />
                 <element signature="e#2457#2458#0" expanded="true" />
@@ -95,32 +96,107 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="538">
-              <caret line="556" column="5" selection-start-line="556" selection-start-column="5" selection-end-line="556" selection-end-column="5" />
+            <state relative-caret-position="-519">
+              <caret line="1120" column="17" selection-start-line="1120" selection-start-column="17" selection-end-line="1120" selection-end-column="17" />
               <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#2280#2281#0" expanded="true" />
+                <element signature="e#2299#2300#0" expanded="true" />
+                <element signature="e#2535#2536#0" expanded="true" />
+                <element signature="e#2567#2568#0" expanded="true" />
+                <element signature="e#2613#2614#0" expanded="true" />
+                <element signature="e#2639#2640#0" expanded="true" />
                 <element signature="e#2869#2870#0" expanded="true" />
                 <element signature="e#2927#2928#0" expanded="true" />
                 <element signature="e#3048#3049#0" expanded="true" />
                 <element signature="e#3080#3081#0" expanded="true" />
+                <element signature="e#3116#3117#0" expanded="true" />
+                <element signature="e#3144#3145#0" expanded="true" />
+                <element signature="e#3176#3177#0" expanded="true" />
+                <element signature="e#3204#3205#0" expanded="true" />
+                <element signature="e#3236#3237#0" expanded="true" />
+                <element signature="e#3265#3266#0" expanded="true" />
+                <element signature="e#4489#4490#0" expanded="true" />
+                <element signature="e#4514#4515#0" expanded="true" />
+                <element signature="e#3821#3822#0" expanded="true" />
+                <element signature="e#3895#3896#0" expanded="true" />
+                <element signature="e#3919#3920#0" expanded="true" />
+                <element signature="e#3993#3994#0" expanded="true" />
+                <element signature="e#34561#34562#0" expanded="true" />
+                <element signature="e#34585#34586#0" expanded="true" />
+                <element signature="e#34609#34610#0" expanded="true" />
+                <element signature="e#34636#34637#0" expanded="true" />
+                <element signature="e#36651#36652#0" expanded="true" />
+                <element signature="e#36678#36679#0" expanded="true" />
+                <element signature="e#36475#36476#0" expanded="true" />
+                <element signature="e#36505#36506#0" expanded="true" />
+                <element signature="e#37274#37275#0" expanded="true" />
+                <element signature="e#37298#37299#0" expanded="true" />
+                <element signature="e#37547#37548#0" expanded="true" />
+                <element signature="e#37583#37584#0" expanded="true" />
+                <element signature="e#37967#37968#0" expanded="true" />
+                <element signature="e#37995#37996#0" expanded="true" />
+                <element signature="e#38034#38035#0" expanded="true" />
+                <element signature="e#38062#38063#0" expanded="true" />
+                <element signature="e#39737#39738#0" expanded="true" />
+                <element signature="e#39770#39771#0" expanded="true" />
+                <element signature="e#38567#38568#0" expanded="true" />
+                <element signature="e#38609#38610#0" expanded="true" />
+                <element signature="e#46310#46311#0" expanded="true" />
+                <element signature="e#46342#46343#0" expanded="true" />
+                <element signature="e#46915#46916#0" expanded="true" />
+                <element signature="e#46944#46945#0" expanded="true" />
+                <element signature="e#46971#46972#0" expanded="true" />
+                <element signature="e#46995#46996#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/BoardSquare.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="231">
+              <caret line="134" column="7" lean-forward="true" selection-start-line="134" selection-start-column="7" selection-end-line="134" selection-end-column="7" />
+              <folding>
+                <element signature="e#1876#1877#0" expanded="true" />
+                <element signature="e#1904#1905#0" expanded="true" />
+                <element signature="e#2067#2068#0" expanded="true" />
+                <element signature="e#2097#2098#0" expanded="true" />
+                <element signature="e#2222#2223#0" expanded="true" />
+                <element signature="e#2241#2242#0" expanded="true" />
+                <element signature="e#2368#2369#0" expanded="true" />
+                <element signature="e#2387#2388#0" expanded="true" />
+                <element signature="e#2512#2513#0" expanded="true" />
+                <element signature="e#2531#2532#0" expanded="true" />
+                <element signature="e#2658#2659#0" expanded="true" />
+                <element signature="e#2677#2678#0" expanded="true" />
+                <element signature="e#2806#2807#0" expanded="true" />
+                <element signature="e#2829#2830#0" expanded="true" />
+                <element signature="e#5765#5766#0" expanded="true" />
+                <element signature="e#5782#5783#0" expanded="true" />
+                <element signature="e#6097#6098#0" expanded="true" />
+                <element signature="e#6118#6119#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3863">
-              <caret line="1157" column="26" selection-start-line="1157" selection-start-column="26" selection-end-line="1157" selection-end-column="26" />
+            <state relative-caret-position="414">
+              <caret line="1005" column="35" lean-forward="true" selection-start-line="1005" selection-start-column="35" selection-end-line="1005" selection-end-column="35" />
               <folding>
                 <element signature="e#529#587#1" expanded="true" />
-                <element signature="e#3198#3225#1" expanded="true" />
                 <element signature="e#4526#4527#0" expanded="true" />
                 <element signature="e#4559#4560#0" expanded="true" />
                 <element signature="e#4587#4588#0" expanded="true" />
                 <element signature="e#4607#4608#0" expanded="true" />
                 <element signature="e#17280#17281#0" expanded="true" />
                 <element signature="e#17297#17298#0" expanded="true" />
+                <element signature="e#18696#18697#0" expanded="true" />
+                <element signature="e#18717#18718#0" expanded="true" />
                 <element signature="e#23436#23437#0" expanded="true" />
                 <element signature="e#23459#23460#0" expanded="true" />
                 <element signature="e#29684#29685#0" expanded="true" />
@@ -133,6 +209,10 @@
                 <element signature="e#47669#47670#0" expanded="true" />
                 <element signature="e#48127#48161#0" />
                 <element signature="e#49046#49078#0" />
+                <element signature="e#50315#50316#0" expanded="true" />
+                <element signature="e#50341#50342#0" expanded="true" />
+                <element signature="e#49194#49195#0" expanded="true" />
+                <element signature="e#49224#49225#0" expanded="true" />
                 <element signature="e#52392#52393#0" expanded="true" />
                 <element signature="e#52411#52412#0" expanded="true" />
               </folding>
@@ -141,32 +221,37 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/WordAddition.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="90">
-              <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="528">
-              <caret line="826" column="16" lean-forward="true" selection-start-line="826" selection-start-column="16" selection-end-line="826" selection-end-column="16" />
+            <state relative-caret-position="335">
+              <caret line="249" column="55" lean-forward="true" selection-start-line="249" selection-start-column="55" selection-end-line="249" selection-end-column="55" />
               <folding>
                 <element signature="e#1805#1806#0" expanded="true" />
                 <element signature="e#1824#1825#0" expanded="true" />
+                <element signature="e#26867#26868#0" expanded="true" />
+                <element signature="e#26894#26895#0" expanded="true" />
+                <element signature="e#26926#26927#0" expanded="true" />
+                <element signature="e#26951#26952#0" expanded="true" />
+                <marker date="1534369522000" expanded="false" signature="2814:3601" ph="{...}" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Playable.java">
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="135">
-              <caret line="9" column="1" lean-forward="true" selection-start-line="9" selection-start-column="1" selection-end-line="9" selection-end-column="1" />
+            <state relative-caret-position="235">
+              <caret line="28" column="94" selection-start-line="28" selection-start-column="94" selection-end-line="28" selection-end-column="94" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/WordOrientation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -191,32 +276,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="366">
-              <caret line="302" column="70" selection-start-line="302" selection-start-column="70" selection-end-line="302" selection-end-column="70" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Tile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-303">
-              <caret line="798" column="27" selection-start-line="798" selection-start-column="27" selection-end-line="798" selection-end-column="27" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Constants.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="225">
-              <caret line="16" column="32" lean-forward="true" selection-start-line="16" selection-start-column="32" selection-end-line="16" selection-end-column="32" />
-              <folding>
-                <element signature="e#126#127#0" expanded="true" />
-                <element signature="e#151#152#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="-148">
+              <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
             </state>
           </provider>
         </entry>
@@ -236,9 +299,24 @@
       <find>winner</find>
       <find>Dir</find>
       <find>crossValue</find>
+      <find>fromColor</find>
+      <find>&quot;TRIPLE LETTER SCORE&quot;</find>
+      <find>&quot;TRIPLE WORD SCORE&quot;</find>
+      <find>thisTile.getValue()</find>
+      <find>(WordMatch) &quot;VALID&quot;</find>
+      <find>system.out</find>
+      <find>System.out</find>
+      <find>&quot;HORIZONTAL&quot;</find>
+      <find>pre</find>
     </findStrings>
     <replaceStrings>
       <replace>wordValue</replace>
+      <replace>toColor</replace>
+      <replace>SquareIdentity.TripleLetterScore</replace>
+      <replace>SquareIdentity.TripleWordScore</replace>
+      <replace>value</replace>
+      <replace>WordMatch.Strict</replace>
+      <replace>WordOrientation.Horizontal</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -254,15 +332,20 @@
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Constants.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Playable.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Player.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/HumanPlayer.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/WordAddition.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/SquareIdentity.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Referee.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/CollectionOrientation.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/WordMatch.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/BoardSquare.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/WordOrientation.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" />
       </list>
     </option>
   </component>
@@ -335,8 +418,8 @@
     <property name="SearchEverywhereHistoryKey" value="refe&#9;PSI&#9;JAVA://Scrabble.Referee" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534335607820" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1534369522829" />
+    <property name="settings.editor.selected.configurable" value="preferences.keymap" />
   </component>
   <component name="RecentsManager">
     <key name="CreateClassDialog.RecentsKey">
@@ -363,12 +446,12 @@
       <option name="presentableId" value="Default" />
       <updated>1534319220945</updated>
       <workItem from="1534319226675" duration="893000" />
-      <workItem from="1534321982053" duration="13506000" />
+      <workItem from="1534321982053" duration="24652000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="14399000" />
+    <option name="totallyTimeSpent" value="25545000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -383,7 +466,7 @@
       <window_info id="Learn" order="6" weight="0.3297568" />
       <window_info id="Favorites" order="7" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32891566" />
+      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32891566" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -457,17 +540,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Winner.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="8" lean-forward="true" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/WordAddition.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/SquareIdentity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="10" selection-start-line="8" selection-start-column="10" selection-end-line="8" selection-end-column="10" />
         </state>
       </provider>
     </entry>
@@ -488,43 +578,101 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="528">
-          <caret line="826" column="16" lean-forward="true" selection-start-line="826" selection-start-column="16" selection-end-line="826" selection-end-column="16" />
-          <folding>
-            <element signature="e#1805#1806#0" expanded="true" />
-            <element signature="e#1824#1825#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/WordAddition.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="1" lean-forward="true" selection-start-line="6" selection-start-column="1" selection-end-line="6" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="366">
-          <caret line="302" column="70" selection-start-line="302" selection-start-column="70" selection-end-line="302" selection-end-column="70" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Tile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-303">
-          <caret line="798" column="27" selection-start-line="798" selection-start-column="27" selection-end-line="798" selection-end-column="27" />
+        <state relative-caret-position="-148">
+          <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/WordMatch.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/CollectionOrientation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="90">
+          <caret line="6" lean-forward="true" selection-start-line="6" selection-end-line="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/WordOrientation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="75">
+          <caret line="5" column="8" selection-start-line="5" selection-start-column="8" selection-end-line="5" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-519">
+          <caret line="1120" column="17" selection-start-line="1120" selection-start-column="17" selection-end-line="1120" selection-end-column="17" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2280#2281#0" expanded="true" />
+            <element signature="e#2299#2300#0" expanded="true" />
+            <element signature="e#2535#2536#0" expanded="true" />
+            <element signature="e#2567#2568#0" expanded="true" />
+            <element signature="e#2613#2614#0" expanded="true" />
+            <element signature="e#2639#2640#0" expanded="true" />
+            <element signature="e#2869#2870#0" expanded="true" />
+            <element signature="e#2927#2928#0" expanded="true" />
+            <element signature="e#3048#3049#0" expanded="true" />
+            <element signature="e#3080#3081#0" expanded="true" />
+            <element signature="e#3116#3117#0" expanded="true" />
+            <element signature="e#3144#3145#0" expanded="true" />
+            <element signature="e#3176#3177#0" expanded="true" />
+            <element signature="e#3204#3205#0" expanded="true" />
+            <element signature="e#3236#3237#0" expanded="true" />
+            <element signature="e#3265#3266#0" expanded="true" />
+            <element signature="e#4489#4490#0" expanded="true" />
+            <element signature="e#4514#4515#0" expanded="true" />
+            <element signature="e#3821#3822#0" expanded="true" />
+            <element signature="e#3895#3896#0" expanded="true" />
+            <element signature="e#3919#3920#0" expanded="true" />
+            <element signature="e#3993#3994#0" expanded="true" />
+            <element signature="e#34561#34562#0" expanded="true" />
+            <element signature="e#34585#34586#0" expanded="true" />
+            <element signature="e#34609#34610#0" expanded="true" />
+            <element signature="e#34636#34637#0" expanded="true" />
+            <element signature="e#36651#36652#0" expanded="true" />
+            <element signature="e#36678#36679#0" expanded="true" />
+            <element signature="e#36475#36476#0" expanded="true" />
+            <element signature="e#36505#36506#0" expanded="true" />
+            <element signature="e#37274#37275#0" expanded="true" />
+            <element signature="e#37298#37299#0" expanded="true" />
+            <element signature="e#37547#37548#0" expanded="true" />
+            <element signature="e#37583#37584#0" expanded="true" />
+            <element signature="e#37967#37968#0" expanded="true" />
+            <element signature="e#37995#37996#0" expanded="true" />
+            <element signature="e#38034#38035#0" expanded="true" />
+            <element signature="e#38062#38063#0" expanded="true" />
+            <element signature="e#39737#39738#0" expanded="true" />
+            <element signature="e#39770#39771#0" expanded="true" />
+            <element signature="e#38567#38568#0" expanded="true" />
+            <element signature="e#38609#38610#0" expanded="true" />
+            <element signature="e#46310#46311#0" expanded="true" />
+            <element signature="e#46342#46343#0" expanded="true" />
+            <element signature="e#46915#46916#0" expanded="true" />
+            <element signature="e#46944#46945#0" expanded="true" />
+            <element signature="e#46971#46972#0" expanded="true" />
+            <element signature="e#46995#46996#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Referee.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="231" column="33" lean-forward="true" selection-start-line="231" selection-start-column="33" selection-end-line="231" selection-end-column="33" />
+        <state relative-caret-position="196">
+          <caret line="200" column="16" lean-forward="true" selection-start-line="200" selection-start-column="16" selection-end-line="200" selection-end-column="16" />
           <folding>
+            <element signature="e#1085#1086#0" expanded="true" />
+            <element signature="e#1159#1160#0" expanded="true" />
+            <element signature="e#1357#1358#0" expanded="true" />
+            <element signature="e#1435#1436#0" expanded="true" />
             <element signature="e#2393#2394#0" expanded="true" />
             <element signature="e#2422#2423#0" expanded="true" />
             <element signature="e#2457#2458#0" expanded="true" />
@@ -543,32 +691,54 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/BoardSquare.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="538">
-          <caret line="556" column="5" selection-start-line="556" selection-start-column="5" selection-end-line="556" selection-end-column="5" />
+        <state relative-caret-position="231">
+          <caret line="134" column="7" lean-forward="true" selection-start-line="134" selection-start-column="7" selection-end-line="134" selection-end-column="7" />
           <folding>
-            <element signature="e#2869#2870#0" expanded="true" />
-            <element signature="e#2927#2928#0" expanded="true" />
-            <element signature="e#3048#3049#0" expanded="true" />
-            <element signature="e#3080#3081#0" expanded="true" />
+            <element signature="e#1876#1877#0" expanded="true" />
+            <element signature="e#1904#1905#0" expanded="true" />
+            <element signature="e#2067#2068#0" expanded="true" />
+            <element signature="e#2097#2098#0" expanded="true" />
+            <element signature="e#2222#2223#0" expanded="true" />
+            <element signature="e#2241#2242#0" expanded="true" />
+            <element signature="e#2368#2369#0" expanded="true" />
+            <element signature="e#2387#2388#0" expanded="true" />
+            <element signature="e#2512#2513#0" expanded="true" />
+            <element signature="e#2531#2532#0" expanded="true" />
+            <element signature="e#2658#2659#0" expanded="true" />
+            <element signature="e#2677#2678#0" expanded="true" />
+            <element signature="e#2806#2807#0" expanded="true" />
+            <element signature="e#2829#2830#0" expanded="true" />
+            <element signature="e#5765#5766#0" expanded="true" />
+            <element signature="e#5782#5783#0" expanded="true" />
+            <element signature="e#6097#6098#0" expanded="true" />
+            <element signature="e#6118#6119#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/PlayerNum.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3863">
-          <caret line="1157" column="26" selection-start-line="1157" selection-start-column="26" selection-end-line="1157" selection-end-column="26" />
+        <state relative-caret-position="414">
+          <caret line="1005" column="35" lean-forward="true" selection-start-line="1005" selection-start-column="35" selection-end-line="1005" selection-end-column="35" />
           <folding>
             <element signature="e#529#587#1" expanded="true" />
-            <element signature="e#3198#3225#1" expanded="true" />
             <element signature="e#4526#4527#0" expanded="true" />
             <element signature="e#4559#4560#0" expanded="true" />
             <element signature="e#4587#4588#0" expanded="true" />
             <element signature="e#4607#4608#0" expanded="true" />
             <element signature="e#17280#17281#0" expanded="true" />
             <element signature="e#17297#17298#0" expanded="true" />
+            <element signature="e#18696#18697#0" expanded="true" />
+            <element signature="e#18717#18718#0" expanded="true" />
             <element signature="e#23436#23437#0" expanded="true" />
             <element signature="e#23459#23460#0" expanded="true" />
             <element signature="e#29684#29685#0" expanded="true" />
@@ -581,9 +751,36 @@
             <element signature="e#47669#47670#0" expanded="true" />
             <element signature="e#48127#48161#0" />
             <element signature="e#49046#49078#0" />
+            <element signature="e#50315#50316#0" expanded="true" />
+            <element signature="e#50341#50342#0" expanded="true" />
+            <element signature="e#49194#49195#0" expanded="true" />
+            <element signature="e#49224#49225#0" expanded="true" />
             <element signature="e#52392#52393#0" expanded="true" />
             <element signature="e#52411#52412#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="335">
+          <caret line="249" column="55" lean-forward="true" selection-start-line="249" selection-start-column="55" selection-end-line="249" selection-end-column="55" />
+          <folding>
+            <element signature="e#1805#1806#0" expanded="true" />
+            <element signature="e#1824#1825#0" expanded="true" />
+            <element signature="e#26867#26868#0" expanded="true" />
+            <element signature="e#26894#26895#0" expanded="true" />
+            <element signature="e#26926#26927#0" expanded="true" />
+            <element signature="e#26951#26952#0" expanded="true" />
+            <marker date="1534369522000" expanded="false" signature="2814:3601" ph="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="28" column="94" selection-start-line="28" selection-start-column="94" selection-end-line="28" selection-end-column="94" />
         </state>
       </provider>
     </entry>

@@ -6,7 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
-public class Referee {
+class Referee {
 	private ScrabbleGame _scrabbleGame;
 	private Playable _playerOne;
 	private Playable _playerTwo;
@@ -21,70 +21,50 @@ public class Referee {
 
 	Referee(ScrabbleGame scrabbleGame, Playable playerOne, Playable playerTwo) {
 		_scrabbleGame = scrabbleGame;
+
 		_playerOne = playerOne;
 		_playerTwo = playerTwo;
 		_currentPlayer = _playerTwo;
+
 		_thinking = false;
-		_moveInt = 0;
 		_firstMoveMade = false;
+
+		_moveInt = 0;
 		_wordsPlayed1 = 0;
 		_wordsPlayed2 = 0;
+
 		_playerOneScore = 0;
 		_playerTwoScore = 0;
+
 		this.nextMove();
 	}
 
 	void incrementWordsPlayedBy(int num) {
 		if (_currentPlayer == _playerOne) {
-			_wordsPlayed1 = _wordsPlayed1 + num;
-		} else if (_currentPlayer == _playerTwo) {
-			_wordsPlayed2 = _wordsPlayed2 + num;
+			_wordsPlayed1 += num;
+		} else {
+			_wordsPlayed2 +=  num;
 		}
-
 	}
 
 	int getNumWordsPlayed() {
-		if (_currentPlayer == _playerOne) {
-			return _wordsPlayed1;
-		} else {
-			return _wordsPlayed2;
-		}
+		return _currentPlayer == _playerOne ? _wordsPlayed1 : _wordsPlayed2;
 	}
 
 	void addToScore(int wordValue) {
 		if (_currentPlayer == _playerOne) {
-			_playerOneScore = _playerOneScore + wordValue;
+			_playerOneScore += wordValue;
 		} else {
-			_playerTwoScore = _playerTwoScore + wordValue;
+			_playerTwoScore += wordValue;
 		}
 	}
 
-	public int getPlayerScore() {
-		if (_currentPlayer == _playerOne) {
-			return _playerOneScore;
-		} else {
-			return _playerTwoScore;
-		}
-	}
-	
 	private boolean currentRackIsEmpty() {
-		return _currentPlayer. == _playerOne
-		if (_currentPlayer == _playerOne && _scrabbleGame.getRackOneSize() == 0) {
-			return true;
-		} else if (_currentPlayer == _playerTwo && _scrabbleGame.getRackTwoSize() == 0) {
-			return true;
-		}
-		return false;
+		return _scrabbleGame.getRackSize(_currentPlayer.getPlayerNumber()) == 0;
 	}
 	
 	ArrayList<Tile> getCurrentPlayerRack() {
-		if (_currentPlayer == _playerOne) {
-			return _scrabbleGame.getPlayerOneRack();
-		} else if (_currentPlayer == _playerTwo) {
-			return _scrabbleGame.getPlayerTwoRack();
-		} else {
-			return null;
-		}
+		return _currentPlayer == _playerOne ? _scrabbleGame.getPlayerOneRack() : _scrabbleGame.getPlayerTwoRack();
 	}
 	
 	private Winner checkWinner() {
@@ -121,54 +101,50 @@ public class Referee {
 	}
 	
 	private void processAdditives() {
-		ArrayList<Tile> rack = null;
-		rack = _scrabbleGame.getPlayerTwoRack();
+		ArrayList<Tile> rack = _scrabbleGame.getPlayerTwoRack();
 		if (rack.size() > 0) {
 			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("ADDED");
+			for (Tile thisTile : rack) {
+				sum += thisTile.getValue();
+				thisTile.playFlash(WordAddition.Success);
 			}
-			_playerOneScore = _playerOneScore + sum;
+			_playerOneScore += sum;
 		}
 		rack = _scrabbleGame.getPlayerOneRack();
 		if (rack.size() > 0) {
 			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("ADDED");
+			for (Tile thisTile : rack) {
+				sum += thisTile.getValue();
+				thisTile.playFlash(WordAddition.Success);
 			}
-			_playerTwoScore = _playerTwoScore + sum;
+			_playerTwoScore += sum;
 		}
+
 		_scrabbleGame.getOrganizer().updateScore();
+
 		PauseTransition subs = new PauseTransition(Duration.seconds(0.8));
 		subs.setOnFinished(new SubsHandler());
 		subs.play();
 	}
 	
 	private void processSubtractives() {
-		ArrayList<Tile> rack = null;
-		rack = _scrabbleGame.getPlayerOneRack();
+		ArrayList<Tile> rack = _scrabbleGame.getPlayerOneRack();
 		if (rack.size() > 0) {
 			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("FAILED");
+			for (Tile thisTile : rack) {
+				sum += thisTile.getValue();
+				thisTile.playFlash(WordAddition.Failure);
 			}
-			_playerOneScore = _playerOneScore - sum;
+			_playerOneScore -= sum;
 		}
 		rack = _scrabbleGame.getPlayerTwoRack();
 		if (rack.size() > 0) {
 			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
+			for (Tile thisTile : rack) {
 				sum = sum + thisTile.getValue();
-				thisTile.playFlash("FAILED");
+				thisTile.playFlash(WordAddition.Failure);
 			}
-			_playerTwoScore = _playerTwoScore - sum;
+			_playerTwoScore -= sum;
 		}
 		_scrabbleGame.getOrganizer().updateScore();
 		PauseTransition end = new PauseTransition(Duration.seconds(0.8));
@@ -188,53 +164,41 @@ public class Referee {
 
 	void nextMove() {
 		boolean gameOver = false;
+
 		_scrabbleGame.updateAlreadyPlayed();
 		_scrabbleGame.resetEnterInt();
-		System.out.printf("There are %s tiles on the board\n", _scrabbleGame.getTilesOnBoard().size());
+
 		if (_scrabbleGame.tileBagIsEmpty() && this.currentRackIsEmpty()) {
 			_scrabbleGame.pauseGamePlay();
 			_thinking = false;
 			_scrabbleGame.getOrganizer().displayScoreLabels();
-			_scrabbleGame.shiftTiles("PLAYER ONE");
-			_scrabbleGame.shiftTiles("PLAYER TWO");
-			if (_currentPlayer == _playerOne) {
-				_scrabbleGame.fadeRacks(2, "IN");
-			} else if (_currentPlayer == _playerTwo) {
-				_scrabbleGame.fadeRacks(1, "IN");
-			}
+			_scrabbleGame.shiftTiles(PlayerNum.One);
+			_scrabbleGame.shiftTiles(PlayerNum.Two);
+
+			_scrabbleGame.fadeRacks(_currentPlayer == _playerOne ? PlayerNum.Two : PlayerNum.One, Direction.In);
+
 			this.processAdditives();
-			System.out.println("GAME OVER!!!!");
 			gameOver = true;
 		}
 
 		if (gameOver) return;
 
-		_moveInt = _moveInt + 1;
-		if (_moveInt == 1 || _moveInt == 2) {
-			_scrabbleGame.rotateBag();
-		}
-		_scrabbleGame.setEnterable(true);
-		if (_currentPlayer == _playerOne) {
-			_scrabbleGame.fadeRacks(2, "IN");
-			if (_moveInt > 1) {
-				_scrabbleGame.fadeRacks(1, "OUT");
-			}
-			_currentPlayer = _playerTwo;
-			_scrabbleGame.shiftTiles("PLAYER TWO");
-			_scrabbleGame.manageDraw(PlayerNum.Two);
-		} else if (_currentPlayer == _playerTwo) {
-			_scrabbleGame.fadeRacks(1, "IN");
-			if (_moveInt > 1) {
-				_scrabbleGame.fadeRacks(2, "OUT");
-			}
-			_currentPlayer = _playerOne;
-			_scrabbleGame.shiftTiles("PLAYER ONE");
-			_scrabbleGame.manageDraw(PlayerNum.One);
-		}
-		if (_currentPlayer.getPlayerType() == "HUMAN") {
+		_moveInt += 1;
+		if (_moveInt == 1 || _moveInt == 2) _scrabbleGame.rotateBag();
+
+		_scrabbleGame.DeclareEnterable();
+
+		boolean isPlayerOne = _currentPlayer == _playerOne;
+		_scrabbleGame.fadeRacks(isPlayerOne ? PlayerNum.Two : PlayerNum.One, Direction.In);
+		if (_moveInt > 1) _scrabbleGame.fadeRacks(isPlayerOne ? PlayerNum.One : PlayerNum.Two, Direction.Out);
+		_currentPlayer = isPlayerOne ? _playerTwo : _playerOne;
+		_scrabbleGame.shiftTiles(isPlayerOne ? PlayerNum.Two : PlayerNum.One);
+		_scrabbleGame.manageDraw(isPlayerOne ? PlayerNum.Two : PlayerNum.One);
+
+		if (_currentPlayer.isHuman()) {
 			_thinking = false;
 			_currentPlayer.makeMove();
-		} else if (_currentPlayer.getPlayerType() == "COMPUTER") {
+		} else {
 			_thinking = true;
 			_scrabbleGame.aiSequence(1, null);
 			PauseTransition delayNextTurn = new PauseTransition(Duration.seconds(0.7 * 7));

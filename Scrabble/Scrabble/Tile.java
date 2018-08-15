@@ -29,7 +29,7 @@ public class Tile {
 	private ScrabbleGame _scrabbleGame;
 	private Word _newestWord;
 	private Boolean _partOfNewestWord;
-	private String _tileAffiliation;
+	private PlayerNum _tileAffiliation;
 	private Playable _currentPlayer;
 	private Boolean _isAddedToBoard;
 	private ImageView _checkViewer;
@@ -687,7 +687,7 @@ public class Tile {
 		_tileViewer.setEffect(_pieceShadow);
 	}
 
-	void add(Pane boardPane, double x, double y, ScrabbleGame thisGame, String tileAffiliation) {
+	void add(Pane boardPane, double x, double y, ScrabbleGame thisGame, PlayerNum tileAffiliation) {
 		_x = (int) x;
 		_y = (int) y;
 		_scrabbleGame = thisGame;
