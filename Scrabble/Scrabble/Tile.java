@@ -46,7 +46,7 @@ public class Tile {
 	private DropShadow _pieceShadow;
 	private ArrayList<Tile> _tilesOnBoard;
 
-	public Tile(int letter) {
+	Tile(int letter) {
 		_tileViewer = new ImageView();
 		_tileViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
 		_tileViewer.setPreserveRatio(true);
@@ -216,14 +216,14 @@ public class Tile {
 		_letter = letter;
 	}
 	
-	public void fadeOut() {
+	void fadeOut() {
 		FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), _tileViewer);
 		fadeOut.setFromValue(1.0);
 		fadeOut.setToValue(0.0);
 		fadeOut.play();
 	}
 
-	public void addRoot() {
+	private void addRoot() {
 		_root = _scrabbleGame.getRoot();
 	}
 
@@ -235,31 +235,31 @@ public class Tile {
 		_isFirstLetter = status;
 	}
 
-	public void isAddedToBoard(Boolean status) {
+	void isAddedToBoard(Boolean status) {
 		_isAddedToBoard = status;
 	}
 
-	public Boolean isAddedToBoard() {
+	Boolean isAddedToBoard() {
 		return _isAddedToBoard;
 	}
 
-	public void setIsPartOfNewestWord(Boolean status) {
+	void setIsPartOfNewestWord(Boolean status) {
 		_partOfNewestWord = status;
 	}
 
-	public void setIsOnBoard(Boolean status) {
+	void setIsOnBoard(Boolean status) {
 		_isOnBoard = status;
 	}
 
-	public double getCenterX() {
+	private double getCenterX() {
 		return _tileViewer.getLayoutX() + _tileViewer.getFitWidth() / 2;
 	}
 
-	public double getCenterY() {
+	private double getCenterY() {
 		return _tileViewer.getLayoutY() + _tileViewer.getFitWidth() / 2;
 	}
 
-	public void setUpDraggable() {
+	private void setUpDraggable() {
 		// _tileViewer.addEventHandler(MouseEvent.MOUSE_DRAGGED, new DragHandler());
 		// _draggableTile.getChildren().add(_tileViewer);
 		_tileViewer.setOnMousePressed(this.pressMouse());
@@ -267,7 +267,7 @@ public class Tile {
 		_tileViewer.setOnMouseReleased(this.releaseMouse());
 	}
 
-	public Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
+	private Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
 		Boolean result = false;
 		if (check >= lowerBounds && check <= upperBounds && check2 >= lowerBounds && check2 <= upperBounds) {
 			result = true;
@@ -275,12 +275,12 @@ public class Tile {
 		return result;
 	}
 
-	public void toFront() {
+	private void toFront() {
 		_boardPane.getChildren().remove(_tileViewer);
 		_boardPane.getChildren().add(_tileViewer);
 	}
 
-	public Boolean isDraggable() {
+	private Boolean isDraggable() {
 		if (!_scrabbleGame.gameIsPlaying()) {
 			return false;
 		} else if (_scrabbleGame.getReferee().isThinking()) {
@@ -355,7 +355,7 @@ public class Tile {
 		boardArrayList.add(this);
 	}
 
-	public void reset() {
+	void reset() {
 		_tileViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 		_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 		_xIndex = -1;
@@ -392,7 +392,7 @@ public class Tile {
 		return dragHandler;
 	}
 
-	public void checkOutOfBoard() {
+	private void checkOutOfBoard() {
 		Boolean status = true;
 		double centerX = this.getCenterX();
 		double centerY = this.getCenterY();
@@ -421,7 +421,7 @@ public class Tile {
 		}
 	}
 
-	public void checkColumn(int id) {
+	private void checkColumn(int id) {
 		int xMin = 0;
 		int xMax = 0;
 		switch (id) {
@@ -499,7 +499,7 @@ public class Tile {
 		}
 	}
 
-	public void checkRow(int id) {
+	private void checkRow(int id) {
 		int yMin = 0;
 		int yMax = 0;
 		switch (id) {
@@ -665,16 +665,16 @@ public class Tile {
 		return releaseHandler;
 	}
 
-	public void setToOpaque() {
+	void setToOpaque() {
 		_tileViewer.setOpacity(1.0);
 	}
 
-	public void refreshPlayerInfo() {
-		_currentPlayer = _scrabbleGame.getReferee().getCurrentPlayer();
+	private void refreshPlayerInfo() {
+		_currentPlayer = _scrabbleGame.getReferee().getCurrentPlayerInstance();
 		_newestWord = _currentPlayer.getNewestWord();
 	}
 
-	public void addShadow() {
+	private void addShadow() {
 		_pieceShadow = new DropShadow();
 		_pieceShadow.setRadius(120);
 		_pieceShadow.setOffsetX(4);
@@ -687,7 +687,7 @@ public class Tile {
 		_tileViewer.setEffect(_pieceShadow);
 	}
 
-	public void add(Pane boardPane, double x, double y, ScrabbleGame thisGame, String tileAffiliation) {
+	void add(Pane boardPane, double x, double y, ScrabbleGame thisGame, String tileAffiliation) {
 		_x = (int) x;
 		_y = (int) y;
 		_scrabbleGame = thisGame;
@@ -705,7 +705,7 @@ public class Tile {
 		return _tileAffiliation;
 	}
 
-	public void placeAtSquare(int x, int y) {
+	void placeAtSquare(int x, int y) {
 		_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 		if (this.isBetween(0, x, y, 15)) {
 			_tileViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
@@ -725,7 +725,7 @@ public class Tile {
 		}
 	}
 
-	public void setUpFlash() {
+	private void setUpFlash() {
 		_checkViewer = new ImageView(new Image("Images/Interaction Feedback/greencheck.png"));
 		_checkViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
 		_checkViewer.setLayoutX(Constants.GRID_FACTOR * 5);
@@ -778,26 +778,31 @@ public class Tile {
 		_partialFlash.setOnFinished(new RemoveIconsHandler("PARTIAL"));
 	}
 
-	public void playFlash(String id) {
-		if (id == "ADDED" && _flashable == true) {
-			_root.getChildren().add(_checkViewer);
-			_addedFlash.play();
-			_flashable = false;
-		} else if (id == "FAILED" && _flashable == true) {
-			_root.getChildren().add(_xViewer);
-			_failedFlash.play();
-			_flashable = false;
-		} else if (id == "PARTIAL" && _flashable == true) {
-			_root.getChildren().add(_minusViewer);
-			_partialFlash.play();
-			_flashable = false;
-		}
+	void playFlash(WordAddition outcome) {
+	    if (!_flashable) return;
+
+	    switch (outcome) {
+            case Success:
+                _root.getChildren().add(_checkViewer);
+                _addedFlash.play();
+                break;
+            case Partial:
+                _root.getChildren().add(_minusViewer);
+                _partialFlash.play();
+                break;
+            case Failure:
+                _root.getChildren().add(_xViewer);
+                _failedFlash.play();
+                break;
+        }
+
+        _flashable = false;
 	}
 
 	private class RemoveIconsHandler implements EventHandler<ActionEvent> {
 		private String _id;
 
-		public RemoveIconsHandler(String id) {
+		RemoveIconsHandler(String id) {
 			_id = id;
 		}
 
@@ -818,7 +823,7 @@ public class Tile {
 
 	}
 
-	public void setLoc(int x, int y) {
+	void setLoc(int x, int y) {
 		_x = x;
 		_y = y;
 		_tileViewer.setLayoutX(x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
@@ -833,11 +838,11 @@ public class Tile {
 		_yIndex = -1;
 	}
 	
-	public ImageView getCheckViewer() {
+	ImageView getCheckViewer() {
 		return _checkViewer;
 	}
 	
-	public void setCheckLoc(double x, double y) {
+	void setCheckLoc(double x, double y) {
 		_checkViewer.setLayoutX(x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 		_checkViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 	}
@@ -846,35 +851,35 @@ public class Tile {
 		return (int) ((_tileViewer.getLayoutX() - Constants.TILE_PADDING) / Constants.GRID_FACTOR);
 	}
 
-	public int getY() {
+	int getY() {
 		return (int) ((_tileViewer.getLayoutY() - Constants.TILE_PADDING) / Constants.GRID_FACTOR);
 	}
 
-	public int getXIndex() {
+	int getXIndex() {
 		return _xIndex;
 	}
 
-	public int getYIndex() {
+	int getYIndex() {
 		return _yIndex;
 	}
 
-	public ImageView getTileViewer() {
+	ImageView getTileViewer() {
 		return _tileViewer;
 	}
 
-	public int getValue() {
+	int getValue() {
 		return _value;
 	}
 
-	public void hide() {
+	void hide() {
 		_tileViewer.setOpacity(0);
 	}
 
-	public String getLetter() {
+	String getLetter() {
 		return _letter;
 	}
 
-	public void stopOverlapFlash() {
+	void stopOverlapFlash() {
 		_overlapFlash.stop();
 		_overlapScale.stop();
 		_tileViewer.setScaleX(1);
@@ -882,11 +887,11 @@ public class Tile {
 		_tileViewer.setOpacity(1.0);
 	}
 
-	public void resetShadow() {
+	void resetShadow() {
 		_tileViewer.setEffect(_pieceShadow);
 	}
 
-	public void moveDown() {
+	void moveDown() {
 		if (_xIndex == -1 && _yIndex == -1) {
 			_y = _y + 1;
 			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
@@ -896,7 +901,7 @@ public class Tile {
 		}
 	}
 	
-	public void moveUp() {
+	void moveUp() {
 		if (_xIndex == -1 && _yIndex == -1) {
 			_y = _y - 1;
 			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
@@ -906,7 +911,7 @@ public class Tile {
 		}
 	}
 	
-	public boolean isOnBoard() {
+	boolean isOnBoard() {
 		return _isOnBoard;
 	}
 

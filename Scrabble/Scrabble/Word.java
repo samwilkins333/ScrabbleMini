@@ -17,9 +17,8 @@ public class Word {
 	private ArrayList<Word> _horizontalCrosses;
 	private ArrayList<Word> _verticalCrosses;
 	private ArrayList<Word> _allCrosses;
-//	private Boolean _isHumanGenerated;
 	private ScrabbleGame _scrabbleGame;
-	private String _playerNumber;
+	private PlayerNum _playerNumber;
 	private String _orientation;
 	private int _firstLetterX;
 	private int _firstLetterY;
@@ -27,7 +26,7 @@ public class Word {
 	private boolean _prefixExtendedStatus;
 	private boolean _suffixExtendedStatus;
 
-	public Word(String letters, String newBoardLetters, int value, int originalValue, String orientation, int firstLetterX, int firstLetterY, boolean prefixExtendedStatus, boolean suffixExtendedStatus) {
+	Word(String letters, String newBoardLetters, int value, int originalValue, String orientation, int firstLetterX, int firstLetterY, boolean prefixExtendedStatus, boolean suffixExtendedStatus) {
 		_letters = letters;
 		_newBoardLetters = newBoardLetters;
 		_value = value;
@@ -50,7 +49,7 @@ public class Word {
 		_tiles = new ArrayList<Tile>();
 	}
 	
-	public Word(String letters, int value, int firstLetterX, int firstLetterY, String orientation) {
+	Word(String letters, int value, int firstLetterX, int firstLetterY, String orientation) {
 		_letters = letters;
 		_value = value;
 		_originalValue = value;
@@ -60,14 +59,13 @@ public class Word {
 		_orientation = orientation;
 	}
 	
-	public void addScrabbleGame(ScrabbleGame scrabbleGame) {
+	void addScrabbleGame(ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 	}
 	
 	public Word(String letters, int value) {
 		_letters = letters;
 		_value = value;
-//		_isHumanGenerated = false;
 	}
 	
 	public boolean isPrefixExtended() {
@@ -90,26 +88,26 @@ public class Word {
 		return _orientation;
 	}
 	
-	public String getNewBoardLetters() {
+	String getNewBoardLetters() {
 		return _newBoardLetters;
 	}
 	
-	public int getOriginalValue() {
+	int getOriginalValue() {
 		return _originalValue;
 	}
 	
-	public void printInfo() {
+	void printInfo() {
 		System.out.printf("Oriented %s at %s, %s, %s yields a score of %s\n", _orientation, _firstLetterX, _firstLetterY, _letters, _value);
 	}
 
-	public Word(ScrabbleGame scrabbleGame, String playerNumber) {
+	Word(ScrabbleGame scrabbleGame, PlayerNum playerNumber) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 		_tiles = new ArrayList<Tile>();
 //		_isHumanGenerated = true;
 	}
 	
-	public Word(ScrabbleGame scrabbleGame) {
+	private Word(ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_tiles = new ArrayList<Tile>();
 	}
@@ -118,11 +116,11 @@ public class Word {
 
 	}
 
-	public void addTiles(ArrayList<Tile> tiles) {
+	void addTiles(ArrayList<Tile> tiles) {
 		_tiles.addAll(tiles);
 	}
 	
-	public void addKernelTiles(ArrayList<Tile> kernelTiles) {
+	void addKernelTiles(ArrayList<Tile> kernelTiles) {
 		_kernelTiles.addAll(kernelTiles);
 	}
 	
@@ -130,7 +128,7 @@ public class Word {
 		_adjacentTiles.addAll(kernelTiles);
 	}
 
-	public Boolean containsATileAt(Tile tile, int x, int y) {
+	Boolean containsATileAt(Tile tile, int x, int y) {
 		for (int i = 0; i < _tiles.size(); i++) {
 			Tile thisTile = _tiles.get(i);
 			if (thisTile != tile && thisTile.getXIndex() == x && thisTile.getYIndex() == y) {
@@ -150,7 +148,7 @@ public class Word {
 		return null;
 	}
 
-	public Boolean containsOnlyAddedTiles() {
+	Boolean containsOnlyAddedTiles() {
 		for (int i = 0; i < _tiles.size(); i++) {
 			Tile thisTile = _tiles.get(i);
 			if (thisTile.isAddedToBoard() == false) {
@@ -160,8 +158,8 @@ public class Word {
 		return true;
 	}
 
-	public Boolean isConnected() {
-		if (_scrabbleGame.getReferee().firstMoveMade() == false) {
+	private Boolean isConnected() {
+		if (_scrabbleGame.getReferee().isFirstMoveMade() == false) {
 			return true;
 		} else {
 			Tile[][] tileArray = _scrabbleGame.getTileArray();
@@ -186,7 +184,7 @@ public class Word {
 		}
 	}
 
-	public void checkAddedTiles() {
+	void checkAddedTiles() {
 		ArrayList<Tile> temp = new ArrayList<Tile>();
 		ArrayList<Tile> tempVert = new ArrayList<Tile>();
 		ArrayList<Tile> tempHoriz = new ArrayList<Tile>();
@@ -240,7 +238,7 @@ public class Word {
 		this.addCrosses();
 	}
 	
-	public void addCrosses() {
+	private void addCrosses() {
 		//System.out.println("199" + _letters);
 		_horizontalCrosses = new ArrayList<Word>();
 		_verticalCrosses = new ArrayList<Word>();
@@ -285,30 +283,24 @@ public class Word {
 		_allCrosses.addAll(_horizontalCrosses);
 		_allCrosses.addAll(_verticalCrosses);
 		//System.out.println("242" + _letters);
-		if (_scrabbleGame.getReferee().getCurrentPlayer().getPlayerType() == "HUMAN") {
+		if (_scrabbleGame.getReferee().getCurrentPlayerInstance().getPlayerType() == "HUMAN") {
 			this.checkValidCrosses();
 		}
 		//System.out.println("244" + _letters);
 	}
 	
-	public ArrayList<Word> getAllCrosses() {
+	ArrayList<Word> getAllCrosses() {
 		return _allCrosses;
 	}
 
-	public void playFlashes(String id) {
-		for (int i = 0; i < _tiles.size(); i++) {
-			_tiles.get(i).playFlash(id);
-		}
-		if (_kernelTiles != null && _kernelTiles.size() > 0) {
-			for (int i = 0; i < _kernelTiles.size(); i++) {
-				_kernelTiles.get(i).playFlash(id);
-			}
-		}
-		if (_adjacentTiles != null && _adjacentTiles.size() > 0) {
-			for (int i = 0; i < _adjacentTiles.size(); i++) {
-				_adjacentTiles.get(i).playFlash(id);
-			}
-		}
+	void playFlashes(WordAddition outcome) {
+		for (Tile _tile : _tiles) _tile.playFlash(outcome);
+
+		if (_kernelTiles != null && _kernelTiles.size() > 0)
+			for (Tile _kernelTile : _kernelTiles) _kernelTile.playFlash(outcome);
+
+		if (_adjacentTiles != null && _adjacentTiles.size() > 0)
+			for (Tile _adjacentTile : _adjacentTiles) _adjacentTile.playFlash(outcome);
 	}
 	
 	public int getAdjacentTilesSize() {
@@ -319,7 +311,7 @@ public class Word {
 		return _adjacentTiles;
 	}
 
-	public void printAllTileLists() {
+	void printAllTileLists() {
 		if (this.isAligned()) {
 			this.printTileListContents(_tiles);	
 			for (int i = 0; i < _allCrosses.size(); i++) {
@@ -340,7 +332,7 @@ public class Word {
 		System.out.printf("Value = %s\n", _value);
 	}
 
-	public void printTileListContents(ArrayList<Tile> tileList) {
+	void printTileListContents(ArrayList<Tile> tileList) {
 		if (tileList == _tiles) {
 			System.out.printf("\n_word...");
 		} else {
@@ -376,11 +368,11 @@ public class Word {
 		return null;
 	}
 
-	public void addTileToWord(Tile tile) {
+	void addTileToWord(Tile tile) {
 		_tiles.add(tile);
 	}
 
-	public void readTiles(String id) {
+	private void readTiles(String id) {
 		ArrayList<Tile> temp = new ArrayList<Tile>();
 		int size = _tiles.size();
 		for (int i = 0; i < size; i++) {
@@ -426,7 +418,7 @@ public class Word {
 //		System.out.printf("Word after reading is %s...\n", _letters);
 	}
 
-	public void addToBoard() {
+	void addToBoard() {
 		if (this.isPlayable()) {
 			int numNewTiles = 0;
 			for (int i = 0; i < _tiles.size(); i++) {
@@ -455,11 +447,11 @@ public class Word {
 		}
 	}
 
-	public void checkValidCrosses() {
+	private void checkValidCrosses() {
 		this.isPlayable();
 	}
 	
-	public void compileWordCharacteristics() {
+	private void compileWordCharacteristics() {
 		this.isFormatted();
 		this.isInDictionary();
 		this.firstMoveSatisfied();
@@ -467,7 +459,7 @@ public class Word {
 
 //BOOLEAN HIERARCHY
 
-	public Boolean isPlayable() {
+	Boolean isPlayable() {
 //		System.out.printf("\n\n\n\n");
 		if (_tiles.size() > 0) {
 			if (this.isFormatted() && this.isInDictionary() && this.firstMoveSatisfied() && this.hasValidCrosses()) {
@@ -529,7 +521,7 @@ public class Word {
 		return true;
 	}
 
-	public boolean isInDictionary() {
+	boolean isInDictionary() {
 		if (_scrabbleGame.tilesToDictBool(_tiles)) {
 			//System.out.println("WORD IS IN DICTIONARY");
 			return true;
@@ -537,14 +529,14 @@ public class Word {
 		return false;
 	}
 
-	public boolean isFormatted() {
+	boolean isFormatted() {
 		if (this.isAligned() && this.isCompact() && this.isConnected()) {
 			return true;
 		} 
 		return false;
 	}
 
-	public boolean isAligned() {
+	private boolean isAligned() {
 		if (_tiles.size() <= 1) {
 			return true;
 		} else {
@@ -555,8 +547,8 @@ public class Word {
 		}
 	}
 
-	public boolean isAlignedVertically() {
-		if (_scrabbleGame.getReferee().getCurrentPlayer().getPlayerType() == "COMPUTER") {
+	private boolean isAlignedVertically() {
+		if (_scrabbleGame.getReferee().getCurrentPlayerInstance().getPlayerType() == "COMPUTER") {
 			if (_orientation == "VERTICAL") {
 				return true;
 			} else if (_orientation == "HORIZONTAL")
@@ -579,8 +571,8 @@ public class Word {
 		return true;
 	}
 
-	public boolean isAlignedHorizontally() {
-		if (_scrabbleGame.getReferee().getCurrentPlayer().getPlayerType() == "COMPUTER") {
+	private boolean isAlignedHorizontally() {
+		if (_scrabbleGame.getReferee().getCurrentPlayerInstance().getPlayerType() == "COMPUTER") {
 			if (_orientation == "VERTICAL") {
 				return false;
 			} else if (_orientation == "HORIZONTAL")
@@ -603,7 +595,7 @@ public class Word {
 		return true;
 	}
 
-	public boolean isCompact() {
+	private boolean isCompact() {
 		if (_tiles.size() <= 1) {
 			return true;
 		} else {
@@ -614,7 +606,7 @@ public class Word {
 		}
 	}
 
-	public boolean isCompactVertically() {
+	private boolean isCompactVertically() {
 		this.readTiles("VERTICALLY");
 		Tile firstTile = _tiles.get(0);
 		int firstY = firstTile.getYIndex();
@@ -629,7 +621,7 @@ public class Word {
 		return true;
 	}
 
-	public boolean isCompactHorizontally() {
+	private boolean isCompactHorizontally() {
 		this.readTiles("HORIZONTALLY");
 		Tile firstTile = _tiles.get(0);
 		int firstX = firstTile.getXIndex();
@@ -644,8 +636,8 @@ public class Word {
 		return true;
 	}
 
-	public boolean firstMoveSatisfied() {
-		if (_scrabbleGame.getReferee().firstMoveMade() == false) {
+	private boolean firstMoveSatisfied() {
+		if (_scrabbleGame.getReferee().isFirstMoveMade() == false) {
 			for (int i = 0; i < _tiles.size(); i++) {
 				Tile thisTile = _tiles.get(i);
 				if (thisTile.getXIndex() == 7 && thisTile.getYIndex() == 7) {
@@ -660,7 +652,7 @@ public class Word {
 	
 //
 
-	public void clear() {
+	void clear() {
 		ArrayList<Tile> tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 		for (int i = 0; i < _tiles.size(); i++) {
 			Tile thisTile = _tiles.get(i);
@@ -688,11 +680,11 @@ public class Word {
 		}
 	}
 
-	public void removeTileFromWord(Tile tile) {
+	void removeTileFromWord(Tile tile) {
 		_tiles.remove(tile);
 	}
 
-	public void updateValue(int bonus) {
+	private void updateValue(int bonus) {
 		if (this.isFormatted()) {
 			_value = _scrabbleGame.getWordValue(_tiles) + bonus;
 //			System.out.printf("UV: %s has %s letters and a value of %s...\n", _letters, _tiles.size(), _value);	
@@ -701,7 +693,7 @@ public class Word {
 		}
 	} 
 	
-	public ArrayList<Tile> getTiles() {
+	ArrayList<Tile> getTiles() {
 		return _tiles;
 	}
 
@@ -709,11 +701,11 @@ public class Word {
 		return _tiles.size();
 	}
 
-	public String getLetters() {
+	String getLetters() {
 		return _letters;
 	}
 
-	public int getValue() {
+	int getValue() {
 		return _value;
 	}
 
@@ -725,12 +717,12 @@ public class Word {
 		System.out.printf("Word %s has a value of %s and has %s tiles...\n", _letters, _value, _tiles.size());
 	}
 
-	public void printContents() {
+	private void printContents() {
 		System.out.printf("Current letters = %s\n", _letters);
 		this.printTileListContents(_tiles);
 	}
 
-	public void arrangeTilesOnBoard() {
+	void arrangeTilesOnBoard() {
 		double delay = 0;
 		ArrayList<Tile> tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 		for (int i = 0; i < _tiles.size(); i++) {
@@ -778,7 +770,7 @@ public class Word {
 		private int _y;
 		private Tile _thisTile;
 		
-		public PlaceHandler(int x, int y, Tile thisTile) {
+		PlaceHandler(int x, int y, Tile thisTile) {
 			_x = x;
 			_y = y;
 			_thisTile = thisTile;
@@ -812,7 +804,7 @@ public class Word {
 
 	}
 	
-	public void addToBoardAI() {
+	void addToBoardAI() {
 		this.printContents();
 		for (int i = 0; i < _tiles.size(); i++) {
 			Tile thisTile = _tiles.get(i);

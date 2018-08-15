@@ -12,7 +12,7 @@ import javafx.util.Duration;
 
 public class ComputerPlayer implements Playable {
 	private Word _newestWord;
-	private String _playerNumber;
+	private PlayerNum _playerNumber;
 	private ScrabbleGame _scrabbleGame;
 	private String _rack;
 	private String _kernel;
@@ -34,7 +34,7 @@ public class ComputerPlayer implements Playable {
 	private PauseTransition _delayAIRemoval;
 	private int _numBlankSlots;
 
-	public ComputerPlayer(String playerNumber, ScrabbleGame scrabbleGame) {
+	ComputerPlayer(PlayerNum playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 		_concatInt = 0;
@@ -56,20 +56,18 @@ public class ComputerPlayer implements Playable {
 
 	}
 
-	public String getPlayerType() {
-		return "COMPUTER";
+	public boolean isHuman() {
+		return false;
 	}
 
 	public void makeMove() {
-		boolean firstMoveMade = _scrabbleGame.getReferee().firstMoveMade();
-		if (firstMoveMade == false) {
-			_newestWord = this.getBestFirstWord();
-		} else if (firstMoveMade == true) {
-			_newestWord = this.getBestWord();
-		}
+		boolean firstMoveMade = _scrabbleGame.getReferee().isFirstMoveMade();
+
+		_newestWord = firstMoveMade ? this.getBestWord() : this.getBestFirstWord();
+
 		if (_newestWord != null) {
 			if (firstMoveMade == false) {
-				_scrabbleGame.getReferee().setFirstMoveIsMade();
+				_scrabbleGame.getReferee().DeclareFirstMoveMade();
 			}
 			System.out.println("BEST WORD = " + _newestWord.getLetters());
 			_newestWord.addScrabbleGame(_scrabbleGame);
@@ -101,8 +99,7 @@ public class ComputerPlayer implements Playable {
 		String orientation = "";
 		int value = 0;
 		_scrabbleGame.collectPermutations(_rack, _validStrings, 15, "VALID");
-		for (int i = 0; i < _validStrings.size(); i++) {
-			String thisString = _validStrings.get(i);
+		for (String thisString : _validStrings) {
 			Word bestWord = null;
 			for (int j = 0; j <= thisString.length() - 1; j++) {
 				Word thisWord = null;
@@ -114,7 +111,8 @@ public class ComputerPlayer implements Playable {
 						x = 7 - j;
 						y = 7;
 						break;
-					case 1: case 2:
+					case 1:
+					case 2:
 						orientation = "VERTICAL";
 						x = 7;
 						y = 7 - j;
@@ -167,9 +165,7 @@ public class ComputerPlayer implements Playable {
 					int numPrefixSlots = _scrabbleGame.getNumPrefixSlots(x, y, "HORIZONTAL");
 					_kernel = _scrabbleGame.getKernelFor(x, y, "HORIZONTAL");
 					ArrayList<Tile> kernelTiles = _scrabbleGame.getKernelTiles(x, y, "HORIZONTAL");
-					if (Constants.PRINT_STATUS) {
-						//system.out.printf("%s kernel tiles\n", kernelTiles.size());
-					}
+					//system.out.printf("%s kernel tiles\n", kernelTiles.size());
 					_firstXkernel = x + 1;
 					_firstYkernel = y;
 					_prefixes = new ArrayList<String>();
@@ -805,7 +801,7 @@ public class ComputerPlayer implements Playable {
 	}
 
 	private void sortValidWords() {
-		ArrayList<Word> temp = new ArrayList<Word>();
+		ArrayList<Word> temp = new ArrayList<>();
 		int size = _validWords.size();
 		for (int i = 0; i < size; i++) {
 			Word highestWord = null;
@@ -813,7 +809,7 @@ public class ComputerPlayer implements Playable {
 				Word thisWord = _validWords.get(j);
 				if (j == 0) {
 					highestWord = thisWord;
-				} else if (j > 0) {
+				} else {
 					if (thisWord.getValue() >= highestWord.getValue()) {
 						highestWord = thisWord;
 					}
@@ -826,17 +822,16 @@ public class ComputerPlayer implements Playable {
 	}
 
 	private void printValidWords() {
-		//system.out.println("");
 		if (_validWords.size() == 0) {
-			//system.out.println("NO VALID WORDS CAN BE CREATED");
+			System.out.println("NO VALID WORDS CAN BE CREATED");
 		} else {
-			for (int i = 0; i < _validWords.size(); i++) {
-				_validWords.get(i).printInfo();
+			for (Word _validWord : _validWords) {
+				_validWord.printInfo();
 			}
 		}
 	}
 	
-	public String getPlayerNumber() {
+	public PlayerNum getPlayerNumber() {
 		return _playerNumber;
 	}
 

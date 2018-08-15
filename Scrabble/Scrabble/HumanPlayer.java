@@ -2,19 +2,19 @@ package Scrabble;
 
 public class HumanPlayer implements Playable {
 	private Word _newestWord;
-	private String _playerNumber;
+	private PlayerNum _playerNumber;
 	private ScrabbleGame _scrabbleGame;
 
-	public HumanPlayer(String playerNumber, ScrabbleGame scrabbleGame) {
+	HumanPlayer(PlayerNum playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 	}
 
-	public String getPlayerType() {
-		return "HUMAN";
+	public boolean isHuman() {
+		return true;
 	}
 
-	public String getPlayerNumber() {
+	public PlayerNum getPlayerNumber() {
 		return _playerNumber;
 	}
 

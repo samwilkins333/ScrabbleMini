@@ -41,7 +41,7 @@ public class ScrabbleGame {
 	private ArrayList<Tile> _endGame;
 	private boolean _autoReset;
 
-	public ScrabbleGame(PaneOrganizer organizer, Pane root, Pane boardPane) {
+	ScrabbleGame(PaneOrganizer organizer, Pane root, Pane boardPane) {
 		_organizer = organizer;
 		_root = root;
 		_boardPane = boardPane;
@@ -67,23 +67,23 @@ public class ScrabbleGame {
 		this.setUpDictionary();
 	}
 
-	public Pane getRoot() {
+	Pane getRoot() {
 		return _root;
 	}
 
-	public String getRackAsString() {
-		if (_referee.currentPlayer() == "PLAYER ONE") {
+	String getRackAsString() {
+		if (_referee.getCurrentPlayer() == "PLAYER ONE") {
 			return this.tilesToString(_playerOneRack);
 		} else {
 			return this.tilesToString(_playerTwoRack);
 		}
 	}
 	
-	public boolean tileBagIsEmpty() {
+	boolean tileBagIsEmpty() {
 		return _tileBag.isEmpty();
 	}
 	
-	public void setAutoReset(boolean status) {
+	void setAutoReset(boolean status) {
 		_autoReset = status;
 	}
 
@@ -95,35 +95,31 @@ public class ScrabbleGame {
 		return this.tilesToString(_playerTwoRack);
 	}
 	
-	public Boolean bagEmpty() {
+	Boolean bagEmpty() {
 		return _tileBag.isEmpty();
 	}
 
-	public int getRackOneSize() {
-		return _playerOneRack.size();
+	int getRackSize(PlayerNum num) {
+		return num == PlayerNum.One ? _playerOneRack.size() : _playerTwoRack.size();
 	}
 
-	public int getRackTwoSize() {
-		return _playerTwoRack.size();
-	}
-
-	public void manageDraw(String id) {
-		_organizer.manageDraw(id);
+	void manageDraw(PlayerNum num) {
+		_organizer.manageDraw(num);
 	}
 	
-	public Boolean gameIsPlaying() {
+	Boolean gameIsPlaying() {
 		return _gameIsPlaying;
 	}
 
-	public void startGamePlay() {
+	void startGamePlay() {
 		_gameIsPlaying = true;
 	}
 
-	public void pauseGamePlay() {
+	void pauseGamePlay() {
 		_gameIsPlaying = false;
 	}
 
-	public void fadeRacks(int player, String direction) {
+	void fadeRacks(int player, String direction) {
 		ArrayList<Tile> tileList = null;
 		double from = 0;
 		double to = 0;
@@ -148,7 +144,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void setUpBoard() {
+	private void setUpBoard() {
 		for (int i = 0; i < _boardArray.length; i++) {
 			for (int j = 0; j < _boardArray[1].length; j++) {
 				int xLayout = (i + Constants.ZEROETH_COLUMN_OFFSET) * Constants.GRID_FACTOR;
@@ -161,11 +157,11 @@ public class ScrabbleGame {
 		this.setUpSpecialBoardSquares();
 	}
 
-	public void addReferee(Referee referee) {
+	void addReferee(Referee referee) {
 		_referee = referee;
 	}
 
-	public Referee getReferee() {
+	Referee getReferee() {
 		if (_referee != null) {
 			return _referee;
 		} else {
@@ -173,23 +169,23 @@ public class ScrabbleGame {
 		}
 	}
 
-	public Boolean getIsShiftDown() {
+	Boolean getIsShiftDown() {
 		return _organizer.getIsShiftDown();
 	}
 
-	public void resetRackOne() {
+	void resetRackOne() {
 		for (int i = 0; i < _playerOneRack.size(); i++) {
 			_playerOneRack.get(i).reset();
 		}
 	}
 
-	public void resetRackTwo() {
+	void resetRackTwo() {
 		for (int i = 0; i < _playerTwoRack.size(); i++) {
 			_playerTwoRack.get(i).reset();
 		}
 	}
 
-	public void setUpSpecialBoardSquares() {
+	private void setUpSpecialBoardSquares() {
 
 		// DOUBLE LETTER SCORES (BLUE)
 
@@ -403,13 +399,13 @@ public class ScrabbleGame {
 		this.setUpHovers();
 	}
 
-	public void setUpHovers() {
+	private void setUpHovers() {
 		for (int i = 0; i < _specialSquares.size(); i++) {
 			_specialSquares.get(i).setUpHoverResponse(this);
 		}
 	}
 
-	public void fadeOutOtherSquares(String id) {
+	void fadeOutOtherSquares(String id) {
 		if (_organizer.getDisplayMultipliers() == false) {
 			if (id == "GHOST") {
 				for (int i = 0; i < _specialSquares.size(); i++) {
@@ -443,7 +439,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void addDiamond() {
+	void addDiamond() {
 		if (!_labelPane.getChildren().contains(_diamondViewer)) {
 			_labelPane.getChildren().add(_diamondViewer);
 		}
@@ -453,7 +449,7 @@ public class ScrabbleGame {
 		fadeDiamond.play();
 	}
 
-	public void removeDiamond() {
+	void removeDiamond() {
 		FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _diamondViewer);
 		fadeDiamond.setFromValue(1.0);
 		fadeDiamond.setToValue(0.0);
@@ -471,7 +467,7 @@ public class ScrabbleGame {
 
 	}
 
-	public void fadeInOtherSquares(String id) {
+	void fadeInOtherSquares(String id) {
 		if (_organizer.getDisplayMultipliers() == false) {
 			if (id == "GHOST") {
 				for (int i = 0; i < _specialSquares.size(); i++) {
@@ -509,7 +505,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void setUpTiles() {
+	private void setUpTiles() {
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
@@ -527,51 +523,34 @@ public class ScrabbleGame {
 		// _tileBag.printSize();
 	}
 
-	public void refillRackOne() {
+	void refillRack(PlayerNum num) {
+		ArrayList<Tile> rack = num == PlayerNum.One ? _playerOneRack : _playerTwoRack;
+
 		int i = 0;
-		while (_playerOneRack.size() < 7 && !_tileBag.isEmpty()) {
+		while (rack.size() < 7 && !_tileBag.isEmpty()) {
 			i++;
+
+			// Generate and add new tile
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET,
-					_playerOneRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, "PLAYER ONE");
-			_playerOneRack.add(tile);
+			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET,rack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, num);
+			rack.add(tile);
 			tile.hide();
-			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION),
-					tile.getTileViewer());
+
+			// Fades in each tile
+			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION), tile.getTileViewer());
 			fadeIn.setFromValue(0.0);
 			fadeIn.setToValue(1.0);
 			fadeIn.setAutoReverse(false);
 			fadeIn.setCycleCount(1);
+
+			// Creates a staggered refilling
 			PauseTransition delayFade = new PauseTransition();
 			delayFade.setDuration(Duration.seconds(Constants.DRAW_INTERVAL * i));
 			delayFade.setOnFinished(new PlayFadeHandler(fadeIn));
 			delayFade.play();
 		}
-		if (_tileBag.isEmpty()) {
-			_organizer.removeBag();
-		}
-	}
-	
-	public void refillRackTwo() {
-		int i = 0;
-		while (_playerTwoRack.size() < 7 && _tileBag.isEmpty() != true) {
-			i++;
-			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET,
-					_playerTwoRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, "PLAYER TWO");
-			_playerTwoRack.add(tile);
-			tile.hide();
-			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION),
-					tile.getTileViewer());
-			fadeIn.setFromValue(0.0);
-			fadeIn.setToValue(1.0);
-			fadeIn.setAutoReverse(false);
-			fadeIn.setCycleCount(1);
-			PauseTransition delayFade = new PauseTransition();
-			delayFade.setDuration(Duration.seconds(Constants.DRAW_INTERVAL * i));
-			delayFade.setOnFinished(new PlayFadeHandler(fadeIn));
-			delayFade.play();
-		}
+
+		// If all tiles have been drawn, update GUI
 		if (_tileBag.isEmpty()) {
 			_organizer.removeBag();
 		}
@@ -580,7 +559,7 @@ public class ScrabbleGame {
 	private class PlayFadeHandler implements EventHandler<ActionEvent> {
 		private FadeTransition _fade;
 
-		public PlayFadeHandler(FadeTransition fade) {
+		PlayFadeHandler(FadeTransition fade) {
 			_fade = fade;
 		}
 
@@ -592,7 +571,7 @@ public class ScrabbleGame {
 
 	}
 
-	public void setUpDictionary() {
+	private void setUpDictionary() {
 		InputStream dictionaryText = this.getClass().getResourceAsStream("dictionary.txt");
 		_scanner = new Scanner(dictionaryText);
 		while (_scanner.hasNext()) {
@@ -600,7 +579,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public String tilesToString(ArrayList<Tile> playerRack) {
+	String tilesToString(ArrayList<Tile> playerRack) {
 		String resultant = "";
 		for (int i = 0; i < playerRack.size(); i++) {
 			resultant += playerRack.get(i).getLetter();
@@ -608,7 +587,7 @@ public class ScrabbleGame {
 		return resultant;
 	}
 
-	public Boolean tilesToDictBool(ArrayList<Tile> tiles) {
+	Boolean tilesToDictBool(ArrayList<Tile> tiles) {
 		Boolean status = false;
 		String word = this.tilesToString(tiles);
 		if (_dictionary.contains(word)) {
@@ -617,7 +596,7 @@ public class ScrabbleGame {
 		return status;
 	}
 
-	public void collectPermutations(String word, ArrayList<String> validWords, int permutationCap, String id) {
+	void collectPermutations(String word, ArrayList<String> validWords, int permutationCap, String id) {
 		//_permutations = 0;
 		if (word.length() > 15) {
 			//system.out.println("Word exceeds 15 letters - not equipped to permute");
@@ -764,7 +743,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void collectPrefixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
+	void collectPrefixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
 		//_permutations = 0;
 		for (int i = 0; i < word.length(); i++) {
 			String oneLetter = String.valueOf(word.charAt(i));
@@ -869,7 +848,7 @@ public class ScrabbleGame {
 	}
 
 	
-	public void collectSuffixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
+	void collectSuffixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
 		//_permutations = 0;
 		for (int i = 0; i < word.length(); i++) {
 			String oneLetter = String.valueOf(word.charAt(i));
@@ -973,7 +952,7 @@ public class ScrabbleGame {
 		}
 	}
 	
-	public void conditionalAdd(String word, ArrayList<String> validWords, String id) {
+	private void conditionalAdd(String word, ArrayList<String> validWords, String id) {
 		//_permutations++;
 		if (id == "VALID") {
 			if (_dictionary.contains(word) && !validWords.contains(word)) {
@@ -1007,7 +986,7 @@ public class ScrabbleGame {
 	}
 
 	// *** @AI ***
-	public ArrayList<Tile> transferTilesFromRack(String word, ArrayList<Tile> rack) {
+	ArrayList<Tile> transferTilesFromRack(String word, ArrayList<Tile> rack) {
 		ArrayList<Tile> result = new ArrayList<Tile>();
 		for (int i = 0; i < word.length(); i++) {
 			for (int j = 0; j < rack.size(); j++) {
@@ -1026,15 +1005,15 @@ public class ScrabbleGame {
 		return result;
 	}
 	
-	public PaneOrganizer getOrganizer() {
+	PaneOrganizer getOrganizer() {
 		return _organizer;
 	}
 
-	public void printBagSize() {
+	void printBagSize() {
 		_tileBag.printSize();
 	}
 
-	public int getWordValue(ArrayList<Tile> tiles) {
+	int getWordValue(ArrayList<Tile> tiles) {
 		int isOnADoubleWordScore = 1;
 		int isOnATripleWordScore = 1;
 		int wordValue = 0;
@@ -1080,7 +1059,7 @@ public class ScrabbleGame {
 		return wordValue;
 	}
 
-	public void updateAlreadyPlayed() {
+	void updateAlreadyPlayed() {
 		for (int i = 0; i < _tilesOnBoard.size(); i++) {
 			Tile thisTile = _tilesOnBoard.get(i);
 			int x = thisTile.getXIndex();
@@ -1089,7 +1068,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void addTileToBoardArrayAt(Tile tile, int x, int y) {
+	void addTileToBoardArrayAt(Tile tile, int x, int y) {
 		if (this.isBetween(0, x, y, 14)) {
 			_tileArray[x][y] = tile;
 		} else {
@@ -1097,11 +1076,11 @@ public class ScrabbleGame {
 		}
 	}
 
-	public ArrayList<Tile> getTilesOnBoard() {
+	ArrayList<Tile> getTilesOnBoard() {
 		return _tilesOnBoard;
 	}
 
-	public Boolean boardSquareOccupiedAt(int x, int y) {
+	Boolean boardSquareOccupiedAt(int x, int y) {
 		if (this.isBetween(0, x, y, 14)) {
 			if (_tileArray[x][y] != null) {
 				return true;
@@ -1113,7 +1092,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
+	private Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
 		Boolean result = false;
 		if (check >= lowerBounds && check <= upperBounds && check2 >= lowerBounds && check2 <= upperBounds) {
 			result = true;
@@ -1121,12 +1100,12 @@ public class ScrabbleGame {
 		return result;
 	}
 
-	public Tile getTileFromArrayAt(int x, int y) {
+	Tile getTileFromArrayAt(int x, int y) {
 		Tile selection = _tileArray[x][y];
 		return selection;
 	}
 
-	public Tile[][] getTileArray() {
+	Tile[][] getTileArray() {
 		return _tileArray;
 	}
 
@@ -1182,7 +1161,7 @@ public class ScrabbleGame {
 //		}
 //	}
 	
-	public void aiSequence(int func, String id) {
+	void aiSequence(int func, String id) {
 		switch (func) {
 			case 1:
 				_organizer.fadeInAI();
@@ -1196,7 +1175,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void setEnterable(Boolean status) {
+	void setEnterable(Boolean status) {
 		_organizer.setEnterable(status);
 	}
 
@@ -1206,7 +1185,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void shiftTiles(String id) {
+	void shiftTiles(String id) {
 		if (id == "PLAYER ONE" && _playerOneRack.size() > 0) {
 			for (int i = 0; i < _playerOneRack.size(); i++) {
 				Tile thisTile = _playerOneRack.get(i);
@@ -1220,11 +1199,11 @@ public class ScrabbleGame {
 		}
 	}
 
-	public ArrayList<Tile> getPlayerOneRack() {
+	ArrayList<Tile> getPlayerOneRack() {
 		return _playerOneRack;
 	}
 
-	public ArrayList<Tile> getPlayerTwoRack() {
+	ArrayList<Tile> getPlayerTwoRack() {
 		return _playerTwoRack;
 	}
 
@@ -1250,7 +1229,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void collectAdjacents(String id, Tile thisTile, ArrayList<Tile> tiles) {
+	void collectAdjacents(String id, Tile thisTile, ArrayList<Tile> tiles) {
 		int x = thisTile.getXIndex();
 		int y = thisTile.getYIndex();
 		int i = 1;
@@ -1298,11 +1277,11 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void resetEnterInt() {
+	void resetEnterInt() {
 		_organizer.resetEnterInt();
 	}
 
-	public boolean dictionaryContains(String string) {
+	boolean dictionaryContains(String string) {
 		if (_dictionary.contains(string)) {
 			return true;
 		} else {
@@ -1310,7 +1289,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public int getValueFromString(String validWord, int firstXIndex, int firstYIndex, String id) {
+	int getValueFromString(String validWord, int firstXIndex, int firstYIndex, String id) {
 		int wordValue = 0;
 		int x = 0;
 		int y = 0;
@@ -1347,7 +1326,7 @@ public class ScrabbleGame {
 		return wordValue;
 	}
 	
-	public int getNumPrefixSlots(int x, int y, String direction) {
+	int getNumPrefixSlots(int x, int y, String direction) {
 		if (direction == "VERTICAL") {
 			int numPrefixSlots = 1;
 			int i = 1;
@@ -1369,7 +1348,7 @@ public class ScrabbleGame {
 		}
 	}
 	
-	public int getNumSuffixSlots(int x, int y, String direction) {
+	int getNumSuffixSlots(int x, int y, String direction) {
 		if (direction == "VERTICAL") {
 			if (y > 14) {
 				return 0;
@@ -1397,7 +1376,7 @@ public class ScrabbleGame {
 		}
 	}
 	
-	public ArrayList<Tile> getKernelTiles(int x, int y, String direction) {
+	ArrayList<Tile> getKernelTiles(int x, int y, String direction) {
 		if (direction == "VERTICAL") {
 			ArrayList<Tile> kernelTiles = new ArrayList<Tile>();
 			int i = 1;
@@ -1419,7 +1398,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public String getKernelFor(int x, int y, String direction) {
+	String getKernelFor(int x, int y, String direction) {
 		if (direction == "VERTICAL") {
 			String kernel = "";
 			int i = 1;
@@ -1441,7 +1420,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void mapKernelsForRow(int y, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
+	void mapKernelsForRow(int y, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
 		System.out.printf("Mapping row %s\n", y);
 		HashMap<Integer, String> kernels = new HashMap<Integer, String>();
 		int read = 0;
@@ -1482,7 +1461,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void mapKernelsForColumn(int x, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
+	void mapKernelsForColumn(int x, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
 		System.out.printf("Mapping column %s\n", x);
 		HashMap<Integer, String> kernels = new HashMap<Integer, String>();
 		int read = 0;
@@ -1522,7 +1501,7 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void displayOutcome(String winner) {
+	void displayOutcome(Winner winner) {
 		_organizer.moveHi(winner);
 	}
 	
@@ -1590,7 +1569,7 @@ public class ScrabbleGame {
 		delayPlacement.play();
 	}
 	
-	public void placeTiles() {
+	private void placeTiles() {
 		double delay = 0;
 		for (int i = 0; i < _endGame.size(); i++) {
 			Tile thisTile = _endGame.get(i);
@@ -1609,7 +1588,7 @@ public class ScrabbleGame {
 		private int _y;
 		private Tile _thisTile;
 		
-		public PlaceHandler(int x, int y, Tile thisTile) {
+		PlaceHandler(int x, int y, Tile thisTile) {
 			_x = x;
 			_y = y;
 			_thisTile = thisTile;
@@ -1623,33 +1602,22 @@ public class ScrabbleGame {
 
 	}
 
-	public void rotateBag() {
+	void rotateBag() {
 		_organizer.rotateBag();
 	}
 
-	public boolean getAutoReset() {
+	boolean getAutoReset() {
 		return _autoReset;
 	}
 
-	public void shuffleRack(int id) {
-		ArrayList<Tile> rack = null;
-		switch (id) {
-			case 1:
-				rack = _playerOneRack;
-				break;
-			case 2:
-				rack = _playerTwoRack;
-				break;
-		}
+	void shuffleRack(PlayerNum num) {
+		ArrayList<Tile> rack = num == PlayerNum.One ? _playerOneRack : _playerTwoRack;
 		int size = rack.size();
-		int checkSize = 0;
-		for (int i = 0; i < rack.size(); i++) {
-			if (!rack.get(i).isOnBoard()) {
-				checkSize = checkSize + 1;
-			}
-		}
+
+		int checkSize = (int) rack.stream().filter(aRack -> !aRack.isOnBoard()).count();
+
 		if (checkSize == 7) {
-			ArrayList<Tile> temp = new ArrayList<Tile>();
+			ArrayList<Tile> temp = new ArrayList<>();
 			for (int i = 0; i < size; i++) {
 				Tile firstTile = null;
 				for (int j = 0; j < rack.size(); j++) {
@@ -1664,10 +1632,6 @@ public class ScrabbleGame {
 				}
 				temp.add(firstTile);
 				rack.remove(firstTile);
-//				FadeTransition fade = new FadeTransition(Duration.seconds(0.2), firstTile.getTileViewer());
-//				fade.setFromValue(1.0);
-//				fade.setToValue(0.0);
-//				fade.play();
 			}
 			rack.addAll(temp);
 			for (int i = 0; i < rack.size() - 1; i++) {
@@ -1685,13 +1649,6 @@ public class ScrabbleGame {
 						break;
 				}
 			}
-//			for (int i = 0; i < rack.size(); i++) {
-//				Tile thisTile = rack.get(i);
-//				FadeTransition fade = new FadeTransition(Duration.seconds(0.2), thisTile.getTileViewer());
-//				fade.setFromValue(0.0);
-//				fade.setToValue(1.0);
-//				fade.play();
-//			}
 		}
 	}
 

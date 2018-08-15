@@ -2,9 +2,9 @@ package Scrabble;
 
 public interface Playable {
 
-	public void makeMove();
-	public String getPlayerType();
-	public String getPlayerNumber();
-	public Word getNewestWord();
+	void makeMove();
+	boolean isHuman();
+	PlayerNum getPlayerNumber();
+	Word getNewestWord();
 
 }
