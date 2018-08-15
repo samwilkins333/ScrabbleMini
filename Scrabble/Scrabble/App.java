@@ -22,7 +22,7 @@ public class App extends Application {
 	    stage.setScene(scene);
         stage.setWidth(Constants.SCENE_WIDTH);
         stage.setResizable(false);
-	    stage.setTitle("Mini Scrabble");
+	    stage.setTitle("Scrabble Mini");
 	    stage.show();
     }
 
@@ -31,6 +31,7 @@ public class App extends Application {
      * @param argv
      */
     public static void main(String[] argv) {
+    		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Scrabble Mini");
         launch(argv);
     }
     
