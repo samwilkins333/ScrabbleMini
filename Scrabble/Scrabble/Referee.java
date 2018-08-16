@@ -59,12 +59,8 @@ class Referee {
 		}
 	}
 
-	private boolean currentRackIsEmpty() {
-		return _scrabbleGame.getRackSize(_currentPlayer.getPlayerNumber()) == 0;
-	}
-	
 	ArrayList<Tile> getCurrentPlayerRack() {
-		return _currentPlayer == _playerOne ? _scrabbleGame.getPlayerOneRack() : _scrabbleGame.getPlayerTwoRack();
+		return _scrabbleGame.getPlayerRack(_currentPlayer.getPlayerNumber());
 	}
 	
 	private Winner checkWinner() {
@@ -88,8 +84,8 @@ class Referee {
 
 		@Override
 		public void handle(ActionEvent event) {
-			ArrayList<Tile> rackOne = _scrabbleGame.getPlayerOneRack();
-			ArrayList<Tile> rackTwo = _scrabbleGame.getPlayerTwoRack();
+			ArrayList<Tile> rackOne = _scrabbleGame.getPlayerRack(PlayerNum.One);
+			ArrayList<Tile> rackTwo = _scrabbleGame.getPlayerRack(PlayerNum.Two);
 
 			if (rackOne.size() > 0) for (Tile aRackOne : rackOne) aRackOne.fadeOut();
 			if (rackTwo.size() > 0) for (Tile aRackTwo : rackTwo) aRackTwo.fadeOut();
@@ -101,7 +97,7 @@ class Referee {
 	}
 	
 	private void processAdditives() {
-		ArrayList<Tile> rack = _scrabbleGame.getPlayerTwoRack();
+		ArrayList<Tile> rack = _scrabbleGame.getPlayerRack(PlayerNum.Two);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (Tile thisTile : rack) {
@@ -110,7 +106,7 @@ class Referee {
 			}
 			_playerOneScore += sum;
 		}
-		rack = _scrabbleGame.getPlayerOneRack();
+		rack = _scrabbleGame.getPlayerRack(PlayerNum.One);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (Tile thisTile : rack) {
@@ -128,7 +124,7 @@ class Referee {
 	}
 	
 	private void processSubtractives() {
-		ArrayList<Tile> rack = _scrabbleGame.getPlayerOneRack();
+		ArrayList<Tile> rack = _scrabbleGame.getPlayerRack(PlayerNum.One);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (Tile thisTile : rack) {
@@ -137,7 +133,7 @@ class Referee {
 			}
 			_playerOneScore -= sum;
 		}
-		rack = _scrabbleGame.getPlayerTwoRack();
+		rack = _scrabbleGame.getPlayerRack(PlayerNum.Two);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (Tile thisTile : rack) {
@@ -168,7 +164,8 @@ class Referee {
 		_scrabbleGame.updateAlreadyPlayed();
 		_scrabbleGame.resetEnterInt();
 
-		if (_scrabbleGame.tileBagIsEmpty() && this.currentRackIsEmpty()) {
+		// GAME OVER - Current player has played all tiles and cannot draw any more
+		if (_scrabbleGame.tileBagIsEmpty() && this.getCurrentPlayerRack().isEmpty()) {
 			_scrabbleGame.pauseGamePlay();
 			_thinking = false;
 			_scrabbleGame.getOrganizer().displayScoreLabels();
@@ -183,17 +180,21 @@ class Referee {
 
 		if (gameOver) return;
 
-		_moveInt += 1;
+		_moveInt++;
 		if (_moveInt == 1 || _moveInt == 2) _scrabbleGame.rotateBag();
 
 		_scrabbleGame.DeclareEnterable();
 
 		boolean isPlayerOne = _currentPlayer == _playerOne;
 		_scrabbleGame.fadeRacks(isPlayerOne ? PlayerNum.Two : PlayerNum.One, Direction.In);
+
 		if (_moveInt > 1) _scrabbleGame.fadeRacks(isPlayerOne ? PlayerNum.One : PlayerNum.Two, Direction.Out);
-		_currentPlayer = isPlayerOne ? _playerTwo : _playerOne;
+
 		_scrabbleGame.shiftTiles(isPlayerOne ? PlayerNum.Two : PlayerNum.One);
 		_scrabbleGame.manageDraw(isPlayerOne ? PlayerNum.Two : PlayerNum.One);
+
+		// Actually switch players
+		_currentPlayer = isPlayerOne ? _playerTwo : _playerOne;
 
 		if (_currentPlayer.isHuman()) {
 			_thinking = false;

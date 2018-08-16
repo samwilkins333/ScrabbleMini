@@ -1543,7 +1543,7 @@ class PaneOrganizer {
 
 	void manageDraw(PlayerNum num) {
 		_justFilled = false;
-		if (_scrabbleGame.getRackSize(num) < 7 && num == PlayerNum.One) {
+		if (_scrabbleGame.getPlayerRack(num).size() < 7 && num == PlayerNum.One) {
 			_scrabbleGame.refillRack(num);
 			_justFilled = true;
 		}

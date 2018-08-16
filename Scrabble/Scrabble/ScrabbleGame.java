@@ -82,10 +82,6 @@ class ScrabbleGame {
 		_autoReset = status;
 	}
 
-	int getRackSize(PlayerNum num) {
-		return num == PlayerNum.One ? _playerOneRack.size() : _playerTwoRack.size();
-	}
-
 	void manageDraw(PlayerNum num) {
 		_organizer.manageDraw(num);
 	}
@@ -963,9 +959,7 @@ class ScrabbleGame {
 
 	void updateAlreadyPlayed() {
 		for (Tile thisTile : _tilesOnBoard) {
-			int x = thisTile.getXIndex();
-			int y = thisTile.getYIndex();
-			_boardArray[x][y].setAlreadyPlayed();
+			_boardArray[thisTile.getXIndex()][thisTile.getYIndex()].setAlreadyPlayed();
 		}
 	}
 
@@ -1027,12 +1021,8 @@ class ScrabbleGame {
 		}
 	}
 
-	ArrayList<Tile> getPlayerOneRack() {
-		return _playerOneRack;
-	}
-
-	ArrayList<Tile> getPlayerTwoRack() {
-		return _playerTwoRack;
+	ArrayList<Tile> getPlayerRack(PlayerNum num) {
+		return num == PlayerNum.One ? _playerOneRack : _playerTwoRack;
 	}
 
 	void collectAdjacents(CollectionOrientation orientation, Tile thisTile, ArrayList<Tile> tiles) {
