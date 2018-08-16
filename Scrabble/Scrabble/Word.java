@@ -259,7 +259,7 @@ class Word {
 
 				_scrabbleGame.addTileToBoardArrayAt(thisTile, x, y);
 
-				ArrayList<Tile> rack = _playerNumber == PlayerNum.One ? _scrabbleGame.getPlayerOneRack() : _scrabbleGame.getPlayerTwoRack();
+				ArrayList<Tile> rack = _scrabbleGame.getPlayerRack(_playerNumber);
 				rack.remove(thisTile);
 
 				if (!thisTile.hasBeenPlayed()) numNewTiles++;

@@ -7,36 +7,38 @@ class Constants {
 	
 	static final PlayerType PLAYER_ONE_START_STATE = PlayerType.AI;
 	static final PlayerType PLAYER_TWO_START_STATE = PlayerType.Human;
-	
-	static final HashMap<String, Integer> VALUES;
+
+	static final HashMap<Integer, Alpha> TILE_INFO;
 	static {
-		VALUES = new HashMap<>();
-		VALUES.put("A", 1);
-		VALUES.put("B", 3);
-		VALUES.put("C", 3);
-		VALUES.put("D", 2);
-		VALUES.put("E", 1);
-		VALUES.put("F", 4);
-		VALUES.put("G", 2);
-		VALUES.put("H", 4);
-		VALUES.put("I", 1);
-		VALUES.put("J", 8);
-		VALUES.put("K", 5);
-		VALUES.put("L", 1);
-		VALUES.put("M", 3);
-		VALUES.put("N", 1);
-		VALUES.put("O", 1);
-		VALUES.put("P", 3);
-		VALUES.put("Q", 10);
-		VALUES.put("R", 1);
-		VALUES.put("S", 1);
-		VALUES.put("T", 1);
-		VALUES.put("U", 1);
-		VALUES.put("V", 4);
-		VALUES.put("W", 4);
-		VALUES.put("X", 8);
-		VALUES.put("Y", 4);
-		VALUES.put("Z", 10);
+		TILE_INFO = new HashMap<>();
+
+		TILE_INFO.put(0, new Alpha("BLANK", 2, 0));
+		TILE_INFO.put(1, new Alpha("A", 9, 1));
+		TILE_INFO.put(2, new Alpha("B", 2, 3));
+		TILE_INFO.put(3, new Alpha("C", 2, 3));
+		TILE_INFO.put(4, new Alpha("D", 4, 2));
+		TILE_INFO.put(5, new Alpha("E", 12, 1));
+		TILE_INFO.put(6, new Alpha("F", 2, 4));
+		TILE_INFO.put(7, new Alpha("G", 3, 2));
+		TILE_INFO.put(8, new Alpha("H", 2, 4));
+		TILE_INFO.put(9, new Alpha("I", 9, 1));
+		TILE_INFO.put(10, new Alpha("J", 1, 8));
+		TILE_INFO.put(11, new Alpha("K", 1, 5));
+		TILE_INFO.put(12, new Alpha("L", 4, 1));
+		TILE_INFO.put(13, new Alpha("M", 2, 3));
+		TILE_INFO.put(14, new Alpha("N", 6, 1));
+		TILE_INFO.put(15, new Alpha("O", 8, 1));
+		TILE_INFO.put(16, new Alpha("P", 2, 3));
+		TILE_INFO.put(17, new Alpha("Q", 1, 10));
+		TILE_INFO.put(18, new Alpha("R", 6, 1));
+		TILE_INFO.put(19, new Alpha("S", 4, 1));
+		TILE_INFO.put(20, new Alpha("T", 6, 1));
+		TILE_INFO.put(21, new Alpha("U", 4, 1));
+		TILE_INFO.put(22, new Alpha("V", 2, 4));
+		TILE_INFO.put(23, new Alpha("W", 2, 4));
+		TILE_INFO.put(24, new Alpha("X", 1, 8));
+		TILE_INFO.put(25, new Alpha("Y", 2, 4));
+		TILE_INFO.put(26, new Alpha("Z", 1, 10));
 	}
 	
 	static final int GRID_FACTOR = 42;
