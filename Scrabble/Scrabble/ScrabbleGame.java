@@ -475,7 +475,6 @@ class ScrabbleGame {
 			_playerTwoRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
 		}
-		// _tileBag.printSize();
 	}
 
 	void refillRack(PlayerNum num) {
@@ -1078,7 +1077,7 @@ class ScrabbleGame {
 
 		for (int i = 0; i < validWord.length(); i++) {
 			String currentLetter = String.valueOf(validWord.charAt(i));
-			int letterValue = Constants.VALUES.get(currentLetter);
+			int letterValue = Constants.TILE_INFO.get(currentLetter).getValue();
 
 			boolean horizontal = orientation == WordOrientation.Horizontal;
 			x = horizontal ? firstXIndex + i : firstXIndex;
