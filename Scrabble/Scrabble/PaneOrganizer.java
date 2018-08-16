@@ -1253,12 +1253,14 @@ class PaneOrganizer {
 					}
 					break;
 				case M:
-					if (_displayMultipliers) {
-						_scrabbleGame.addDiamond();
-						_scrabbleGame.fadeInOtherSquares(SquareIdentity.Ghost);
-					} else {
-						_scrabbleGame.removeDiamond();
+					if (!_displayMultipliers) {
 						_scrabbleGame.fadeOutOtherSquares(SquareIdentity.Ghost);
+						_displayMultipliers = true;
+						_scrabbleGame.removeDiamond();
+					} else {
+						_displayMultipliers = false;
+						_scrabbleGame.fadeInOtherSquares(SquareIdentity.Ghost);
+						_scrabbleGame.addDiamond();
 					}
 					break;
 				case Q:
