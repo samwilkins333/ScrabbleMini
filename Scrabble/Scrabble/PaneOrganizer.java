@@ -1144,7 +1144,6 @@ class PaneOrganizer {
 							_playedWords.add(value);
 
 							int wordValue = newestWord.getValue();
-							_referee.addToScore(wordValue);
 
 							// Compute and apply the appropriate offset for value (manual right alignment)
 							int offsetFactor = 1;
@@ -1261,8 +1260,6 @@ class PaneOrganizer {
 						_scrabbleGame.removeDiamond();
 						_scrabbleGame.fadeOutOtherSquares(SquareIdentity.Ghost);
 					}
-
-					_displayMultipliers = !_displayMultipliers;
 					break;
 				case Q:
 					System.exit(0); // Quits game with "Q"

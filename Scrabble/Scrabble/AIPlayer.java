@@ -88,16 +88,18 @@ public class AIPlayer implements Playable {
 		_rack = _scrabbleGame.getRackAsString();
 		_validWords = new ArrayList<>();
 		_validStrings = new ArrayList<>();
+
 		int orientationRand = (int) (Math.random() * 3);
-		WordOrientation orientation = WordOrientation.None;
+		WordOrientation orientation;
+
 		int value;
 		_scrabbleGame.collectPermutations(_rack, _validStrings);
 		for (String thisString : _validStrings) {
 			Word bestWord = null;
 			for (int j = 0; j <= thisString.length() - 1; j++) {
 				Word thisWord;
-				int x = -1;
-				int y = -1;
+				int x;
+				int y;
 				switch (orientationRand) {
 					case 0:
 						orientation = WordOrientation.Horizontal;
@@ -107,6 +109,11 @@ public class AIPlayer implements Playable {
 					// 2 : 1 weighted preference toward horizontal
 					case 1:
 					case 2:
+						orientation = WordOrientation.Horizontal;
+						x = 7;
+						y = 7 - j;
+						break;
+					default:
 						orientation = WordOrientation.Horizontal;
 						x = 7;
 						y = 7 - j;
@@ -124,11 +131,8 @@ public class AIPlayer implements Playable {
 			_validWords.add(bestWord);
 		}
 		this.sortValidWords();
-		if (_validWords.size() > 0) {
-			return this.applyHeuristics();
-		} else {
-			return null;
-		}
+
+		return _validWords.isEmpty() ? null : this.applyHeuristics();
 	}
 
 	private Word getBestWord() {
