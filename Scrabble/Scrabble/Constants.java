@@ -3,18 +3,14 @@ package Scrabble;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
-public class Constants {
-	
-	Constants() {
-		this.setUpValues();
-	}
+class Constants {
 	
 	static final PlayerType PLAYER_ONE_START_STATE = PlayerType.AI;
 	static final PlayerType PLAYER_TWO_START_STATE = PlayerType.Human;
 	
-	static final HashMap<String, Integer> VALUES = new HashMap<>();
-
-	private void setUpValues() {
+	static final HashMap<String, Integer> VALUES;
+	static {
+		VALUES = new HashMap<>();
 		VALUES.put("A", 1);
 		VALUES.put("B", 3);
 		VALUES.put("C", 3);
@@ -46,22 +42,22 @@ public class Constants {
 	static final int GRID_FACTOR = 42;
 	static final int SCENE_WIDTH = (GRID_FACTOR + 5) * 31;
 	static final int SCENE_HEIGHT = (GRID_FACTOR + 5) * 17 + 10;
-	static final Color BOARD_FILL = Color.WHITE;
 	static final double BOARD_OPACITY = 1.0;
 	static final int TILE_PADDING = 4;
-	public static final String ESC = "\033[";
+
+	static final Color BOARD_FILL = Color.WHITE;
 	static final Color DOUBLE_WORD_SCORE = Color.web("#E71308"); //RED
 	static final Color DOUBLE_LETTER_SCORE = Color.web("#3333FF"); //BLUE
 	static final Color TRIPLE_WORD_SCORE = Color.web("#FF9900"); //ORANGE
 	static final Color TRIPLE_LETTER_SCORE = Color.web("#00CC00"); //GREEN
 	static final Color SHADOW_FILL = Color.web("#000000"); //GREY
-	static final double FADE_OUT_DURATION = 0.4;
-	static final double FADE_IN_DURATION = 0.4;
+
 	static final int ZEROETH_ROW_OFFSET = 3;
 	static final int ZEROETH_COLUMN_OFFSET = 13;
 	static final int COLLECTION_VERTICAL_OFFSET = 7;
 	static final int COLLECTION_ONE_HORIZONTAL_OFFSET = ZEROETH_COLUMN_OFFSET - 2;
 	static final int COLLECTION_TWO_HORIZONTAL_OFFSET = ZEROETH_COLUMN_OFFSET + 16;
+
 	static final double LABEL_ANIMATION = 0.3;
 	static final double FADED_TILE_OPACITY = 0.0;
 	static final double FEEDBACK_FLASH_DURATION = 0.5;
@@ -112,8 +108,6 @@ public class Constants {
 	static final String DOMESTIC_MANNERS = ClassLoader.getSystemResource("Fonts/domesticmanners.ttf").toExternalForm();
 
 	static final double PLACEMENT_DURATION = 0.6;
-	static final boolean PRINT_STATUS = false;
 	static final double FLASH_SPACING_DURATION = 0.6;
 	static final double AI_ROTATE_DURATION = 0.1;
-	
 }

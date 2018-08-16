@@ -1094,11 +1094,11 @@ class PaneOrganizer {
 
 						Playable _playerOne = _playerOneType == PlayerType.Human ?
 								new HumanPlayer(PlayerNum.One, _scrabbleGame) :
-								new ComputerPlayer(PlayerNum.One, _scrabbleGame);
+								new AIPlayer(PlayerNum.One, _scrabbleGame);
 
 						Playable _playerTwo = _playerTwoType == PlayerType.Human ?
 								new HumanPlayer(PlayerNum.Two, _scrabbleGame) :
-								new ComputerPlayer(PlayerNum.Two, _scrabbleGame);
+								new AIPlayer(PlayerNum.Two, _scrabbleGame);
 
 						_referee = new Referee(_scrabbleGame, _playerOne, _playerTwo);
 						_scrabbleGame.addReferee(_referee);
@@ -1549,7 +1549,6 @@ class PaneOrganizer {
 
 		// If a rack was refilled and the bag was <not> emptied in the process...
 		if (_justFilled && !_scrabbleGame.tileBagIsEmpty()) {
-			_scrabbleGame.printBagSize();
 			_enterable = false;
 
 			// Bag wiggling to simulate dispensing of tiles

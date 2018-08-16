@@ -923,10 +923,6 @@ class ScrabbleGame {
 		return _organizer;
 	}
 
-	void printBagSize() {
-		_tileBag.printSize();
-	}
-
 	int getWordValue(ArrayList<Tile> tiles) {
 		int isOnADoubleWordScore = 1;
 		int isOnATripleWordScore = 1;
@@ -1024,7 +1020,7 @@ class ScrabbleGame {
 
 		for (int i = 0; i < rack.size(); i++) {
 			Tile thisTile = rack.get(i);
-			thisTile.setLoc(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET);
+			thisTile.setLoc(i + Constants.COLLECTION_VERTICAL_OFFSET);
 		}
 	}
 
@@ -1044,26 +1040,26 @@ class ScrabbleGame {
 		if (!tiles.contains(thisTile)) tiles.add(thisTile);
 
 		if (orientation == CollectionOrientation.Horizontal) {
-			while (x - i >= 0 && _tileArray[x - i][y] != null && _tileArray[x - i][y].isAddedToBoard()) {
+			while (x - i >= 0 && _tileArray[x - i][y] != null && _tileArray[x - i][y].hasBeenPlayed()) {
 				Tile t = _tileArray[x - i][y];
 				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
 			i = 1;
-			while (x + i <= 14 && _tileArray[x + i][y] != null && _tileArray[x + i][y].isAddedToBoard()) {
+			while (x + i <= 14 && _tileArray[x + i][y] != null && _tileArray[x + i][y].hasBeenPlayed()) {
 				Tile t = _tileArray[x + i][y];
 				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
 		} else if (orientation == CollectionOrientation.Vertical) {
 			i = 1;
-			while (y - i >= 0 && _tileArray[x][y - i] != null && _tileArray[x][y - i].isAddedToBoard()) {
+			while (y - i >= 0 && _tileArray[x][y - i] != null && _tileArray[x][y - i].hasBeenPlayed()) {
 				Tile t = _tileArray[x][y - i];
 				if (!tiles.contains(t)) tiles.add(t);
 				i++;
 			}
 			i = 1;
-			while (y + i <= 14 && _tileArray[x][y + i] != null && _tileArray[x][y + i].isAddedToBoard()) {
+			while (y + i <= 14 && _tileArray[x][y + i] != null && _tileArray[x][y + i].hasBeenPlayed()) {
 				Tile t = _tileArray[x][y + i];
 				if (!tiles.contains(t)) tiles.add(t);
 				i++;

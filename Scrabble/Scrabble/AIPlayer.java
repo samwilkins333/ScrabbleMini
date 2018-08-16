@@ -10,7 +10,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
-public class ComputerPlayer implements Playable {
+public class AIPlayer implements Playable {
 	private ScrabbleGame _scrabbleGame;
 
 	private Word _newestWord;
@@ -29,7 +29,7 @@ public class ComputerPlayer implements Playable {
 
 	private PauseTransition _delayAIRemoval;
 
-	ComputerPlayer(PlayerNum playerNumber, ScrabbleGame scrabbleGame) {
+	AIPlayer(PlayerNum playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 		_concatInt = 0;
@@ -124,7 +124,6 @@ public class ComputerPlayer implements Playable {
 			_validWords.add(bestWord);
 		}
 		this.sortValidWords();
-		this.printValidWords();
 		if (_validWords.size() > 0) {
 			return this.applyHeuristics();
 		} else {
@@ -138,7 +137,6 @@ public class ComputerPlayer implements Playable {
 		_validStrings = new ArrayList<>();
 		Tile[][] realBoard = _scrabbleGame.getTileArray();
 
-		int _numHooksTested = 0;
 		String _kernel;
 		ArrayList<String> _prefixes;
 		ArrayList<String> _suffixes;
@@ -152,22 +150,20 @@ public class ComputerPlayer implements Playable {
 			_succeedingKernels = new HashMap<>();
 			_scrabbleGame.mapKernelsForRow(y, _precedingKernels, _succeedingKernels);
 			for (int x = 0; x < realBoard[1].length; x++) {
-				if (x + 1 <= 14 && realBoard[x][y] == null && realBoard[x + 1][y] != null && realBoard[x + 1][y].isAddedToBoard()) {
-					
+				if (x + 1 <= 14 && realBoard[x][y] == null && realBoard[x + 1][y] != null && realBoard[x + 1][y].hasBeenPlayed()) {
+
 					_prefixCrosses = new HashMap<>();
 					_suffixCrosses = new HashMap<>();
 					specificSuffixes = new HashMap<>();
-					
-					_numHooksTested++;
-					
+
 					int numPrefixSlots = _scrabbleGame.getNumPrefixSlots(x, y, CollectionOrientation.Horizontal);
 					_kernel = _scrabbleGame.getKernelFor(x, y, CollectionOrientation.Horizontal);
-					
+
 					ArrayList<Tile> kernelTiles = _scrabbleGame.getKernelTiles(x, y, CollectionOrientation.Horizontal);
-					
+
 					_firstXKernel = x + 1;
 					_firstYKernel = y;
-					
+
 					_prefixes = new ArrayList<>();
 					_suffixes = new ArrayList<>();
 
@@ -193,9 +189,10 @@ public class ComputerPlayer implements Playable {
 						for (String prefix : _prefixes) {
 							_concatInt = _concatInt + 1;
 							String concat = prefix + _kernel;
+
 							boolean prefixExtended = false;
-							boolean suffixExtended = false;
 							String precedingKernel = "";
+
 							if (prefix.length() == numPrefixSlots) {
 								precedingKernel = _precedingKernels.get(_kernel);
 								concat = precedingKernel + concat;
@@ -217,8 +214,10 @@ public class ComputerPlayer implements Playable {
 									value = value + _prefixCrosses.get(numLet).get(letter);
 									numLet = numLet + 1;
 								}
-								Word validWord = new Word(concat, prefix, value, originalValue, "HORIZONTAL", actualFirstX, _firstYKernel, prefixExtended, suffixExtended);
+
+								Word validWord = new Word(concat, prefix, value, originalValue, WordOrientation.Horizontal, actualFirstX, _firstYKernel);
 								validWord.addKernelTiles(kernelTiles);
+
 								_validWords.add(validWord);
 								_validStrings.add(concat);
 							}
@@ -226,14 +225,11 @@ public class ComputerPlayer implements Playable {
 					}
 					if (numSuffixSlots > 0 && _suffixes.size() > 0) {
 						for (String suffix : _suffixes) {
-							_concatInt = _concatInt + 1;
+
+							_concatInt++;
 							String concat = _kernel + suffix;
-							boolean prefixExtended = false;
-							boolean suffixExtended = false;
-							if (suffix.length() == numSuffixSlots) {
-								concat = concat + _succeedingKernels.get(_kernel);
-								suffixExtended = true;
-							}
+
+							if (suffix.length() == numSuffixSlots) concat += _succeedingKernels.get(_kernel);
 
 							if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
 								int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, _firstYKernel, WordOrientation.Horizontal);
@@ -247,8 +243,10 @@ public class ComputerPlayer implements Playable {
 									value = value + _suffixCrosses.get(numLet).get(letter);
 									numLet = numLet + 1;
 								}
-								Word validWord = new Word(concat, suffix, value, originalValue, WordOrientation.Horizontal, _firstXKernel, _firstYKernel, prefixExtended, suffixExtended);
+
+								Word validWord = new Word(concat, suffix, value, originalValue, WordOrientation.Horizontal, _firstXKernel, _firstYKernel);
 								validWord.addKernelTiles(kernelTiles);
+
 								_validWords.add(validWord);
 								_validStrings.add(concat);
 							}
@@ -257,47 +255,51 @@ public class ComputerPlayer implements Playable {
 					if (numSuffixSlots > 0 && numPrefixSlots > 0 && _prefixes.size() > 0 && specificSuffixes.size() > 0) {
 						for (String thisPrefix : _prefixes) {
 							ArrayList<String> newSuffixes = specificSuffixes.get(thisPrefix);
-							_concatInt = _concatInt + 1;
+							_concatInt++;
+
 							for (String newSuffix : newSuffixes) {
 								String combo = thisPrefix + newSuffix;
 								String concat = thisPrefix + _kernel + newSuffix;
+
 								boolean prefixExtended = false;
-								boolean suffixExtended = false;
 								String precedingKernel = "";
+
 								if (thisPrefix.length() == numPrefixSlots) {
 									precedingKernel = _precedingKernels.get(_kernel);
 									concat = precedingKernel + concat;
 									prefixExtended = true;
 								}
+
 								if (newSuffix.length() == numSuffixSlots) {
 									concat = concat + _succeedingKernels.get(_kernel);
-									suffixExtended = true;
 								}
 
 								if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
 									int actualFirstX = _firstXKernel - thisPrefix.length();
-									if (prefixExtended) {
-										actualFirstX = actualFirstX - precedingKernel.length();
-									}
-									int value = _scrabbleGame.getValueFromString(concat, actualFirstX, _firstYKernel, "HORIZONTAL");
-									if (combo.length() == 7) {
-										value = value + 50;
-									}
+									if (prefixExtended) actualFirstX = actualFirstX - precedingKernel.length();
+
+									int value = _scrabbleGame.getValueFromString(concat, actualFirstX, _firstYKernel, WordOrientation.Horizontal);
+									if (combo.length() == 7) value = value + 50;
+
 									int originalValue = value;
+
 									int numLet = 1;
 									for (int k = thisPrefix.length(); k > 0; k--) {
 										String letter = String.valueOf(thisPrefix.charAt(k - 1));
 										value = value + _prefixCrosses.get(numLet).get(letter);
-										numLet = numLet + 1;
+										numLet++;
 									}
+
 									numLet = 1;
 									for (int k = 0; k < newSuffix.length(); k++) {
 										String letter = String.valueOf(newSuffix.charAt(k));
 										value = value + _suffixCrosses.get(numLet).get(letter);
-										numLet = numLet + 1;
+										numLet++;
 									}
-									Word validWord = new Word(concat, combo, value, originalValue, "HORIZONTAL", actualFirstX, _firstYKernel, prefixExtended, suffixExtended);
+
+									Word validWord = new Word(concat, combo, value, originalValue, WordOrientation.Horizontal, actualFirstX, _firstYKernel);
 									validWord.addKernelTiles(kernelTiles);
+
 									_validWords.add(validWord);
 									_validStrings.add(concat);
 								}
@@ -308,29 +310,38 @@ public class ComputerPlayer implements Playable {
 			}
 		}
 		//int temp = _numHooksTested;
-		_numHooksTested = 0;
 		for (int x = 0; x < 15; x++) {
+
 			_precedingKernels = new HashMap<>();
 			_succeedingKernels = new HashMap<>();
 			_scrabbleGame.mapKernelsForColumn(x, _precedingKernels, _succeedingKernels);
+
 			for (int y = 0; y < realBoard.length; y++) {
-				if (y + 1 <= 14 && realBoard[x][y] == null && realBoard[x][y + 1] != null && realBoard[x][y + 1].isAddedToBoard()) {
+				if (y + 1 <= 14 && realBoard[x][y] == null && realBoard[x][y + 1] != null && realBoard[x][y + 1].hasBeenPlayed()) {
+
 					_prefixCrosses = new HashMap<>();
 					_suffixCrosses = new HashMap<>();
-					_numHooksTested = _numHooksTested + 1;
-					int numPrefixSlots = _scrabbleGame.getNumPrefixSlots(x, y, "VERTICAL");
-					_kernel = _scrabbleGame.getKernelFor(x, y, "VERTICAL");
-					ArrayList<Tile> kernelTiles = _scrabbleGame.getKernelTiles(x, y, "VERTICAL");
+					specificSuffixes = new HashMap<>();
+
+					int numPrefixSlots = _scrabbleGame.getNumPrefixSlots(x, y, CollectionOrientation.Vertical);
+
+					_kernel = _scrabbleGame.getKernelFor(x, y, CollectionOrientation.Vertical);
+					ArrayList<Tile> kernelTiles = _scrabbleGame.getKernelTiles(x, y, CollectionOrientation.Vertical);
+
 					_firstXKernel = x;
 					_firstYKernel = y + 1;
+
 					_prefixes = new ArrayList<>();
 					_suffixes = new ArrayList<>();
-					specificSuffixes = new HashMap<>();
-					int numSuffixSlots = _scrabbleGame.getNumSuffixSlots(x, y + _kernel.length() + 1, "VERTICAL");
+
+					int numSuffixSlots = _scrabbleGame.getNumSuffixSlots(x, y + _kernel.length() + 1, CollectionOrientation.Vertical);
+
 					this.analyzeVerticalPrefixCrosses(x, y, numPrefixSlots);
 					this.analyzeVerticalSuffixCrosses(x, y + _kernel.length() + 1, numSuffixSlots);
+
 					_scrabbleGame.collectPrefixes(_rack, _prefixes, numPrefixSlots, _invalidLettersAndPrefixIndices);
 					_scrabbleGame.collectSuffixes(_rack, _suffixes, numSuffixSlots, _invalidLettersAndSuffixIndices);
+
 					for (String thisPrefix : _prefixes) {
 						ArrayList<String> newSuffixes = new ArrayList<>();
 						String shortenedRack = _rack;
@@ -341,36 +352,40 @@ public class ComputerPlayer implements Playable {
 						_scrabbleGame.collectSuffixes(shortenedRack, newSuffixes, numSuffixSlots, _invalidLettersAndSuffixIndices);
 						specificSuffixes.put(thisPrefix, newSuffixes);
 					}
+
 					if (numPrefixSlots > 0 && _prefixes.size() > 0) {
 						for (String prefix : _prefixes) {
 							_concatInt++;
 							String concat = prefix + _kernel;
+
 							boolean prefixExtended = false;
-							boolean suffixExtended = false;
+
 							String precedingKernel = "";
 							if (prefix.length() == numPrefixSlots) {
 								precedingKernel = _precedingKernels.get(_kernel);
 								concat = precedingKernel + concat;
 								prefixExtended = true;
 							}
+
 							if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
 								int actualFirstY = _firstYKernel - prefix.length();
-								if (prefixExtended) {
-									actualFirstY = actualFirstY - precedingKernel.length();
-								}
-								int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, actualFirstY, "VERTICAL");
-								if (prefix.length() == 7) {
-									value += 50;
-								}
+								if (prefixExtended) actualFirstY = actualFirstY - precedingKernel.length();
+
+								int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, actualFirstY, WordOrientation.Vertical);
+								if (prefix.length() == 7) value += 50;
+
 								int originalValue = value;
+
 								int numLet = 1;
 								for (int j = prefix.length(); j > 0; j--) {
 									String letter = String.valueOf(prefix.charAt(j - 1));
 									value += _prefixCrosses.get(numLet).get(letter);
 									numLet++;
 								}
-								Word validWord = new Word(concat, prefix, value, originalValue, "VERTICAL", _firstXKernel, actualFirstY, prefixExtended, suffixExtended);
+
+								Word validWord = new Word(concat, prefix, value, originalValue, WordOrientation.Vertical, _firstXKernel, actualFirstY);
 								validWord.addKernelTiles(kernelTiles);
+
 								_validWords.add(validWord);
 								_validStrings.add(concat);
 							}
@@ -380,26 +395,26 @@ public class ComputerPlayer implements Playable {
 						for (String suffix : _suffixes) {
 							_concatInt = _concatInt + 1;
 							String concat = _kernel + suffix;
-							boolean prefixExtended = false;
-							boolean suffixExtended = false;
+
 							if (suffix.length() == numSuffixSlots) {
 								concat = concat + _succeedingKernels.get(_kernel);
-								suffixExtended = true;
 							}
+
 							if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
-								int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, _firstYKernel, "VERTICAL");
-								if (suffix.length() == 7) {
-									value = value + 50;
-								}
+								int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, _firstYKernel, WordOrientation.Vertical);
+								if (suffix.length() == 7) value = value + 50;
+
 								int originalValue = value;
 								int numLet = 1;
 								for (int j = 0; j < suffix.length(); j++) {
 									String letter = String.valueOf(suffix.charAt(j));
-									value = value + _suffixCrosses.get(numLet).get(letter);
-									numLet = numLet + 1;
+									value += _suffixCrosses.get(numLet).get(letter);
+									numLet++;
 								}
-								Word validWord = new Word(concat, suffix, value, originalValue, "VERTICAL", _firstXKernel, _firstYKernel, prefixExtended, suffixExtended);
+
+								Word validWord = new Word(concat, suffix, value, originalValue, WordOrientation.Vertical, _firstXKernel, _firstYKernel);
 								validWord.addKernelTiles(kernelTiles);
+
 								_validWords.add(validWord);
 								_validStrings.add(concat);
 							}
@@ -408,46 +423,51 @@ public class ComputerPlayer implements Playable {
 					if (numSuffixSlots > 0 && numPrefixSlots > 0 && _prefixes.size() > 0 && specificSuffixes.size() > 0) {
 						for (String thisPrefix : _prefixes) {
 							ArrayList<String> newSuffixes = specificSuffixes.get(thisPrefix);
-							_concatInt = _concatInt + 1;
+							_concatInt++;
 							for (String newSuffix : newSuffixes) {
 								String combo = thisPrefix + newSuffix;
 								String concat = thisPrefix + _kernel + newSuffix;
+
 								boolean prefixExtended = false;
-								boolean suffixExtended = false;
+
 								String precedingKernel = "";
+
 								if (thisPrefix.length() == numPrefixSlots) {
 									precedingKernel = _precedingKernels.get(_kernel);
 									concat = precedingKernel + concat;
 									prefixExtended = true;
 								}
+
 								if (newSuffix.length() == numSuffixSlots) {
 									concat = concat + _succeedingKernels.get(_kernel);
-									suffixExtended = true;
 								}
+
 								if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
 									int actualFirstY = _firstYKernel - thisPrefix.length();
-									if (prefixExtended) {
-										actualFirstY = actualFirstY - precedingKernel.length();
-									}
-									int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, actualFirstY, "VERTICAL");
-									if (combo.length() == 7) {
-										value = value + 50;
-									}
+									if (prefixExtended) actualFirstY = actualFirstY - precedingKernel.length();
+
+									int value = _scrabbleGame.getValueFromString(concat, _firstXKernel, actualFirstY, WordOrientation.Vertical);
+									if (combo.length() == 7) value = value + 50;
+
 									int originalValue = value;
+
 									int numLet = 1;
 									for (int k = thisPrefix.length(); k > 0; k--) {
 										String letter = String.valueOf(thisPrefix.charAt(k - 1));
-										value = value + _prefixCrosses.get(numLet).get(letter);
-										numLet = numLet + 1;
+										value += _prefixCrosses.get(numLet).get(letter);
+										numLet += 1;
 									}
+
 									numLet = 1;
 									for (int k = 0; k < newSuffix.length(); k++) {
 										String letter = String.valueOf(newSuffix.charAt(k));
-										value = value + _suffixCrosses.get(numLet).get(letter);
-										numLet = numLet + 1;
+										value += _suffixCrosses.get(numLet).get(letter);
+										numLet++;
 									}
-									Word validWord = new Word(concat, combo, value, originalValue, "VERTICAL", _firstXKernel, actualFirstY, prefixExtended, suffixExtended);
+
+									Word validWord = new Word(concat, combo, value, originalValue, WordOrientation.Vertical, _firstXKernel, actualFirstY);
 									validWord.addKernelTiles(kernelTiles);
+
 									_validWords.add(validWord);
 									_validStrings.add(concat);
 								}
@@ -458,12 +478,9 @@ public class ComputerPlayer implements Playable {
 			}
 		}
 		this.sortValidWords();
-		this.printValidWords();
-		if (_validWords.size() > 0) {
-			return this.applyHeuristics();
-		} else {
-			return null;
-		}
+
+
+		return _validWords.isEmpty() ? null : this.applyHeuristics();
 	}
 
 	private Word applyHeuristics() {
@@ -499,26 +516,26 @@ public class ComputerPlayer implements Playable {
 	private void analyzeHorizontalPrefixCrosses(int x, int y, int numPrefixSlots) {
 		_invalidLettersAndPrefixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
-		String upperCross;
-		String lowerCross;
+		StringBuilder upperCross;
+		StringBuilder lowerCross;
 		int vertical;
 		int horizontal = 0;
 		while (x - horizontal >= 0 && horizontal < numPrefixSlots) {
 			HashMap<String, Integer> letterToValue = new HashMap<>();
-			upperCross = "";
-			lowerCross = "";
+			upperCross = new StringBuilder();
+			lowerCross = new StringBuilder();
 			ArrayList<String> invalidLetters = new ArrayList<>();
 			vertical = 1;
 			while (y - vertical >= 0 && tileArray[x - horizontal][y - vertical] != null) {
-				upperCross = tileArray[x - horizontal][y - vertical].getLetter() + upperCross;
+				upperCross.insert(0, tileArray[x - horizontal][y - vertical].getLetter());
 				vertical = vertical + 1;
 			}
 			vertical = 1;
 			while (y + vertical <= 14 && tileArray[x - horizontal][y + vertical] != null) {
-				lowerCross = lowerCross + tileArray[x - horizontal][y + vertical].getLetter();
+				lowerCross.append(tileArray[x - horizontal][y + vertical].getLetter());
 				vertical = vertical + 1;
 			}
-			if (upperCross == "" && lowerCross == "") {
+			if (upperCross.toString().equals("") && lowerCross.toString().equals("")) {
 				_invalidLettersAndPrefixIndices.put(horizontal + 1, new ArrayList<>());
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -532,13 +549,13 @@ public class ComputerPlayer implements Playable {
 						invalidLetters.add(toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x - horizontal, y - upperCross.length(), "VERTICAL");
+						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x - horizontal, y - upperCross.length(), WordOrientation.Vertical);
 						letterToValue.put(toCheck, crossValue);
 					}
 				}
 				_invalidLettersAndPrefixIndices.put(horizontal + 1, invalidLetters);
 			}
-			horizontal = horizontal + 1;
+			horizontal++;
 			_prefixCrosses.put(horizontal, letterToValue);
 		}
 	}
@@ -546,26 +563,26 @@ public class ComputerPlayer implements Playable {
 	private void analyzeVerticalPrefixCrosses(int x, int y, int numPrefixSlots) {
 		_invalidLettersAndPrefixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
-		String leftCross;
-		String rightCross;
+		StringBuilder leftCross;
+		StringBuilder rightCross;
 		int horizontal;
 		int vertical = 0;
 		while (y - vertical >= 0 && vertical < numPrefixSlots) {
 			HashMap<String, Integer> letterToValue = new HashMap<>();
-			leftCross = "";
-			rightCross = "";
+			leftCross = new StringBuilder();
+			rightCross = new StringBuilder();
 			ArrayList<String> invalidLetters = new ArrayList<>();
 			horizontal = 1;
 			while (x - horizontal >= 0 && tileArray[x - horizontal][y - vertical] != null) {
-				leftCross = tileArray[x - horizontal][y - vertical].getLetter() + leftCross;
+				leftCross.insert(0, tileArray[x - horizontal][y - vertical].getLetter());
 				horizontal = horizontal + 1;
 			}
 			horizontal = 1;
 			while (x + horizontal <= 14 && tileArray[x + horizontal][y - vertical] != null) {
-				rightCross = rightCross + tileArray[x + horizontal][y - vertical].getLetter();
+				rightCross.append(tileArray[x + horizontal][y - vertical].getLetter());
 				horizontal = horizontal + 1;
 			}
-			if (leftCross == "" && rightCross == "") {
+			if (leftCross.toString().equals("") && rightCross.toString().equals("")) {
 				_invalidLettersAndPrefixIndices.put(vertical + 1, new ArrayList<>());
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -579,7 +596,7 @@ public class ComputerPlayer implements Playable {
 						invalidLetters.add(toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y, "HORIZONTAL");
+						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y, WordOrientation.Horizontal);
 						letterToValue.put(toCheck, crossValue);
 					}
 				}
@@ -593,26 +610,26 @@ public class ComputerPlayer implements Playable {
 	private void analyzeHorizontalSuffixCrosses(int x, int y, int numSuffixSlots) {
 		_invalidLettersAndSuffixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
-		String upperCross;
-		String lowerCross;
+		StringBuilder upperCross;
+		StringBuilder lowerCross;
 		int vertical;
 		int horizontal = 0;
 		while (x + horizontal <= 14 && horizontal < numSuffixSlots) {
 			HashMap<String, Integer> letterToValue = new HashMap<>();
-			upperCross = "";
-			lowerCross = "";
+			upperCross = new StringBuilder();
+			lowerCross = new StringBuilder();
 			ArrayList<String> invalidLetters = new ArrayList<>();
 			vertical = 1;
 			while (y - vertical >= 0 && tileArray[x + horizontal][y - vertical] != null) {
-				upperCross = tileArray[x + horizontal][y - vertical].getLetter() + upperCross;
+				upperCross.insert(0, tileArray[x + horizontal][y - vertical].getLetter());
 				vertical = vertical + 1;
 			}
 			vertical = 1;
 			while (y + vertical <= 14 && tileArray[x + horizontal][y + vertical] != null) {
-				lowerCross = lowerCross + tileArray[x + horizontal][y + vertical].getLetter();
+				lowerCross.append(tileArray[x + horizontal][y + vertical].getLetter());
 				vertical = vertical + 1;
 			}
-			if (upperCross == "" && lowerCross == "") {
+			if (upperCross.toString().equals("") && lowerCross.toString().equals("")) {
 				_invalidLettersAndSuffixIndices.put(horizontal + 1, new ArrayList<>());
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -626,7 +643,7 @@ public class ComputerPlayer implements Playable {
 						invalidLetters.add(toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x + horizontal, y - upperCross.length(), "VERTICAL");
+						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x + horizontal, y - upperCross.length(), WordOrientation.Vertical);
 						letterToValue.put(toCheck, crossValue);
 					}
 				}
@@ -640,26 +657,26 @@ public class ComputerPlayer implements Playable {
 	private void analyzeVerticalSuffixCrosses(int x, int y, int numSuffixSlots) {
 		_invalidLettersAndSuffixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
-		String leftCross;
-		String rightCross;
+		StringBuilder leftCross;
+		StringBuilder rightCross;
 		int horizontal;
 		int vertical = 0;
 		while (y + vertical <= 14 && vertical < numSuffixSlots) {
 			HashMap<String, Integer> letterToValue = new HashMap<>();
-			leftCross = "";
-			rightCross = "";
+			leftCross = new StringBuilder();
+			rightCross = new StringBuilder();
 			ArrayList<String> invalidLetters = new ArrayList<>();
 			horizontal = 1;
 			while (x - horizontal >= 0 && tileArray[x - horizontal][y + vertical] != null) {
-				leftCross = tileArray[x - horizontal][y + vertical].getLetter() + leftCross;
+				leftCross.insert(0, tileArray[x - horizontal][y + vertical].getLetter());
 				horizontal++;
 			}
 			horizontal = 1;
 			while (x + horizontal <= 14 && tileArray[x + horizontal][y + vertical] != null) {
-				rightCross = rightCross + tileArray[x + horizontal][y + vertical].getLetter();
+				rightCross.append(tileArray[x + horizontal][y + vertical].getLetter());
 				horizontal++;
 			}
-			if (leftCross == "" && rightCross == "") {
+			if (leftCross.toString().equals("") && rightCross.toString().equals("")) {
 				_invalidLettersAndSuffixIndices.put(vertical + 1, new ArrayList<>());
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -673,7 +690,7 @@ public class ComputerPlayer implements Playable {
 						invalidLetters.add(toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y + vertical, "HORIZONTAL");
+						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y + vertical, WordOrientation.Horizontal);
 						letterToValue.put(toCheck, crossValue);
 					}
 				}
@@ -705,11 +722,6 @@ public class ComputerPlayer implements Playable {
 		_validWords.addAll(temp);
 	}
 
-	private void printValidWords() {
-		if (_validWords.size() == 0) return;
-		for (Word _validWord : _validWords) _validWord.printInfo();
-	}
-	
 	public PlayerNum getPlayerNumber() {
 		return _playerNumber;
 	}

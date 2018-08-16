@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 
 /**
  * 
- * @author samwilkins333
+ * @author Samuel Wilkins, samwilkins333@gmail.com
  *
  */
 public class App extends Application {
@@ -28,11 +28,11 @@ public class App extends Application {
 
     /**
      * Main line to initialize application
-     * @param argv
+     * @param args initialization arguments
      */
-    public static void main(String[] argv) {
-    		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Scrabble Mini");
-        launch(argv);
+    public static void main(String[] args) {
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Scrabble Mini");
+        launch(args);
     }
     
 }
