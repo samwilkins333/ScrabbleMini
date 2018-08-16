@@ -388,6 +388,8 @@ class ScrabbleGame {
 						case TripleWordScore:
 							toColor = Constants.TRIPLE_WORD_SCORE;
 							break;
+						default:
+							break;
 					}
 					FillTransition restoreColors = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION), thisSquare.getSquare(), Constants.BOARD_FILL, toColor);
 					restoreColors.play();
@@ -414,6 +416,8 @@ class ScrabbleGame {
 				else {
 					Color fromColor = null;
 					switch (thisSquare.getIdentity()) {
+						default:
+							break;
 						case DoubleLetterScore:
 							fromColor = Constants.DOUBLE_LETTER_SCORE;
 							break;
@@ -527,9 +531,8 @@ class ScrabbleGame {
 	private void setUpDictionary() {
 		InputStream dictionaryText = this.getClass().getResourceAsStream("dictionary.txt");
 		Scanner _scanner = new Scanner(dictionaryText);
-		while (_scanner.hasNext()) {
-			_dictionary.add(_scanner.next());
-		}
+		while (_scanner.hasNext()) _dictionary.add(_scanner.next());
+		_scanner.close();
 	}
 
 	String tilesToString(ArrayList<Tile> playerRack) {

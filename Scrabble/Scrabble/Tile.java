@@ -646,7 +646,8 @@ class Tile {
 		_tileViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 
 		_boardPane = boardPane;
-		_boardPane.getChildren().add(_tileViewer);
+		if (!_boardPane.getChildren().contains(_tileViewer))
+				_boardPane.getChildren().add(_tileViewer);
 	}
 
 	void placeAtSquare(int x, int y) {

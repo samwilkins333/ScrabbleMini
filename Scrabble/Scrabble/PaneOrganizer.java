@@ -1035,8 +1035,9 @@ class PaneOrganizer {
 
 		@Override
 		public void handle(KeyEvent event) {
-			KeyCode keyPressed = event.getCode();
-			switch (keyPressed) {
+			switch (event.getCode()) {
+				default:
+					break;
 				case A:
 					_scrabbleGame.setAutoReset(!_scrabbleGame.getAutoReset());
 					break;
