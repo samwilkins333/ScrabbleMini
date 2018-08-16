@@ -438,9 +438,11 @@ class Word {
 		double delay = 0;
 		ArrayList<Tile> tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 		for (Tile thisTile : _tiles) if (!tilesOnBoard.contains(thisTile)) tilesOnBoard.add(thisTile);
+
 		int x;
 		int y;
 		int tileInt = -1;
+
 		for (int i = 0; i < _letters.length(); i++) {
 			boolean isHorizontal = _orientation == WordOrientation.Horizontal;
 
@@ -509,7 +511,7 @@ class Word {
 
 	}
 	
-	void addToBoardAI() {
+	void addToBoardLogicallyAI() {
 		for (Tile thisTile : _tiles) {
 			int x = thisTile.getXIndex();
 			int y = thisTile.getYIndex();

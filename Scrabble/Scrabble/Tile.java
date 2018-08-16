@@ -52,6 +52,8 @@ class Tile {
 
 	private DropShadow _pieceShadow;
 	private ArrayList<Tile> _tilesOnBoard;
+	private boolean _snappedX;
+	private boolean _snappedY;
 
 	Tile(int letter) {
 		// Create stock new tile image view
@@ -59,6 +61,9 @@ class Tile {
 		_tileViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
 		_tileViewer.setPreserveRatio(true);
 		_tileViewer.setCache(true);
+
+		_snappedX = false;
+		_snappedY = false;
 
 		// Set its default properties
 
@@ -171,6 +176,9 @@ class Tile {
 			_tileViewer.setOpacity(1.0);
 			_tileViewer.setEffect(_pieceShadow);
 
+			_snappedX = false;
+			_snappedY = false;
+
 			if (event.getButton() == MouseButton.PRIMARY) {
 				// get the current mouse coordinates according to the scene.
 				_mouseDragX = event.getSceneX();
@@ -210,13 +218,24 @@ class Tile {
 
 	private EventHandler<MouseEvent> releaseMouse() {
 		return event -> {
-			if (!Tile.this.isDraggable()) return;
+ 			if (!Tile.this.isDraggable()) return;
 
 			_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 			Tile.this.checkOutOfBoard();
 
-			for (int c = 0; c < 15; c++) if (Tile.this.setColumn(c)) break;
-			for (int r = 0; r < 15; r++) if (Tile.this.setRow(r)) break;
+			for (int c = 0; c < 15; c++) {
+				if (_snappedX) break;
+
+				Tile.this.checkColumn(c);
+				if (_snappedX) _xIndex = c;
+			}
+
+			for (int r = 0; r < 15; r++) {
+				if (_snappedY) break;
+
+				Tile.this.checkRow(r);
+				if (_snappedY) _yIndex = r;
+			}
 
 			// If the user releases on a played piece or manually sends the piece back to the rack via double click...
 			if (_scrabbleGame.boardSquareOccupiedAt(_xIndex, _yIndex) || event.getClickCount() == 2) {
@@ -240,6 +259,9 @@ class Tile {
 				_tileViewer.setScaleY(1);
 				_tileViewer.setOpacity(1.0);
 				_tileViewer.setEffect(_pieceShadow);
+
+				_snappedX = true;
+				_snappedY = true;
 
 				// Has been returned to rack from board
 				_tempPlacedOnBoard = false;
@@ -293,19 +315,27 @@ class Tile {
 		if (status) {
 			_tileViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+
 			_checkViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+
 			_xViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+
 			_minusViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+
+			_snappedX = true;
+			_snappedY = true;
+
 			_tempPlacedOnBoard = false;
+
 			_xIndex = -1;
 			_yIndex = -1;
 		} else _tempPlacedOnBoard = true;
 	}
 
-	private boolean setColumn(int num) {
+	private void checkColumn(int num) {
 		int xMin = 0;
 		int xMax = 0;
 
@@ -381,13 +411,11 @@ class Tile {
 			_checkViewer.setLayoutX(xMin + Constants.TILE_PADDING);
 			_xViewer.setLayoutX(xMin + Constants.TILE_PADDING);
 			_minusViewer.setLayoutX(xMin + Constants.TILE_PADDING);
-			_xIndex = num;
+			_snappedX = true;
 		}
-
-		return hasBeenSet;
 	}
 
-	private boolean setRow(int num) {
+	private void checkRow(int num) {
 		int yMin = 0;
 		int yMax = 0;
 
@@ -463,10 +491,8 @@ class Tile {
 			_checkViewer.setLayoutY(yMin + Constants.TILE_PADDING);
 			_xViewer.setLayoutY(yMin + Constants.TILE_PADDING);
 			_minusViewer.setLayoutY(yMin + Constants.TILE_PADDING);
-			_yIndex = num;
+			_snappedY = true;
 		}
-
-		return hasBeenSet;
 	}
 
 	void setToOpaque() {
@@ -666,7 +692,7 @@ class Tile {
 	}
 
 	int getY() {
-		return (int) ((_tileViewer.getLayoutY() - Constants.TILE_PADDING) / Constants.GRID_FACTOR);
+		return _y;
 	}
 
 	int getXIndex() {
@@ -705,23 +731,27 @@ class Tile {
 		_tileViewer.setEffect(_pieceShadow);
 	}
 
-	void moveDown() {
+	void moveDown(String letter) {
 		if (_xIndex == -1 && _yIndex == -1) {
-			_y = _y + 1;
+			_y++;
 			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		} else {
+			System.out.printf("\nNOT INCREMENTED! %s had indices (%s, %s)", letter, _xIndex, _yIndex);
 		}
 	}
 	
-	void moveUp() {
+	void moveUp(String letter) {
 		if (_xIndex == -1 && _yIndex == -1) {
-			_y = _y - 1;
+			_y--;
 			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		} else {
+			System.out.printf("\nNOT INCREMENTED! %s had indices (%s, %s)", letter, _xIndex, _yIndex);
 		}
 	}
 	

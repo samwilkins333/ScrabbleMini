@@ -253,7 +253,7 @@ class PaneOrganizer {
 		_playerTwoIcon.setLayoutX(SCENE_WIDTH - 200 - GRID_FACTOR * 3);
 		_playerTwoIcon.setLayoutY(SCENE_HEIGHT / 2 - GRID_FACTOR * 1.5);
 		_playerTwoIcon.setOnMouseClicked(new TogglePlayer(PlayerNum.Two));
-		_playerTwoIcon.setOnMouseEntered(new ScaleIcon(PlayerNum.Two, Direction.Out));
+		_playerTwoIcon.setOnMouseEntered(new ScaleIcon(PlayerNum.Two, Direction.In));
 		_playerTwoIcon.setOnMouseExited(new ScaleIcon(PlayerNum.Two, Direction.Out));
 
 		// Graphically add all elements
@@ -1110,7 +1110,7 @@ class PaneOrganizer {
 
 					// ELSE IF THE USER SUBMITS A WORD
 
-					} else if (_enterInt > 0 && event.isShiftDown()) {
+					} else if (_enterInt > 0 && event.isMetaDown()) {
 
 						//TODO: Combine word with crosses and AI with human word addition to cut back on duplicate code
 
@@ -1286,7 +1286,7 @@ class PaneOrganizer {
 
 		//TODO: Combine word with crosses and AI with human word addition to cut back on duplicate code
 
-		newestWord.addToBoardAI();
+		newestWord.addToBoardLogicallyAI();
 
 		// Inform referee of move implications
 		if (!_referee.isFirstMoveMade()) _referee.DeclareFirstMoveMade();
@@ -1435,18 +1435,6 @@ class PaneOrganizer {
 					fadeIn.setFromValue(0.0);
 					fadeIn.setToValue(1.0);
 					fadeIn.play();
-					// // FadeTransition fadeIn1 = new
-					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
-					// _playerOneScore);
-					// fadeIn1.setFromValue(0.0);
-					// fadeIn1.setToValue(1.0);
-					// fadeIn1.play();
-					// // FadeTransition fadeIn2 = new
-					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
-					// _playerTwoScore);
-					// fadeIn2.setFromValue(0.0);
-					// fadeIn2.setToValue(1.0);
-					// fadeIn2.play();
 				} else {
 					_olds1 = _s1.getVvalue();
 					_olds2 = _s2.getVvalue();
@@ -1459,18 +1447,6 @@ class PaneOrganizer {
 					fadeOut.setToValue(0.0);
 					fadeOut.setOnFinished(new ScorePaneRemoveHandler());
 					fadeOut.play();
-					// FadeTransition fadeOut1 = new
-					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
-					// _playerOneScore);
-					// fadeOut1.setFromValue(1.0);
-					// fadeOut1.setToValue(0.0);
-					// fadeOut1.play();
-					// FadeTransition fadeOut2 = new
-					// FadeTransition(Duration.seconds(Constants.SCORE_FADE_DURATION),
-					// _playerTwoScore);
-					// fadeOut2.setFromValue(1.0);
-					// fadeOut2.setToValue(0.0);
-					// // fadeOut2.play();
 				}
 			}
 			event.consume();

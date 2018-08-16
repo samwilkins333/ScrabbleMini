@@ -40,6 +40,8 @@ class Constants {
 		TILE_INFO.put(25, new Alpha("Y", 2, 4));
 		TILE_INFO.put(26, new Alpha("Z", 1, 10));
 	}
+
+	static final String A = "_ABCDEFGHIJKLMNOPQRSTUVWQYZ";
 	
 	static final int GRID_FACTOR = 42;
 	static final int SCENE_WIDTH = (GRID_FACTOR + 5) * 31;

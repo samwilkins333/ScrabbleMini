@@ -13,7 +13,6 @@ class TileBag {
 	}
 
 	private void fillBag() {
-		int[] count = new int[] {2, 9, 2, 2, 4, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1};
 		for (int i = 0; i < 26; i++) Add(i + 1, Constants.TILE_INFO.get(i).getFrequency());
 	}
 

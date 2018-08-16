@@ -159,8 +159,6 @@ class Referee {
 	}
 
 	void nextMove() {
-		boolean gameOver = false;
-
 		_scrabbleGame.updateAlreadyPlayed();
 		_scrabbleGame.resetEnterInt();
 
@@ -175,15 +173,13 @@ class Referee {
 			_scrabbleGame.fadeRacks(_currentPlayer == _playerOne ? PlayerNum.Two : PlayerNum.One, Direction.In);
 
 			this.processAdditives();
-			gameOver = true;
+			return;
 		}
-
-		if (gameOver) return;
 
 		_moveInt++;
 		if (_moveInt == 1 || _moveInt == 2) _scrabbleGame.rotateBag();
 
-		_scrabbleGame.DeclareEnterable();
+		_scrabbleGame.declareEnterable();
 
 		boolean isPlayerOne = _currentPlayer == _playerOne;
 		_scrabbleGame.fadeRacks(isPlayerOne ? PlayerNum.Two : PlayerNum.One, Direction.In);

@@ -27,7 +27,7 @@ class Alpha {
         return frequency;
     }
 
-    public Image getImage() {
+    Image getImage() {
         return _image;
     }
 }
