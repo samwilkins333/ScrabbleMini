@@ -7,9 +7,9 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 class Referee {
-	private ScrabbleGame _scrabbleGame;
-	private Playable _playerOne;
-	private Playable _playerTwo;
+	private final ScrabbleGame _scrabbleGame;
+	private final Playable _playerOne;
+	private final Playable _playerTwo;
 	private Playable _currentPlayer;
 	private int _moveInt;
 	private int _wordsPlayed1;

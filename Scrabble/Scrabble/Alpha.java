@@ -6,7 +6,7 @@ class Alpha {
     private final String _letter;
     private final int frequency;
     private final int _value;
-    private Image _image;
+    private final Image _image;
 
     Alpha(String let, int frequency, int val) {
         _letter = let;

@@ -24,10 +24,10 @@ import static Scrabble.Constants.*;
 class PaneOrganizer {
 
 	// ORIGINAL CONTENT
-	private App _appClass;
-	private Stage _stage;
+	private final App _appClass;
+	private final Stage _stage;
 	private Referee _referee;
-	private ScrabbleGame _scrabbleGame;
+	private final ScrabbleGame _scrabbleGame;
 
 	// BASE TYPES
 	private int _enterInt;
@@ -43,10 +43,10 @@ class PaneOrganizer {
 	private PlayerType _playerTwoType;
 
 	// DATA STRUCTURES
-	private ArrayList<Label> _playedWords;
+	private final ArrayList<Label> _playedWords;
 
-	private Pane _root;
-	private Pane _boardPane;
+	private final Pane _root;
+	private final Pane _boardPane;
 	private Pane _wordContainer1;
 	private Pane _wordContainer2;
 	private Pane _scorePane;
@@ -506,7 +506,7 @@ class PaneOrganizer {
 	}
 
 	private class TileRemover implements EventHandler<ActionEvent> {
-		private Tile _toRemove;
+		private final Tile _toRemove;
 
 		TileRemover(Tile toRemove) {
 			_toRemove = toRemove;
@@ -531,8 +531,8 @@ class PaneOrganizer {
 	}
 
 	private class ScaleIcon implements EventHandler<MouseEvent> {
-		private Direction _direction;
-		private PlayerNum _p;
+		private final Direction _direction;
+		private final PlayerNum _p;
 
 		private ScaleIcon(PlayerNum p, Direction direction) {
 			_p = p;
@@ -560,7 +560,7 @@ class PaneOrganizer {
 	}
 
 	private class TogglePlayer implements EventHandler<MouseEvent> {
-		private PlayerNum _p;
+		private final PlayerNum _p;
 
 		TogglePlayer(PlayerNum p) {
 			_p = p;
@@ -602,7 +602,7 @@ class PaneOrganizer {
 	}
 
 	private class PlayFadeHandler implements EventHandler<ActionEvent> {
-		private FadeTransition _fade;
+		private final FadeTransition _fade;
 
 		PlayFadeHandler(FadeTransition fade) {
 			_fade = fade;
@@ -779,10 +779,10 @@ class PaneOrganizer {
 	}
 
 	private class IntroFlashHandler implements EventHandler<ActionEvent> {
-		private Tile _tileM;
-		private Tile _tileI1;
-		private Tile _tileN;
-		private Tile _tileI2;
+		private final Tile _tileM;
+		private final Tile _tileI1;
+		private final Tile _tileN;
+		private final Tile _tileI2;
 
 		private IntroFlashHandler(Tile tileM, Tile tileI1, Tile tileN, Tile tileI2) {
 			_tileM = tileM;
@@ -942,7 +942,7 @@ class PaneOrganizer {
 	}
 
 	private class HighlightHandler implements EventHandler<ActionEvent> {
-		private Winner _winner;
+		private final Winner _winner;
 
 		HighlightHandler(Winner winner) {
 			_winner = winner;
@@ -1397,8 +1397,8 @@ class PaneOrganizer {
 	}
 
 	private class PlayFlashHandler implements EventHandler<ActionEvent> {
-		private Word _word;
-		private WordAddition _outcome;
+		private final Word _word;
+		private final WordAddition _outcome;
 
 		PlayFlashHandler(Word word, WordAddition outcome) {
 			_word = word;
@@ -1414,7 +1414,7 @@ class PaneOrganizer {
 	}
 
 	private class ScorePaneHandler implements EventHandler<MouseEvent> {
-		private Direction _dir;
+		private final Direction _dir;
 
 		ScorePaneHandler(Direction direction) {
 			_dir = direction;

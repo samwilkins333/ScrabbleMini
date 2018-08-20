@@ -2,8 +2,8 @@ package Scrabble;
 
 public class HumanPlayer implements Playable {
 	private Word _newestWord;
-	private PlayerNum _playerNumber;
-	private ScrabbleGame _scrabbleGame;
+	private final PlayerNum _playerNumber;
+	private final ScrabbleGame _scrabbleGame;
 
 	HumanPlayer(PlayerNum playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;

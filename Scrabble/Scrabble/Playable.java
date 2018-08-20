@@ -1,6 +1,6 @@
 package Scrabble;
 
-public interface Playable {
+interface Playable {
 
 	void makeMove();
 	boolean isHuman();

@@ -3,13 +3,13 @@ package Scrabble;
 import java.util.ArrayList;
 
 class TileBag {
-	private ArrayList<Tile> _bag;
-	private ScrabbleGame _scrabbleGame;
+	private final ArrayList<Tile> _bag;
+	private final ScrabbleGame _scrabbleGame;
 
 	TileBag(ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_bag = new ArrayList<>();
-		this.fillBag();
+		fillBag();
 	}
 
 	private void fillBag() {

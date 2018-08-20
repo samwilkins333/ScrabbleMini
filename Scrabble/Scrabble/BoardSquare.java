@@ -22,12 +22,12 @@ class BoardSquare {
 	private Label _label;
 	private ScrabbleGame _scrabbleGame;
 	
-	private int _x;
-	private int _y;
+	private final int _x;
+	private final int _y;
 	private SquareIdentity _identity;
 	
-	private Pane _boardPane;
-	private Pane _labelPane;
+	private final Pane _boardPane;
+	private final Pane _labelPane;
 	
 	private Boolean _labelIsShown;
 	private Boolean _alreadyPlayed;
@@ -39,18 +39,16 @@ class BoardSquare {
 	private Boolean _isNormal;
 
 	/**
-	 * 
-	 * @param x - width of square
+	 *  @param x - width of square
 	 * @param y - height of square
-	 * @param id - specifies if the board square to be made is a score multiplier 
 	 * @param boardPane - the pane displaying the graphical squares that comprise the board
-	 * @param labelPane - the pane displaying the identifying white text of each board square 
+	 * @param labelPane - the pane displaying the identifying white text of each board square
 	 * 
 	 */
-	BoardSquare(int x, int y, SquareIdentity id, Pane boardPane, Pane labelPane) {
+	BoardSquare(int x, int y, Pane boardPane, Pane labelPane) {
 		_x = x;
 		_y = y;
-		_identity = id;
+		_identity = SquareIdentity.Normal;
 		
 		_boardPane = boardPane;
 		_labelPane = labelPane;
@@ -119,9 +117,7 @@ class BoardSquare {
 	 * @return whether or not the board square exists as a triple letter multiplier
 	 * 
 	 */
-	Boolean is3L() {
-		return _is3L;
-	}
+	Boolean is3L() { return _is3L; }
 
 	/**
 	 * 

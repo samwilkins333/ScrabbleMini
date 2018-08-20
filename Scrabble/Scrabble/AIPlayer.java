@@ -11,10 +11,10 @@ import javafx.event.EventHandler;
 import javafx.util.Duration;
 
 public class AIPlayer implements Playable {
-	private ScrabbleGame _scrabbleGame;
+	private final ScrabbleGame _scrabbleGame;
+	private final PlayerNum _playerNumber;
 
 	private Word _newestWord;
-	private PlayerNum _playerNumber;
 	private String _rack;
 
 	private ArrayList<Word> _validWords;
@@ -93,7 +93,9 @@ public class AIPlayer implements Playable {
 		WordOrientation orientation;
 
 		int value;
-		_scrabbleGame.collectPermutations(_rack, _validStrings);
+
+		_validStrings = _scrabbleGame.validPermutationsOf(_rack);
+
 		for (String thisString : _validStrings) {
 			Word bestWord = null;
 			for (int j = 0; j <= thisString.length() - 1; j++) {

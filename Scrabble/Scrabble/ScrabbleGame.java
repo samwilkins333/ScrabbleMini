@@ -6,7 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 
 import java.io.*;
-import java.util.stream.Collectors;
 
 import javafx.animation.*;
 import javafx.util.Duration;
@@ -17,22 +16,22 @@ import javafx.scene.image.Image;
 import static Scrabble.Constants.*;
 
 class ScrabbleGame {
-	private PaneOrganizer _organizer;
-	private Pane _root;
-	private Pane _boardPane;
-	private Pane _labelPane;
-	private TileBag _tileBag;
+	private final PaneOrganizer _organizer;
+	private final Pane _root;
+	private final Pane _boardPane;
+	private final Pane _labelPane;
+	private final TileBag _tileBag;
 	private ArrayList<Tile> _playerOneRack;
 	private ArrayList<Tile> _playerTwoRack;
-	private HashSet<String> _dictionary;
-	private BoardSquare[][] _boardArray;
-	private ArrayList<BoardSquare> _doubleLetterScores;
-	private ArrayList<BoardSquare> _doubleWordScores;
-	private ArrayList<BoardSquare> _tripleLetterScores;
-	private ArrayList<BoardSquare> _tripleWordScores;
-	private Tile[][] _tileArray;
-	private ArrayList<Tile> _tilesOnBoard;
-	private ArrayList<BoardSquare> _specialSquares;
+	private final HashSet<String> _dictionary;
+	private final BoardSquare[][] _boardArray;
+	private final ArrayList<BoardSquare> _doubleLetterScores;
+	private final ArrayList<BoardSquare> _doubleWordScores;
+	private final ArrayList<BoardSquare> _tripleLetterScores;
+	private final ArrayList<BoardSquare> _tripleWordScores;
+	private final Tile[][] _tileArray;
+	private final ArrayList<Tile> _tilesOnBoard;
+	private final ArrayList<BoardSquare> _specialSquares;
 	private ImageView _diamondViewer;
 	private Boolean _gameIsPlaying;
 	private Referee _referee;
@@ -121,7 +120,7 @@ class ScrabbleGame {
 			for (int j = 0; j < _boardArray[1].length; j++) {
 				int xLayout = (i + ZEROETH_COLUMN_OFFSET) * GRID_FACTOR;
 				int yLayout = (j + ZEROETH_ROW_OFFSET) * GRID_FACTOR;
-				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, SquareIdentity.Normal, _boardPane, _labelPane);
+				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, _boardPane, _labelPane);
 				_boardArray[i][j] = boardSquare;
 			}
 		}
@@ -134,11 +133,7 @@ class ScrabbleGame {
 	}
 
 	Referee getReferee() {
-		if (_referee != null) {
-			return _referee;
-		} else {
-			return null;
-		}
+		return _referee;
 	}
 
 	Boolean getIsShiftDown() {
@@ -324,7 +319,7 @@ class ScrabbleGame {
 		// Create and add ghost or transparent overlay square for middle of board
 		int xLayout = X7 * GRID_FACTOR;
 		int yLayout = Y7 * GRID_FACTOR;
-		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, SquareIdentity.Normal, _boardPane, _labelPane);
+		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, _boardPane, _labelPane);
 		ghostSquare.setID(SquareIdentity.Ghost);
 		ghostSquare.setUpHoverResponse(this);
 
@@ -514,7 +509,7 @@ class ScrabbleGame {
 	}
 
 	private class PlayFadeHandler implements EventHandler<ActionEvent> {
-		private FadeTransition _fade;
+		private final FadeTransition _fade;
 
 		PlayFadeHandler(FadeTransition fade) {
 			_fade = fade;
@@ -551,145 +546,34 @@ class ScrabbleGame {
 		return status;
 	}
 
-	void collectPermutations(String word, ArrayList<String> validWords) {
+	ArrayList<String> validPermutationsOf(String word) {
+		ArrayList<String> validPermutations = new ArrayList<>();
+		if (word.isEmpty()) return validPermutations;
 
-		if (word.length() > 15 || word.length() <= 0) return;
+		ArrayList<Integer> indices =  new ArrayList<>();
+		for (int i = 0; i < word.length(); i++) { indices.add(i); }
 
-		for (int i = 0; i < word.length(); i++) {
-			String oneLetter = String.valueOf(word.charAt(i));
-			this.conditionalAdd(oneLetter, validWords);
-			if (word.length() > 1) {
+		permutationHelper("", word, indices, validPermutations);
+		return validPermutations;
+	}
 
-				for (int j = 0; j < word.length(); j++) {
-					if (j != i) {
-						String twoLetter = oneLetter + String.valueOf(word.charAt(j));
-						this.conditionalAdd(twoLetter, validWords);
-						if (word.length() > 2) {
+	private void permutationHelper(String accumulated, String word, ArrayList<Integer> indices, ArrayList<String> collector) {
+		if (indices.isEmpty()) return;
 
-							for (int k = 0; k < word.length(); k++) {
-								if (k != i && k != j) {
-									String threeLetter = twoLetter + String.valueOf(word.charAt(k));
-									this.conditionalAdd(threeLetter, validWords);
-									if (word.length() > 3) {
+		for (int i = 0; i < indices.size(); i++) {
+			String concat = accumulated + String.valueOf(word.charAt(indices.get(i)));
 
-										for (int l = 0; l < word.length(); l++) {
-											if (l != i && l != j && l != k) {
-												String fourLetter = threeLetter + String.valueOf(word.charAt(l));
-												this.conditionalAdd(fourLetter, validWords);
-												if (word.length() > 4) {
+			if (_dictionary.contains(concat) && !collector.contains(concat))
+				collector.add(concat);
 
-													for (int m = 0; m < word.length(); m++) {
-														if (m != i && m != j && m != k && m != l) {
-															String fiveLetter = fourLetter + String.valueOf(word.charAt(m));
-															this.conditionalAdd(fiveLetter, validWords);
-															if (word.length() > 5) {
+			ArrayList<Integer> remainder = new ArrayList<>(indices);
+			remainder.remove(i);
 
-																for (int n = 0; n < word.length(); n++) {
-																	if (n != i && n != j && n != k && n != l && n != m) {
-																		String sixLetter = fiveLetter + String.valueOf(word.charAt(n));
-																		this.conditionalAdd(sixLetter, validWords);
-																		if (word.length() > 6) {
-
-																			for (int o = 0; o < word.length(); o++) {
-																				if (o != i && o != j && o != k && o != l && o != m && o != n) {
-																					String sevenLetter = sixLetter + String.valueOf(word.charAt(o));
-																					this.conditionalAdd(sevenLetter, validWords);
-																					if (word.length() > 7) {
-
-																						for (int p = 0; p < word.length(); p++) {
-																							if (p != i && p != j && p != k && p != l && p != m && p != n && p != o) {
-																								String eightLetter = sevenLetter + String.valueOf(word.charAt(p));
-																								this.conditionalAdd(eightLetter, validWords);
-																								if (word.length() > 8) {
-
-																									for (int q = 0; q < word.length(); q++) {
-																										if (q != i && q != j && q != k && q != l && q != m && q != n && q != o && q != p) {
-																											String nineLetter = eightLetter + String.valueOf(word.charAt(q));
-																											this.conditionalAdd(nineLetter, validWords);
-																											if (word.length() > 9) {
-
-																												for (int r = 0; r < word.length(); r++) {
-																													if (r != i && r != j && r != k && r != l && r != m && r != n && r != o && r != p && r != q) {
-																														String tenLetter = nineLetter + String.valueOf(word.charAt(r));
-																														this.conditionalAdd(tenLetter, validWords);
-																														if (word.length() > 10) {
-
-																															for (int s = 0; s < word.length(); s++) {
-																																if (s != i && s != j && s != k && s != l && s != m && s != n && s != o && s != p && s != q && s != r) {
-																																	String elevenLetter = tenLetter + String.valueOf(word.charAt(s));
-																																	this.conditionalAdd(elevenLetter, validWords);
-																																	if (word.length() > 11) {
-
-																																		for (int t = 0; t < word
-																																				.length(); t++) {
-																																			if (t != i && t != j && t != k && t != l && t != m && t != n && t != o && t != p && t != q && t != r && t != s) {
-																																				String twelveLetter = elevenLetter + String.valueOf(word.charAt(t));
-																																				this.conditionalAdd(twelveLetter, validWords);
-																																				if (word.length() > 12) {
-
-																																					for (int u = 0; u < word.length(); u++) {
-																																						if (u != i && u != j && u != k && u != l && u != m && u != n && u != o && u != p && u != q && u != r && u != s && u != t) {
-																																							String thirteenLetter = twelveLetter + String.valueOf(word.charAt(u));
-																																							this.conditionalAdd(thirteenLetter, validWords);
-																																							if (word.length() > 13) {
-
-																																								for (int v = 0; v < word.length(); v++) {
-																																									if (v != i && v != j && v != k && v != l && v != m && v != n && v != o && v != p && v != q && v != r && v != s && v != t && v != u) {
-																																										String fourteenLetter = thirteenLetter + String.valueOf(word.charAt(v));
-																																										this.conditionalAdd(fourteenLetter, validWords);
-																																										if (word.length() > 14) {
-
-																																											for (int w = 0; w < word.length(); w++) {
-																																												if (w != i && w != j && w != k && w != l && w != m && w != n && w != o && w != p && w != q && w != r && w != s && w != t && w != u && w != v) {
-																																													String fifteenLetter = fourteenLetter + String.valueOf(word.charAt(w));
-																																													this.conditionalAdd(fifteenLetter, validWords);
-																																												}
-																																											}
-																																										}
-																																									}
-																																								}
-																																							}
-																																						}
-																																					}
-																																				}
-																																			}
-																																		}
-																																	}
-																																}
-																															}
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
+			permutationHelper(concat, word, remainder, collector);
 		}
 	}
 
 	void collectPrefixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
-		//_permutations = 0;
 		for (int i = 0; i < word.length(); i++) {
 			String oneLetter = String.valueOf(word.charAt(i));
 			boolean crossOne = false;
@@ -794,7 +678,6 @@ class ScrabbleGame {
 
 	
 	void collectSuffixes(String word, ArrayList<String> validWords, int permutationCap, HashMap<Integer, ArrayList<String>> invalidCross) {
-		//_permutations = 0;
 		for (int i = 0; i < word.length(); i++) {
 			String oneLetter = String.valueOf(word.charAt(i));
 			boolean crossOne = false;
@@ -895,10 +778,6 @@ class ScrabbleGame {
 				}
 			}
 		}
-	}
-	
-	private void conditionalAdd(String word, ArrayList<String> validWords) {
-		if (_dictionary.contains(word) && !validWords.contains(word)) validWords.add(word);
 	}
 
 	// *** @AI ***
@@ -1296,9 +1175,6 @@ class ScrabbleGame {
 		List<Tile> sorted = new ArrayList<>(rack);
 		sorted.sort(Comparator.comparing(Tile::getY));
 
-		System.out.printf("\nINITIAL letter order: %s\n", sorted.stream().map(Tile::getLetter).collect(Collectors.toList()));
-		System.out.printf("INITIAL index order: %s\n", sorted.stream().map(Tile::getY).collect(Collectors.toList()));
-
 		for (int i = 0; i < sorted.size() - 1; i++) {
 			Tile upperTile = sorted.get(i);
 			Tile lowerTile = sorted.get(i + 1);
@@ -1306,22 +1182,16 @@ class ScrabbleGame {
 			switch ((int) (Math.random() * 3)) {
 				case 0:
 				case 1:
-					System.out.printf("\n** PRE-SWAP, %s (%s) and %s (%s)", upperTile.getLetter(), upperTile.getY(), lowerTile.getLetter(), lowerTile.getY());
 					upperTile.moveDown(upperTile.getLetter());
 					lowerTile.moveUp(lowerTile.getLetter());
+
 					sorted.set(i + 1, upperTile);
 					sorted.set(i, lowerTile);
-					System.out.printf("\n** SWAPPED, now %s (%s) and %s (%s)\n", upperTile.getLetter(), upperTile.getY(), lowerTile.getLetter(), lowerTile.getY());
 					break;
 				case 2:
-					System.out.printf("\n** unswapped, %s (%s) and %s (%s)\n", upperTile.getLetter(), upperTile.getY(), lowerTile.getLetter(), lowerTile.getY());
 					break;
 			}
-			System.out.printf("\nLetter order: %s\n", sorted.stream().map(Tile::getLetter).collect(Collectors.toList()));
-			System.out.printf("Index order: %s\n", sorted.stream().map(Tile::getY).collect(Collectors.toList()));
 		}
-		System.out.printf("\nFINAL letter order: %s\n", sorted.stream().map(Tile::getLetter).collect(Collectors.toList()));
-		System.out.printf("FINAL index order: %s\n", sorted.stream().map(Tile::getY).collect(Collectors.toList()));
 
 		if (isPlayerOne) _playerOneRack = new ArrayList<>(sorted);
 		else _playerTwoRack = new ArrayList<>(sorted);

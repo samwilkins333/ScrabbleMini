@@ -11,12 +11,12 @@ import javafx.animation.*;
 import javafx.util.Duration;
 
 class Tile {
-	private String _letter;
-	private ImageView _tileViewer;
+	private final String _letter;
+	private final ImageView _tileViewer;
 	private Pane _boardPane;
 	private Boolean _tempPlacedOnBoard;
 
-	private int _value;
+	private final int _value;
 	private int _x;
 	private int _y;
 
@@ -637,7 +637,7 @@ class Tile {
 	}
 
 	private class RemoveIconsHandler implements EventHandler<ActionEvent> {
-		private WordAddition _outcome;
+		private final WordAddition _outcome;
 
 		RemoveIconsHandler(WordAddition outcome) {
 			_outcome = outcome;

@@ -1,7 +1,7 @@
 package Scrabble;
 
-import java.util.HashMap;
 import javafx.scene.paint.Color;
+import java.util.HashMap;
 
 class Constants {
 	

@@ -11,7 +11,7 @@ class Word {
 	private String _letters;
 	private int _value;
 	private int _originalValue;
-	private ArrayList<Tile> _tiles;
+	private final ArrayList<Tile> _tiles;
 	private ArrayList<Tile> _kernelTiles;
 	private ArrayList<Tile> _adjacentTiles;
 	private ArrayList<Word> _horizontalCrosses;
@@ -473,9 +473,9 @@ class Word {
 	}
 	
 	private class PlaceHandler implements EventHandler<ActionEvent> {
-		private int _x;
-		private int _y;
-		private Tile _thisTile;
+		private final int _x;
+		private final int _y;
+		private final Tile _thisTile;
 		
 		PlaceHandler(int x, int y, Tile thisTile) {
 			_x = x;
