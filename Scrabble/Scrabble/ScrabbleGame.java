@@ -617,150 +617,30 @@ public class ScrabbleGame {
 		return status;
 	}
 
-	public void collectPermutations(String word, ArrayList<String> validWords, int permutationCap, String id) {
-		//_permutations = 0;
-		if (word.length() > 15) {
-			//system.out.println("Word exceeds 15 letters - not equipped to permute");
-		} else if (word.length() == 0) {
-			if (Constants.PRINT_STATUS) {
-				//system.out.println("No word to permute");
-			}
-		} else if (word.length() > 0 && word.length() <= 15) {
-			
-			for (int i = 0; i < word.length(); i++) {
-				String oneLetter = String.valueOf(word.charAt(i));
-				this.conditionalAdd(oneLetter, validWords, id);
-				if (word.length() > 1 && permutationCap >= 1) {
-					
-					for (int j = 0; j < word.length(); j++) {
-						if (j != i) {
-							String twoLetter = oneLetter + String.valueOf(word.charAt(j));
-							this.conditionalAdd(twoLetter, validWords, id);
-							if (word.length() > 2 && permutationCap >= 2) {
-								
-								for (int k = 0; k < word.length(); k++) {
-									if (k != i && k != j) {
-										String threeLetter = twoLetter + String.valueOf(word.charAt(k));
-										this.conditionalAdd(threeLetter, validWords, id);
-										if (word.length() > 3 && permutationCap >= 3) {
-											
-											for (int l = 0; l < word.length(); l++) {
-												if (l != i && l != j && l != k) {
-													String fourLetter = threeLetter + String.valueOf(word.charAt(l));
-													this.conditionalAdd(fourLetter, validWords, id);
-													if (word.length() > 4 && permutationCap >= 4) {
-														
-														for (int m = 0; m < word.length(); m++) {
-															if (m != i && m != j && m != k && m != l) {
-																String fiveLetter = fourLetter + String.valueOf(word.charAt(m));
-																this.conditionalAdd(fiveLetter, validWords, id);
-																if (word.length() > 5 && permutationCap >= 5) {
-																	
-																	for (int n = 0; n < word.length(); n++) {
-																		if (n != i && n != j && n != k && n != l && n != m) {
-																			String sixLetter = fiveLetter + String.valueOf(word.charAt(n));
-																			this.conditionalAdd(sixLetter, validWords, id);
-																			if (word.length() > 6 && permutationCap >= 6) {
-																				
-																				for (int o = 0; o < word.length(); o++) {
-																					if (o != i && o != j && o != k && o != l && o != m && o != n) {
-																						String sevenLetter = sixLetter + String.valueOf(word.charAt(o));
-																						this.conditionalAdd(sevenLetter, validWords, id);
-																						if (word.length() > 7 && permutationCap >= 7) {
-																							
-																							for (int p = 0; p < word.length(); p++) {
-																								if (p != i && p != j && p != k && p != l && p != m && p != n && p != o) {
-																									String eightLetter = sevenLetter + String.valueOf(word.charAt(p));
-																									this.conditionalAdd(eightLetter, validWords, id);
-																									if (word.length() > 8 && permutationCap >= 8) {
-																										
-																										for (int q = 0; q < word.length(); q++) {
-																											if (q != i && q != j && q != k && q != l && q != m && q != n && q != o && q != p) {
-																												String nineLetter = eightLetter + String.valueOf(word.charAt(q));
-																												this.conditionalAdd(nineLetter, validWords, id);
-																												if (word.length() > 9 && permutationCap >= 9) {
-																													
-																													for (int r = 0; r < word.length(); r++) {
-																														if (r != i && r != j && r != k && r != l && r != m && r != n && r != o && r != p && r != q) {
-																															String tenLetter = nineLetter + String.valueOf(word.charAt(r));
-																															this.conditionalAdd(tenLetter, validWords, id);
-																															if (word.length() > 10 && permutationCap >= 10) {
-																																
-																																for (int s = 0; s < word.length(); s++) {
-																																	if (s != i && s != j && s != k && s != l && s != m && s != n && s != o && s != p && s != q && s != r) {
-																																		String elevenLetter = tenLetter + String.valueOf(word.charAt(s));
-																																		this.conditionalAdd(elevenLetter, validWords, id);
-																																		if (word.length() > 11 && permutationCap >= 11) {
-																																			
-																																			for (int t = 0; t < word
-																																					.length(); t++) {
-																																				if (t != i && t != j && t != k && t != l && t != m && t != n && t != o && t != p && t != q && t != r && t != s) {
-																																					String twelveLetter = elevenLetter + String.valueOf(word.charAt(t));
-																																					this.conditionalAdd(twelveLetter, validWords, id);
-																																					if (word.length() > 12 && permutationCap >= 12) {
-																																						
-																																						for (int u = 0; u < word.length(); u++) {
-																																							if (u != i && u != j && u != k && u != l && u != m && u != n && u != o && u != p && u != q && u != r && u != s && u != t) {
-																																								String thirteenLetter = twelveLetter + String.valueOf(word.charAt(u));
-																																								this.conditionalAdd(thirteenLetter, validWords, id);
-																																								if (word.length() > 13 && permutationCap >= 13) {
-																																									
-																																									for (int v = 0; v < word.length(); v++) {
-																																										if (v != i && v != j && v != k && v != l && v != m && v != n && v != o && v != p && v != q && v != r && v != s && v != t && v != u) {
-																																											String fourteenLetter = thirteenLetter + String.valueOf(word.charAt(v));
-																																											this.conditionalAdd(fourteenLetter, validWords, id);
-																																											if (word.length() > 14 && permutationCap >= 14) {
-																																												
-																																												for (int w = 0; w < word.length(); w++) {
-																																													if (w != i && w != j && w != k && w != l && w != m && w != n && w != o && w != p && w != q && w != r && w != s && w != t && w != u && w != v) {
-																																														String fifteenLetter = fourteenLetter + String.valueOf(word.charAt(w));
-																																														this.conditionalAdd(fifteenLetter, validWords, id);
-																																													}
-																																												}
-																																											}
-																																										}
-																																									}
-																																								}
-																																							}
-																																						}
-																																					}
-																																				}
-																																			}
-																																		}
-																																	}
-																																}
-																															}
-																														}
-																													}
-																												}
-																											}
-																										}
-																									}
-																								}
-																							}
-																						}
-																					}
-																				}
-																			}
-																		}
-																	}
-																}
-															}
-														}
-													}
-												}
-											}
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-		if (id == "VALID") {
-			//system.out.printf("\nBEST WORD = %s\n", this.getBestWord(validWords));
+	ArrayList<String> validPermutationsOf(String word) {
+		ArrayList<String> validPermutations = new ArrayList<>();
+		if (word.isEmpty()) return validPermutations;
+
+		ArrayList<Integer> indices =  new ArrayList<>();
+		for (int i = 0; i < word.length(); i++) { indices.add(i); }
+
+		permutationHelper("", word, indices, validPermutations);
+		return validPermutations;
+	}
+
+	private void permutationHelper(String accumulated, String word, ArrayList<Integer> indices, ArrayList<String> collector) {
+		if (indices.isEmpty()) return;
+
+		for (int i = 0; i < indices.size(); i++) {
+			String concat = accumulated + String.valueOf(word.charAt(indices.get(i)));
+
+			if (_dictionary.contains(concat) && !collector.contains(concat))
+				collector.add(concat);
+
+			ArrayList<Integer> remainder = new ArrayList<>(indices);
+			remainder.remove(i);
+
+			permutationHelper(concat, word, remainder, collector);
 		}
 	}
 

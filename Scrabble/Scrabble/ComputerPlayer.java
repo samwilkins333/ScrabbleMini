@@ -100,7 +100,7 @@ public class ComputerPlayer implements Playable {
 		int orientationRand = (int) (Math.random() * 3);
 		String orientation = "";
 		int value = 0;
-		_scrabbleGame.collectPermutations(_rack, _validStrings, 15, "VALID");
+		_validStrings = _scrabbleGame.validPermutationsOf(_rack);
 		for (int i = 0; i < _validStrings.size(); i++) {
 			String thisString = _validStrings.get(i);
 			Word bestWord = null;

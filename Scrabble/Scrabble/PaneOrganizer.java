@@ -19,7 +19,7 @@ import javafx.scene.effect.*;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 
 public class PaneOrganizer {
-	// ORIGINAL CONENT
+	// ORIGINAL CONTENT
 	private App _appClass;
 	private Stage _stage;
 	private Referee _referee;
