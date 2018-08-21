@@ -251,7 +251,7 @@ class Word {
 	}
 
 	void addToBoard() {
-		if (this.isPlayable()) {
+		if (isPlayable()) {
 			int numNewTiles = 0;
 			for (Tile thisTile : _tiles) {
 				int x = thisTile.getXIndex();

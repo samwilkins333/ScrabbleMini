@@ -41,7 +41,7 @@ class Constants {
 		TILE_INFO.put(26, new Alpha("Z", 1, 10));
 	}
 
-	static final String A = "_ABCDEFGHIJKLMNOPQRSTUVWQYZ";
+	static final String A = "_ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	
 	static final int GRID_FACTOR = 42;
 	static final int SCENE_WIDTH = (GRID_FACTOR + 5) * 31;

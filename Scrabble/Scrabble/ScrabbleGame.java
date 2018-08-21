@@ -465,13 +465,13 @@ class ScrabbleGame {
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, COLLECTION_ONE_HORIZONTAL_OFFSET, i + COLLECTION_VERTICAL_OFFSET, this, PlayerNum.One);
 			_playerOneRack.add(tile);
-			tile.getTileViewer().setOpacity(0.5);
+			tile.getTileViewer().setOpacity(0);
 		}
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, COLLECTION_TWO_HORIZONTAL_OFFSET, i + COLLECTION_VERTICAL_OFFSET, this, PlayerNum.Two);
 			_playerTwoRack.add(tile);
-			tile.getTileViewer().setOpacity(0.5);
+			tile.getTileViewer().setOpacity(0);
 		}
 	}
 
@@ -847,7 +847,7 @@ class ScrabbleGame {
 	}
 
 	void addTileToBoardArrayAt(Tile tile, int x, int y) {
-		if (!this.isBetween(x, y)) return;
+		if (!isBetween(x, y)) return;
 		_tileArray[x][y] = tile;
 	}
 
@@ -894,13 +894,14 @@ class ScrabbleGame {
 	}
 
 	void shiftTiles(PlayerNum identity) {
-		ArrayList<Tile> rack = identity == PlayerNum.One ? _playerOneRack : _playerTwoRack;
-
+		boolean isPlayerOne = identity == PlayerNum.One;
+		ArrayList<Tile> rack = isPlayerOne ? _playerOneRack : _playerTwoRack;
+		int x = isPlayerOne ? COLLECTION_ONE_HORIZONTAL_OFFSET : COLLECTION_TWO_HORIZONTAL_OFFSET;
 		if (rack.isEmpty()) return;
 
 		for (int i = 0; i < rack.size(); i++) {
 			Tile thisTile = rack.get(i);
-			thisTile.setLoc(i + COLLECTION_VERTICAL_OFFSET);
+			thisTile.setLoc(x, i + COLLECTION_VERTICAL_OFFSET);
 		}
 	}
 

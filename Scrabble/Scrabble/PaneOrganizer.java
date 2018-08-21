@@ -270,7 +270,7 @@ class PaneOrganizer {
 		double y = Y12;
 		m.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		m.getTileViewer().setOpacity(0.0);
-		m.setCheckLoc(x, y);
+		m.setImageViewLoc(m.getCheckViewer(), x, y);
 
 		_scaleM = new ScaleTransition(Duration.seconds(0.6), m.getTileViewer());
 		_scaleM.setByX(-0.60);
@@ -316,7 +316,7 @@ class PaneOrganizer {
 		x = X4 - 0.35;
 		i1.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		i1.getTileViewer().setOpacity(0.0);
-		i1.setCheckLoc(x, y);
+		i1.setImageViewLoc(i1.getCheckViewer(), x, y);
 
 		_scaleI1 = new ScaleTransition(Duration.seconds(0.6), i1.getTileViewer());
 		_scaleI1.setByX(-0.60);
@@ -362,7 +362,7 @@ class PaneOrganizer {
 		x = X5 - 0.35;
 		n.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		n.getTileViewer().setOpacity(0.0);
-		n.setCheckLoc(x, y);
+		n.setImageViewLoc(n.getCheckViewer(), x, y);
 
 		_scaleN = new ScaleTransition(Duration.seconds(0.6), n.getTileViewer());
 		_scaleN.setByX(-0.60);
@@ -408,7 +408,7 @@ class PaneOrganizer {
 		x = X6 - 0.35;
 		i2.add(_root, x, y, _scrabbleGame, PlayerNum.Neither);
 		i2.getTileViewer().setOpacity(0.0);
-		i2.setCheckLoc(x, y);
+		i2.setImageViewLoc(i2.getCheckViewer(), x, y);
 
 		_scaleI2 = new ScaleTransition(Duration.seconds(0.6), i2.getCheckViewer());
 		_scaleI2.setByX(-0.60);
@@ -1316,7 +1316,7 @@ class PaneOrganizer {
 		if (wordValue > 9 && wordValue <= 99) offsetFactor = 2;
 		else if (wordValue > 99 && wordValue <= 999) offsetFactor = 3;
 		else if (wordValue > 999) offsetFactor = 4;
-		value.setLayoutX(315 - 15 - 25 * offsetFactor);
+		value.setLayoutX(300 - 25 * offsetFactor);
 
 		// Graphically add new word and value labels
 		Pane wc = _referee.getCurrentPlayer() == PlayerNum.One ? _wordContainer1 : _wordContainer2;
@@ -1518,7 +1518,7 @@ class PaneOrganizer {
 
 	void manageDraw(PlayerNum num) {
 		_justFilled = false;
-		if (_scrabbleGame.getPlayerRack(num).size() < 7 && num == PlayerNum.One) {
+		if (_scrabbleGame.getPlayerRack(num).size() < 7) {
 			_scrabbleGame.refillRack(num);
 			_justFilled = true;
 		}

@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import javafx.animation.*;
 import javafx.util.Duration;
 
+import static Scrabble.Constants.*;
+
 class Tile {
 	private final String _letter;
 	private final ImageView _tileViewer;
@@ -58,7 +60,7 @@ class Tile {
 	Tile(int letter) {
 		// Create stock new tile image view
 		_tileViewer = new ImageView();
-		_tileViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
+		_tileViewer.setFitWidth(GRID_FACTOR - (TILE_PADDING * 2));
 		_tileViewer.setPreserveRatio(true);
 		_tileViewer.setCache(true);
 
@@ -78,7 +80,7 @@ class Tile {
 		_tileAffiliation = PlayerNum.Neither;
 		_currentPlayer = null;
 
-		Alpha t = Constants.TILE_INFO.get(letter);
+		Alpha t = TILE_INFO.get(letter);
 		_letter = t.getLetter();
 		_value = t.getValue();
 		_tileViewer.setImage(t.getImage());
@@ -150,13 +152,13 @@ class Tile {
 	}
 
 	private void setUpOverlapFlash() {
-		_overlapFlash = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION), _tileViewer);
+		_overlapFlash = new FadeTransition(Duration.seconds(FEEDBACK_FLASH_DURATION), _tileViewer);
 		_overlapFlash.setFromValue(1.0);
 		_overlapFlash.setToValue(0.0);
 		_overlapFlash.setAutoReverse(true);
 		_overlapFlash.setCycleCount(Animation.INDEFINITE);
 
-		_overlapScale = new ScaleTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION), _tileViewer);
+		_overlapScale = new ScaleTransition(Duration.seconds(FEEDBACK_FLASH_DURATION), _tileViewer);
 		_overlapScale.setByX(0.2);
 		_overlapScale.setByY(0.2);
 		_overlapScale.setAutoReverse(true);
@@ -240,17 +242,17 @@ class Tile {
 			// If the user releases on a played piece or manually sends the piece back to the rack via double click...
 			if (_scrabbleGame.boardSquareOccupiedAt(_xIndex, _yIndex) || event.getClickCount() == 2) {
 				// ...update locations of both the tile and all of its associated flash overlays
-				_tileViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-				_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+				_tileViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+				_tileViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-				_checkViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-				_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+				_checkViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+				_checkViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-				_xViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-				_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+				_xViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+				_xViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-				_minusViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-				_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+				_minusViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+				_minusViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
 				_overlapFlash.stop();
 				_overlapScale.stop();
@@ -305,25 +307,25 @@ class Tile {
 		double centerX = this.getCenterX();
 		double centerY = this.getCenterY();
 
-		if (centerX >= Constants.X0 * Constants.GRID_FACTOR
-				&& centerX < Constants.X15 * Constants.GRID_FACTOR
-				&& centerY >= Constants.Y0 * Constants.GRID_FACTOR
-				&& centerY < Constants.Y15 * Constants.GRID_FACTOR) {
+		if (centerX >= X0 * GRID_FACTOR
+				&& centerX < X15 * GRID_FACTOR
+				&& centerY >= Y0 * GRID_FACTOR
+				&& centerY < Y15 * GRID_FACTOR) {
 			status = false;
 		}
 
 		if (status) {
-			_tileViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+			_tileViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+			_tileViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-			_checkViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+			_checkViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+			_checkViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-			_xViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+			_xViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+			_xViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-			_minusViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+			_minusViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+			_minusViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
 			_snappedX = true;
 			_snappedY = true;
@@ -341,64 +343,64 @@ class Tile {
 
 		switch (num) {
 			case 0:
-				xMin = Constants.X0 * Constants.GRID_FACTOR;
-				xMax = Constants.X1 * Constants.GRID_FACTOR;
+				xMin = X0 * GRID_FACTOR;
+				xMax = X1 * GRID_FACTOR;
 				break;
 			case 1:
-				xMin = Constants.X1 * Constants.GRID_FACTOR;
-				xMax = Constants.X2 * Constants.GRID_FACTOR;
+				xMin = X1 * GRID_FACTOR;
+				xMax = X2 * GRID_FACTOR;
 				break;
 			case 2:
-				xMin = Constants.X2 * Constants.GRID_FACTOR;
-				xMax = Constants.X3 * Constants.GRID_FACTOR;
+				xMin = X2 * GRID_FACTOR;
+				xMax = X3 * GRID_FACTOR;
 				break;
 			case 3:
-				xMin = Constants.X3 * Constants.GRID_FACTOR;
-				xMax = Constants.X4 * Constants.GRID_FACTOR;
+				xMin = X3 * GRID_FACTOR;
+				xMax = X4 * GRID_FACTOR;
 				break;
 			case 4:
-				xMin = Constants.X4 * Constants.GRID_FACTOR;
-				xMax = Constants.X5 * Constants.GRID_FACTOR;
+				xMin = X4 * GRID_FACTOR;
+				xMax = X5 * GRID_FACTOR;
 				break;
 			case 5:
-				xMin = Constants.X5 * Constants.GRID_FACTOR;
-				xMax = Constants.X6 * Constants.GRID_FACTOR;
+				xMin = X5 * GRID_FACTOR;
+				xMax = X6 * GRID_FACTOR;
 				break;
 			case 6:
-				xMin = Constants.X6 * Constants.GRID_FACTOR;
-				xMax = Constants.X7 * Constants.GRID_FACTOR;
+				xMin = X6 * GRID_FACTOR;
+				xMax = X7 * GRID_FACTOR;
 				break;
 			case 7:
-				xMin = Constants.X7 * Constants.GRID_FACTOR;
-				xMax = Constants.X8 * Constants.GRID_FACTOR;
+				xMin = X7 * GRID_FACTOR;
+				xMax = X8 * GRID_FACTOR;
 				break;
 			case 8:
-				xMin = Constants.X8 * Constants.GRID_FACTOR;
-				xMax = Constants.X9 * Constants.GRID_FACTOR;
+				xMin = X8 * GRID_FACTOR;
+				xMax = X9 * GRID_FACTOR;
 				break;
 			case 9:
-				xMin = Constants.X9 * Constants.GRID_FACTOR;
-				xMax = Constants.X10 * Constants.GRID_FACTOR;
+				xMin = X9 * GRID_FACTOR;
+				xMax = X10 * GRID_FACTOR;
 				break;
 			case 10:
-				xMin = Constants.X10 * Constants.GRID_FACTOR;
-				xMax = Constants.X11 * Constants.GRID_FACTOR;
+				xMin = X10 * GRID_FACTOR;
+				xMax = X11 * GRID_FACTOR;
 				break;
 			case 11:
-				xMin = Constants.X11 * Constants.GRID_FACTOR;
-				xMax = Constants.X12 * Constants.GRID_FACTOR;
+				xMin = X11 * GRID_FACTOR;
+				xMax = X12 * GRID_FACTOR;
 				break;
 			case 12:
-				xMin = Constants.X12 * Constants.GRID_FACTOR;
-				xMax = Constants.X13 * Constants.GRID_FACTOR;
+				xMin = X12 * GRID_FACTOR;
+				xMax = X13 * GRID_FACTOR;
 				break;
 			case 13:
-				xMin = Constants.X13 * Constants.GRID_FACTOR;
-				xMax = Constants.X14 * Constants.GRID_FACTOR;
+				xMin = X13 * GRID_FACTOR;
+				xMax = X14 * GRID_FACTOR;
 				break;
 			case 14:
-				xMin = Constants.X14 * Constants.GRID_FACTOR;
-				xMax = Constants.X15 * Constants.GRID_FACTOR;
+				xMin = X14 * GRID_FACTOR;
+				xMax = X15 * GRID_FACTOR;
 				break;
 		}
 
@@ -407,10 +409,10 @@ class Tile {
 		if (this.getCenterX() >= xMin && this.getCenterX() < xMax) hasBeenSet = true;
 
 		if (hasBeenSet) {
-			_tileViewer.setLayoutX(xMin + Constants.TILE_PADDING);
-			_checkViewer.setLayoutX(xMin + Constants.TILE_PADDING);
-			_xViewer.setLayoutX(xMin + Constants.TILE_PADDING);
-			_minusViewer.setLayoutX(xMin + Constants.TILE_PADDING);
+			_tileViewer.setLayoutX(xMin + TILE_PADDING);
+			_checkViewer.setLayoutX(xMin + TILE_PADDING);
+			_xViewer.setLayoutX(xMin + TILE_PADDING);
+			_minusViewer.setLayoutX(xMin + TILE_PADDING);
 			_snappedX = true;
 		}
 	}
@@ -421,64 +423,64 @@ class Tile {
 
 		switch (num) {
 			case 0:
-				yMin = Constants.Y0 * Constants.GRID_FACTOR;
-				yMax = Constants.Y1 * Constants.GRID_FACTOR;
+				yMin = Y0 * GRID_FACTOR;
+				yMax = Y1 * GRID_FACTOR;
 				break;
 			case 1:
-				yMin = Constants.Y1 * Constants.GRID_FACTOR;
-				yMax = Constants.Y2 * Constants.GRID_FACTOR;
+				yMin = Y1 * GRID_FACTOR;
+				yMax = Y2 * GRID_FACTOR;
 				break;
 			case 2:
-				yMin = Constants.Y2 * Constants.GRID_FACTOR;
-				yMax = Constants.Y3 * Constants.GRID_FACTOR;
+				yMin = Y2 * GRID_FACTOR;
+				yMax = Y3 * GRID_FACTOR;
 				break;
 			case 3:
-				yMin = Constants.Y3 * Constants.GRID_FACTOR;
-				yMax = Constants.Y4 * Constants.GRID_FACTOR;
+				yMin = Y3 * GRID_FACTOR;
+				yMax = Y4 * GRID_FACTOR;
 				break;
 			case 4:
-				yMin = Constants.Y4 * Constants.GRID_FACTOR;
-				yMax = Constants.Y5 * Constants.GRID_FACTOR;
+				yMin = Y4 * GRID_FACTOR;
+				yMax = Y5 * GRID_FACTOR;
 				break;
 			case 5:
-				yMin = Constants.Y5 * Constants.GRID_FACTOR;
-				yMax = Constants.Y6 * Constants.GRID_FACTOR;
+				yMin = Y5 * GRID_FACTOR;
+				yMax = Y6 * GRID_FACTOR;
 				break;
 			case 6:
-				yMin = Constants.Y6 * Constants.GRID_FACTOR;
-				yMax = Constants.Y7 * Constants.GRID_FACTOR;
+				yMin = Y6 * GRID_FACTOR;
+				yMax = Y7 * GRID_FACTOR;
 				break;
 			case 7:
-				yMin = Constants.Y7 * Constants.GRID_FACTOR;
-				yMax = Constants.Y8 * Constants.GRID_FACTOR;
+				yMin = Y7 * GRID_FACTOR;
+				yMax = Y8 * GRID_FACTOR;
 				break;
 			case 8:
-				yMin = Constants.Y8 * Constants.GRID_FACTOR;
-				yMax = Constants.Y9 * Constants.GRID_FACTOR;
+				yMin = Y8 * GRID_FACTOR;
+				yMax = Y9 * GRID_FACTOR;
 				break;
 			case 9:
-				yMin = Constants.Y9 * Constants.GRID_FACTOR;
-				yMax = Constants.Y10 * Constants.GRID_FACTOR;
+				yMin = Y9 * GRID_FACTOR;
+				yMax = Y10 * GRID_FACTOR;
 				break;
 			case 10:
-				yMin = Constants.Y10 * Constants.GRID_FACTOR;
-				yMax = Constants.Y11 * Constants.GRID_FACTOR;
+				yMin = Y10 * GRID_FACTOR;
+				yMax = Y11 * GRID_FACTOR;
 				break;
 			case 11:
-				yMin = Constants.Y11 * Constants.GRID_FACTOR;
-				yMax = Constants.Y12 * Constants.GRID_FACTOR;
+				yMin = Y11 * GRID_FACTOR;
+				yMax = Y12 * GRID_FACTOR;
 				break;
 			case 12:
-				yMin = Constants.Y12 * Constants.GRID_FACTOR;
-				yMax = Constants.Y13 * Constants.GRID_FACTOR;
+				yMin = Y12 * GRID_FACTOR;
+				yMax = Y13 * GRID_FACTOR;
 				break;
 			case 13:
-				yMin = Constants.Y13 * Constants.GRID_FACTOR;
-				yMax = Constants.Y14 * Constants.GRID_FACTOR;
+				yMin = Y13 * GRID_FACTOR;
+				yMax = Y14 * GRID_FACTOR;
 				break;
 			case 14:
-				yMin = Constants.Y14 * Constants.GRID_FACTOR;
-				yMax = Constants.Y15 * Constants.GRID_FACTOR;
+				yMin = Y14 * GRID_FACTOR;
+				yMax = Y15 * GRID_FACTOR;
 				break;
 			}
 
@@ -487,10 +489,10 @@ class Tile {
 		if (this.getCenterY() >= yMin && this.getCenterY() < yMax) hasBeenSet = true;
 
 		if (hasBeenSet) {
-			_tileViewer.setLayoutY(yMin + Constants.TILE_PADDING);
-			_checkViewer.setLayoutY(yMin + Constants.TILE_PADDING);
-			_xViewer.setLayoutY(yMin + Constants.TILE_PADDING);
-			_minusViewer.setLayoutY(yMin + Constants.TILE_PADDING);
+			_tileViewer.setLayoutY(yMin + TILE_PADDING);
+			_checkViewer.setLayoutY(yMin + TILE_PADDING);
+			_xViewer.setLayoutY(yMin + TILE_PADDING);
+			_minusViewer.setLayoutY(yMin + TILE_PADDING);
 			_snappedY = true;
 		}
 	}
@@ -509,7 +511,7 @@ class Tile {
 		_pieceShadow.setRadius(120);
 		_pieceShadow.setOffsetX(4);
 		_pieceShadow.setOffsetY(4);
-		_pieceShadow.setColor(Constants.SHADOW_FILL);
+		_pieceShadow.setColor(SHADOW_FILL);
 		_pieceShadow.setSpread(0.0);
 		_pieceShadow.setHeight(25);
 		_pieceShadow.setWidth(25);
@@ -530,8 +532,8 @@ class Tile {
 
 		_tileAffiliation = tileAffiliation;
 
-		_tileViewer.setLayoutX(x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_tileViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_tileViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
+		_tileViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
 
 		_boardPane = boardPane;
 		_boardPane.getChildren().add(_tileViewer);
@@ -541,17 +543,17 @@ class Tile {
 		if (!this.isBetween(x, y)) return;
 
 		// If within the boundaries, position the tile view and all of its associated overlay views at the specified indices
-		_tileViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_tileViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_tileViewer.setLayoutX((ZEROETH_COLUMN_OFFSET + x) * GRID_FACTOR + TILE_PADDING);
+		_tileViewer.setLayoutY((ZEROETH_ROW_OFFSET + y) * GRID_FACTOR + TILE_PADDING);
 
-		_checkViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_checkViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_checkViewer.setLayoutX((ZEROETH_COLUMN_OFFSET + x) * GRID_FACTOR + TILE_PADDING);
+		_checkViewer.setLayoutY((ZEROETH_ROW_OFFSET + y) * GRID_FACTOR + TILE_PADDING);
 
-		_minusViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_minusViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_minusViewer.setLayoutX((ZEROETH_COLUMN_OFFSET + x) * GRID_FACTOR + TILE_PADDING);
+		_minusViewer.setLayoutY((ZEROETH_ROW_OFFSET + y) * GRID_FACTOR + TILE_PADDING);
 
-		_xViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_xViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_xViewer.setLayoutX((ZEROETH_COLUMN_OFFSET + x) * GRID_FACTOR + TILE_PADDING);
+		_xViewer.setLayoutY((ZEROETH_ROW_OFFSET + y) * GRID_FACTOR + TILE_PADDING);
 
 		_tempPlacedOnBoard = true;
 
@@ -564,16 +566,16 @@ class Tile {
 
 	private void setUpFlash() {
 		_checkViewer = new ImageView(new Image("Images/Interaction Feedback/greencheck.png"));
-		_checkViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
-		_checkViewer.setLayoutX(Constants.GRID_FACTOR * 5);
-		_checkViewer.setLayoutY(Constants.GRID_FACTOR * 4);
+		_checkViewer.setFitWidth(GRID_FACTOR - (TILE_PADDING * 2));
+		_checkViewer.setLayoutX(GRID_FACTOR * 5);
+		_checkViewer.setLayoutY(GRID_FACTOR * 4);
 		_checkViewer.setOpacity(0);
 		_checkViewer.setCache(true);
 		_checkViewer.setPreserveRatio(true);
-		_checkViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_checkViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+		_checkViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-		_addedFlash = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION), _checkViewer);
+		_addedFlash = new FadeTransition(Duration.seconds(FEEDBACK_FLASH_DURATION), _checkViewer);
 		_addedFlash.setFromValue(1.0);
 		_addedFlash.setToValue(0.0);
 		_addedFlash.setAutoReverse(false);
@@ -581,16 +583,16 @@ class Tile {
 		_addedFlash.setOnFinished(new RemoveIconsHandler(WordAddition.Success));
 
 		_xViewer = new ImageView(new Image("Images/Interaction Feedback/redx.png"));
-		_xViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
-		_xViewer.setLayoutX(Constants.GRID_FACTOR * 5);
-		_xViewer.setLayoutY(Constants.GRID_FACTOR * 4);
+		_xViewer.setFitWidth(GRID_FACTOR - (TILE_PADDING * 2));
+		_xViewer.setLayoutX(GRID_FACTOR * 5);
+		_xViewer.setLayoutY(GRID_FACTOR * 4);
 		_xViewer.setOpacity(0);
 		_xViewer.setCache(true);
 		_xViewer.setPreserveRatio(true);
-		_xViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_xViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+		_xViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-		_failedFlash = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION), _xViewer);
+		_failedFlash = new FadeTransition(Duration.seconds(FEEDBACK_FLASH_DURATION), _xViewer);
 		_failedFlash.setFromValue(1.0);
 		_failedFlash.setToValue(0.0);
 		_failedFlash.setAutoReverse(false);
@@ -598,16 +600,16 @@ class Tile {
 		_failedFlash.setOnFinished(new RemoveIconsHandler(WordAddition.Failure));
 
 		_minusViewer = new ImageView(new Image("Images/Interaction Feedback/yellowminus.png"));
-		_minusViewer.setFitWidth(Constants.GRID_FACTOR - (Constants.TILE_PADDING * 2));
-		_minusViewer.setLayoutX(Constants.GRID_FACTOR * 5);
-		_minusViewer.setLayoutY(Constants.GRID_FACTOR * 4);
+		_minusViewer.setFitWidth(GRID_FACTOR - (TILE_PADDING * 2));
+		_minusViewer.setLayoutX(GRID_FACTOR * 5);
+		_minusViewer.setLayoutY(GRID_FACTOR * 4);
 		_minusViewer.setOpacity(0);
 		_minusViewer.setCache(true);
 		_minusViewer.setPreserveRatio(true);
-		_minusViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_minusViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+		_minusViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 
-		_partialFlash = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION), _minusViewer);
+		_partialFlash = new FadeTransition(Duration.seconds(FEEDBACK_FLASH_DURATION), _minusViewer);
 		_partialFlash.setFromValue(1.0);
 		_partialFlash.setToValue(0.0);
 		_partialFlash.setAutoReverse(false);
@@ -662,21 +664,14 @@ class Tile {
 
 	}
 
-	void setLoc(int y) {
-		_x = Constants.COLLECTION_ONE_HORIZONTAL_OFFSET;
+	void setLoc(int x, int y) {
+		_x = x;
 		_y = y;
 
-		_tileViewer.setLayoutX(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_tileViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-
-		_checkViewer.setLayoutX(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_checkViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-
-		_minusViewer.setLayoutX(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_minusViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-
-		_xViewer.setLayoutX(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_xViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		setImageViewLoc(_tileViewer, x, y);
+		setImageViewLoc(_checkViewer, x, y);
+		setImageViewLoc(_minusViewer, x, y);
+		setImageViewLoc(_xViewer, x, y);
 
 		_xIndex = -1;
 		_yIndex = -1;
@@ -686,9 +681,9 @@ class Tile {
 		return _checkViewer;
 	}
 	
-	void setCheckLoc(double x, double y) {
-		_checkViewer.setLayoutX(x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_checkViewer.setLayoutY(y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+	void setImageViewLoc(ImageView view, double x, double y) {
+		view.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
+		view.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
 	}
 
 	int getY() {
@@ -734,10 +729,10 @@ class Tile {
 	void moveDown(String letter) {
 		if (_xIndex == -1 && _yIndex == -1) {
 			_y++;
-			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+			_tileViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
+			_checkViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
+			_minusViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
+			_xViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 		} else {
 			System.out.printf("\nNOT INCREMENTED! %s had indices (%s, %s)", letter, _xIndex, _yIndex);
 		}
@@ -746,10 +741,10 @@ class Tile {
 	void moveUp(String letter) {
 		if (_xIndex == -1 && _yIndex == -1) {
 			_y--;
-			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_checkViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_minusViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_xViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+			_tileViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
+			_checkViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
+			_minusViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
+			_xViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 		} else {
 			System.out.printf("\nNOT INCREMENTED! %s had indices (%s, %s)", letter, _xIndex, _yIndex);
 		}
@@ -760,8 +755,8 @@ class Tile {
 	}
 
 	void reset() {
-		_tileViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-		_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_tileViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
+		_tileViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
 		_xIndex = -1;
 		_yIndex = -1;
 		_tempPlacedOnBoard = false;

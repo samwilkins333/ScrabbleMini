@@ -111,14 +111,14 @@ public class AIPlayer implements Playable {
 					// 2 : 1 weighted preference toward horizontal
 					case 1:
 					case 2:
-						orientation = WordOrientation.Horizontal;
+						orientation = WordOrientation.Vertical;
 						x = 7;
 						y = 7 - j;
 						break;
 					default:
 						orientation = WordOrientation.Horizontal;
-						x = 7;
-						y = 7 - j;
+						x = 7 - j;
+						y = 7;
 						break;
 				}
 				value = _scrabbleGame.getValueFromString(thisString, x, y, orientation);
