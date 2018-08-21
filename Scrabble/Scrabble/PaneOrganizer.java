@@ -1388,8 +1388,7 @@ class PaneOrganizer {
 		// Display GUI feedback indicating the success for word
 		newestWord.playFlashes(WordAddition.Success);
 
-
-		// Play pencil rotation animation to indicate completion of writing
+    	// Play pencil rotation animation to indicate completion of writing
 		_rtPencil.play();
 
 		//Initiate next move
