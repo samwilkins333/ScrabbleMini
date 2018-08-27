@@ -526,7 +526,7 @@ class ScrabbleGame {
 	private void setUpDictionary() {
 		InputStream dictionaryText = this.getClass().getResourceAsStream("dictionary.txt");
 		Scanner _scanner = new Scanner(dictionaryText);
-		while (_scanner.hasNext()) _dictionary.add(_scanner.next());
+		while (_scanner.hasNext()) _dictionary.add(_scanner.next().toUpperCase());
 		_scanner.close();
 	}
 
