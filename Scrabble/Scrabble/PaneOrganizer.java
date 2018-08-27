@@ -797,7 +797,7 @@ public class PaneOrganizer {
 		_playerOneScore.setOpacity(1.0);
 		_playerOneScore.setTextFill(Constants.GRAPHITE);
 		// System.out.println(16);
-		_playerOneScore.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_POST_IT));
+		_playerOneScore.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_POST_IT));
 		_playerOneScore.setLayoutY(Constants.GRID_FACTOR * 6.1);
 		_playerOneScore.setLayoutX(Constants.GRID_FACTOR * 5.7);
 		// _playerOneScore.setRotate(-15);
@@ -816,7 +816,7 @@ public class PaneOrganizer {
 		_playerTwoScore.setOpacity(1.0);
 		// _playerTwoScore.setRotate(15);
 		_playerTwoScore.setTextFill(Constants.GRAPHITE);
-		_playerTwoScore.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_POST_IT));
+		_playerTwoScore.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_POST_IT));
 		_playerTwoScore.setLayoutY(Constants.GRID_FACTOR * 4.1);
 		_playerTwoScore.setLayoutX(Constants.GRID_FACTOR * 7.9);
 		_playerTwoScore.setOnMousePressed(new ScorePaneHandler("IN"));
@@ -1066,7 +1066,7 @@ public class PaneOrganizer {
 						PaneOrganizer.this.updateLabels();
 						Label word = new Label(newestWord.getLetters());
 						word.setTextFill(Constants.GREEN);
-						word.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+						word.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 						word.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() - 1));
 						word.setLayoutX(15);
 						_playedWords.add(word);
@@ -1081,7 +1081,7 @@ public class PaneOrganizer {
 							digitmult = 3;
 						}
 						value.setTextFill(Constants.GREEN);
-						value.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+						value.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 						value.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() - 1));
 						value.setLayoutX(315 - 15 - 25 * digitmult);
 
@@ -1096,7 +1096,7 @@ public class PaneOrganizer {
 							Word thisCross = crosses.get(i);
 							Label newCrossWord = new Label(thisCross.getLetters());
 							newCrossWord.setTextFill(Constants.GREEN);
-							newCrossWord.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+							newCrossWord.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 							newCrossWord
 									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossWord.setLayoutX(15);
@@ -1111,7 +1111,7 @@ public class PaneOrganizer {
 							Label newCrossValue = new Label(String.valueOf(crossValue));
 							_playedWords.add(newCrossValue);
 							newCrossValue.setTextFill(Constants.GREEN);
-							newCrossValue.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+							newCrossValue.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 							newCrossValue
 									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossValue.setLayoutX(315 - 15 - 25 * digitmult);
@@ -1236,7 +1236,7 @@ public class PaneOrganizer {
 		PaneOrganizer.this.updateLabels();
 		Label word = new Label(newestWord.getLetters());
 		word.setTextFill(Constants.GREEN);
-		word.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+		word.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 		word.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() - 1));
 		word.setLayoutX(15);
 		_playedWords.add(word);
@@ -1251,7 +1251,7 @@ public class PaneOrganizer {
 			digitmult = 3;
 		}
 		value.setTextFill(Constants.GREEN);
-		value.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+		value.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 		value.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() - 1));
 		value.setLayoutX(315 - 15 - 25 * digitmult);
 
@@ -1268,7 +1268,7 @@ public class PaneOrganizer {
 				Word thisCross = crosses.get(i);
 				Label newCrossWord = new Label(thisCross.getLetters());
 				newCrossWord.setTextFill(Constants.GREEN);
-				newCrossWord.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+				newCrossWord.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 				newCrossWord.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 				newCrossWord.setLayoutX(15);
 				_playedWords.add(newCrossWord);
@@ -1284,7 +1284,7 @@ public class PaneOrganizer {
 				Label newCrossValue = new Label(String.valueOf(crossValue));
 				_playedWords.add(newCrossValue);
 				newCrossValue.setTextFill(Constants.GREEN);
-				newCrossValue.setFont(Font.loadFont(Constants.DOMESTIC_MANNERS, Constants.FONT_SIZE_WORD_LIST));
+				newCrossValue.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 				newCrossValue.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 				newCrossValue.setLayoutX(315 - 15 - 25 * digitmult);
 				if (_referee.currentPlayer() == "PLAYER ONE") {
@@ -1468,7 +1468,6 @@ public class PaneOrganizer {
 	}
 
 	public void reset() {
-		// //system.out.print(Constants.ESC + "2J");
 		_appClass.start(_stage);
 	}
 

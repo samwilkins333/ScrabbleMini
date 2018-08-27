@@ -18,8 +18,7 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
 	    PaneOrganizer organizer = new PaneOrganizer(this, stage);
-	    Scene scene = new Scene(organizer.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT);
-	    stage.setScene(scene);
+	    stage.setScene(new Scene(organizer.getRoot(), Constants.SCENE_WIDTH, Constants.SCENE_HEIGHT));
         stage.setWidth(Constants.SCENE_WIDTH);
         stage.setResizable(false);
 	    stage.setTitle("Scrabble Mini");
@@ -28,10 +27,10 @@ public class App extends Application {
 
     /**
      * Main line to initialize application
-     * @param argv
+     * @param argv initialization arguments
      */
     public static void main(String[] argv) {
-    		System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Scrabble Mini");
+        System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Scrabble Mini");
         launch(argv);
     }
     
