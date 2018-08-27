@@ -254,7 +254,7 @@ public class PaneOrganizer {
 		Tile m = new Tile(13);
 		double x = Constants.X3 - 0.3;
 		double y = Constants.Y12;
-		m.add(_root, x, y, _scrabbleGame, "NONE");
+		m.add(_root, x, y, _scrabbleGame, PlayerNumber.None);
 		m.getTileViewer().setOpacity(0.0);
 		m.setCheckLoc(x, y);
 
@@ -290,7 +290,7 @@ public class PaneOrganizer {
 
 		Tile i1 = new Tile(9);
 		x = Constants.X4 - 0.35;
-		i1.add(_root, x, y, _scrabbleGame, "NONE");
+		i1.add(_root, x, y, _scrabbleGame, PlayerNumber.None);
 		i1.getTileViewer().setOpacity(0.0);
 		i1.setCheckLoc(x, y);
 
@@ -326,7 +326,7 @@ public class PaneOrganizer {
 
 		Tile n = new Tile(14);
 		x = Constants.X5 - 0.35;
-		n.add(_root, x, y, _scrabbleGame, "NONE");
+		n.add(_root, x, y, _scrabbleGame, PlayerNumber.None);
 		n.getTileViewer().setOpacity(0.0);
 		n.setCheckLoc(x, y);
 
@@ -362,7 +362,7 @@ public class PaneOrganizer {
 
 		Tile i2 = new Tile(9);
 		x = Constants.X6 - 0.35;
-		i2.add(_root, x, y, _scrabbleGame, "NONE");
+		i2.add(_root, x, y, _scrabbleGame, PlayerNumber.None);
 		i2.getTileViewer().setOpacity(0.0);
 		i2.setCheckLoc(x, y);
 
@@ -1039,14 +1039,14 @@ public class PaneOrganizer {
 					// fadeRight.play();
 					_scrabbleGame.startGamePlay();
 					if (_playerOneType == "HUMAN") {
-						_playerOne = new HumanPlayer("PLAYER ONE", _scrabbleGame);
+						_playerOne = new HumanPlayer(PlayerNumber.One, _scrabbleGame);
 					} else if (_playerOneType == "COMPUTER") {
-						_playerOne = new ComputerPlayer("PLAYER ONE", _scrabbleGame);
+						_playerOne = new ComputerPlayer(PlayerNumber.One, _scrabbleGame);
 					}
 					if (_playerTwoType == "HUMAN") {
-						_playerTwo = new HumanPlayer("PLAYER TWO", _scrabbleGame);
+						_playerTwo = new HumanPlayer(PlayerNumber.Two, _scrabbleGame);
 					} else if (_playerTwoType == "COMPUTER") {
-						_playerTwo = new ComputerPlayer("PLAYER TWO", _scrabbleGame);
+						_playerTwo = new ComputerPlayer(PlayerNumber.Two, _scrabbleGame);
 					}
 					_referee = new Referee(_scrabbleGame, _playerOne, _playerTwo);
 					_scrabbleGame.addReferee(_referee);
@@ -1474,15 +1474,15 @@ public class PaneOrganizer {
 
 	public void manageDraw(String id) {
 		_justFilled = false;
-		if (_scrabbleGame.getRackOneSize() < 7 && id == "PLAYER ONE") {
+		if (_scrabbleGame.getRackFor(PlayerNumber.One).size() < 7 && id == "PLAYER ONE") {
 			_scrabbleGame.refillRackOne();
 			_justFilled = true;
 		}
-		if (_scrabbleGame.getRackTwoSize() < 7 && id == "PLAYER TWO") {
+		if (_scrabbleGame.getRackFor(PlayerNumber.Two).size() < 7 && id == "PLAYER TWO") {
 			_scrabbleGame.refillRackTwo();
 			_justFilled = true;
 		}
-		if (_justFilled == true && !_scrabbleGame.bagEmpty()) {
+		if (_justFilled == true && !_scrabbleGame.isBagEmpty()) {
 			_scrabbleGame.printBagSize();
 			_enterable = false;
 			_rtBag.play();

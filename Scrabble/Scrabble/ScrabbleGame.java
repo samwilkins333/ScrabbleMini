@@ -49,18 +49,18 @@ public class ScrabbleGame {
 		_labelPane = new Pane();
 		_tileBag = new TileBag(this);
 		_tileArray = new Tile[15][15];
-		_playerOneRack = new ArrayList<Tile>();
-		_playerTwoRack = new ArrayList<Tile>();
+		_playerOneRack = new ArrayList<>();
+		_playerTwoRack = new ArrayList<>();
 		_boardArray = new BoardSquare[15][15];
-		_dictionary = new HashSet<String>();
-		_fadeOuts = new ArrayList<FadeTransition>();
-		_fadeIns = new ArrayList<FadeTransition>();
-		_tilesOnBoard = new ArrayList<Tile>();
-		_doubleLetterScores = new ArrayList<BoardSquare>();
-		_doubleWordScores = new ArrayList<BoardSquare>();
-		_tripleLetterScores = new ArrayList<BoardSquare>();
-		_tripleWordScores = new ArrayList<BoardSquare>();
-		_specialSquares = new ArrayList<BoardSquare>();
+		_dictionary = new HashSet<>();
+		_fadeOuts = new ArrayList<>();
+		_fadeIns = new ArrayList<>();
+		_tilesOnBoard = new ArrayList<>();
+		_doubleLetterScores = new ArrayList<>();
+		_doubleWordScores = new ArrayList<>();
+		_tripleLetterScores = new ArrayList<>();
+		_tripleWordScores = new ArrayList<>();
+		_specialSquares = new ArrayList<>();
 		_gameIsPlaying = false;
 		_autoReset = false;
 		this.setUpBoard();
@@ -88,24 +88,12 @@ public class ScrabbleGame {
 		_autoReset = status;
 	}
 
-	public String getPlayerOneString() {
-		return this.tilesToString(_playerOneRack);
-	}
-
-	public String getPlayerTwoString() {
-		return this.tilesToString(_playerTwoRack);
-	}
-	
-	Boolean bagEmpty() {
+    Boolean isBagEmpty() {
 		return _tileBag.isEmpty();
 	}
 
-	int getRackOneSize() {
-		return _playerOneRack.size();
-	}
-
-	int getRackTwoSize() {
-		return _playerTwoRack.size();
+    ArrayList<Tile> getRackFor(PlayerNumber number) {
+		return number == PlayerNumber.One ? _playerOneRack : _playerTwoRack;
 	}
 
 	void manageDraw(String id) {
@@ -436,9 +424,6 @@ public class ScrabbleGame {
 					} else {
 						thisSquare.showText();
 					}
-					// if (id != "TRIPLE WORD SCORE") {
-					// this.fadeDiamond("OUT");
-					// }
 				}
 			}
 		}
@@ -514,14 +499,14 @@ public class ScrabbleGame {
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
-					this, "PLAYER ONE");
+					this, PlayerNumber.One);
 			_playerOneRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
 		}
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
-					this, "PLAYER TWO");
+					this, PlayerNumber.Two);
 			_playerTwoRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
 		}
@@ -534,7 +519,7 @@ public class ScrabbleGame {
 			i++;
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET,
-					_playerOneRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, "PLAYER ONE");
+					_playerOneRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, PlayerNumber.One);
 			_playerOneRack.add(tile);
 			tile.hide();
 			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION),
@@ -559,7 +544,7 @@ public class ScrabbleGame {
 			i++;
 			Tile tile = _tileBag.draw();
 			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET,
-					_playerTwoRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, "PLAYER TWO");
+					_playerTwoRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, PlayerNumber.Two);
 			_playerTwoRack.add(tile);
 			tile.hide();
 			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION),
@@ -847,43 +832,10 @@ public class ScrabbleGame {
 			}
 		}
 	}
-	
-	public void conditionalAdd(String word, ArrayList<String> validWords, String id) {
-		//_permutations++;
-		if (id == "VALID") {
-			if (_dictionary.contains(word) && !validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("%s - %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		} else if (id == "PREF") {
-			if (!validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("Prefix %s: %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		} else if (id == "SUFF") {
-			if (!validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("Suffix %s: %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		} else if (id == "NEW SUFF") {
-			if (!validWords.contains(word)) {
-				if (Constants.PRINT_STATUS) {
-					//system.out.printf("New suffix %s: %s\n", _permutations, word);
-				}
-				validWords.add(word);
-			}
-		}
-	}
 
-	// *** @AI ***
+    // *** @AI ***
 	ArrayList<Tile> transferTilesFromRack(String word, ArrayList<Tile> rack) {
-		ArrayList<Tile> result = new ArrayList<Tile>();
+		ArrayList<Tile> result = new ArrayList<>();
 		for (int i = 0; i < word.length(); i++) {
 			for (int j = 0; j < rack.size(); j++) {
 				Tile thisTile = rack.get(j);
@@ -1095,14 +1047,6 @@ public class ScrabbleGame {
 		}
 	}
 
-	ArrayList<Tile> getPlayerOneRack() {
-		return _playerOneRack;
-	}
-
-	ArrayList<Tile> getPlayerTwoRack() {
-		return _playerTwoRack;
-	}
-
 	public void playFadeOuts() {
 		for (int i = 0; i < _fadeOuts.size(); i++) {
 			_fadeOuts.get(i).play();
@@ -1270,7 +1214,7 @@ public class ScrabbleGame {
 	
 	ArrayList<Tile> getKernelTiles(int x, int y, String direction) {
 		if (direction == "VERTICAL") {
-			ArrayList<Tile> kernelTiles = new ArrayList<Tile>();
+			ArrayList<Tile> kernelTiles = new ArrayList<>();
 			int i = 1;
 			while (y + i <= 14 && _tileArray[x][y + i] != null) {
 				kernelTiles.add(_tileArray[x][y + i]);
@@ -1278,7 +1222,7 @@ public class ScrabbleGame {
 			}
 			return kernelTiles;
 		} else if (direction == "HORIZONTAL") {
-			ArrayList<Tile> kernelTiles = new ArrayList<Tile>();
+			ArrayList<Tile> kernelTiles = new ArrayList<>();
 			int i = 1;
 			while (x + i <= 14 && _tileArray[x + i][y] != null) {
 				kernelTiles.add(_tileArray[x + i][y]);
@@ -1314,7 +1258,7 @@ public class ScrabbleGame {
 
 	void mapKernelsForRow(int y, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
 		System.out.printf("Mapping row %s\n", y);
-		HashMap<Integer, String> kernels = new HashMap<Integer, String>();
+		HashMap<Integer, String> kernels = new HashMap<>();
 		int read = 0;
 		int kernelNum = 0;
 		String kernel = "";
@@ -1355,7 +1299,7 @@ public class ScrabbleGame {
 
 	void mapKernelsForColumn(int x, HashMap<String, String> precedingKernels, HashMap<String, String> succeedingKernels) {
 		System.out.printf("Mapping column %s\n", x);
-		HashMap<Integer, String> kernels = new HashMap<Integer, String>();
+		HashMap<Integer, String> kernels = new HashMap<>();
 		int read = 0;
 		int kernelNum = 0;
 		String kernel = "";
@@ -1520,7 +1464,7 @@ public class ScrabbleGame {
 			}
 		}
 		if (checkSize == 7) {
-			ArrayList<Tile> temp = new ArrayList<Tile>();
+			ArrayList<Tile> temp = new ArrayList<>();
 			for (int i = 0; i < size; i++) {
 				Tile firstTile = null;
 				for (int j = 0; j < rack.size(); j++) {

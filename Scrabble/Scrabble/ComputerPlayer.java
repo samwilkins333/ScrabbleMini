@@ -12,7 +12,7 @@ import javafx.util.Duration;
 
 public class ComputerPlayer implements Playable {
 	private Word _newestWord;
-	private String _playerNumber;
+	private PlayerNumber _playerNumber;
 	private ScrabbleGame _scrabbleGame;
 	private String _rack;
 	private String _kernel;
@@ -34,7 +34,7 @@ public class ComputerPlayer implements Playable {
 	private PauseTransition _delayAIRemoval;
 	private int _numBlankSlots;
 
-	public ComputerPlayer(String playerNumber, ScrabbleGame scrabbleGame) {
+	public ComputerPlayer(PlayerNumber playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 		_concatInt = 0;
@@ -836,7 +836,7 @@ public class ComputerPlayer implements Playable {
 		}
 	}
 	
-	public String getPlayerNumber() {
+	public PlayerNumber getPlayerNumber() {
 		return _playerNumber;
 	}
 

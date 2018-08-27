@@ -67,22 +67,16 @@ public class Referee {
 	}
 	
 	public boolean currentRackIsEmpty() {
-		if (_currentPlayer == _playerOne && _scrabbleGame.getRackOneSize() == 0) {
+		if (_currentPlayer == _playerOne && _scrabbleGame.getRackFor(PlayerNumber.One).size() == 0) {
 			return true;
-		} else if (_currentPlayer == _playerTwo && _scrabbleGame.getRackTwoSize() == 0) {
+		} else if (_currentPlayer == _playerTwo && _scrabbleGame.getRackFor(PlayerNumber.Two).size() == 0) {
 			return true;
 		}
 		return false;
 	}
 	
 	public ArrayList<Tile> getCurrentPlayerRack() {
-		if (_currentPlayer == _playerOne) {
-			return _scrabbleGame.getPlayerOneRack();
-		} else if (_currentPlayer == _playerTwo) {
-			return _scrabbleGame.getPlayerTwoRack();
-		} else {
-			return null;
-		}
+		return _scrabbleGame.getRackFor(_currentPlayer.getPlayerNumber());
 	}
 	
 	public String checkWinner() {
@@ -111,8 +105,8 @@ public class Referee {
 
 		@Override
 		public void handle(ActionEvent event) {
-			ArrayList<Tile> rackOne = _scrabbleGame.getPlayerOneRack();
-			ArrayList<Tile> rackTwo = _scrabbleGame.getPlayerTwoRack();
+			ArrayList<Tile> rackOne = _scrabbleGame.getRackFor(PlayerNumber.One);
+			ArrayList<Tile> rackTwo = _scrabbleGame.getRackFor(PlayerNumber.Two);
 			if (rackOne.size() > 0) {
 				for (int i = 0; i < rackOne.size(); i++) {
 					 rackOne.get(i).fadeOut();
@@ -131,7 +125,7 @@ public class Referee {
 	
 	public void processAdditives() {
 		ArrayList<Tile> rack = null;
-		rack = _scrabbleGame.getPlayerTwoRack();
+		rack = _scrabbleGame.getRackFor(PlayerNumber.Two);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (int i = 0; i < rack.size(); i++) {
@@ -141,7 +135,7 @@ public class Referee {
 			}
 			_playerOneScore = _playerOneScore + sum;
 		}
-		rack = _scrabbleGame.getPlayerOneRack();
+		rack = _scrabbleGame.getRackFor(PlayerNumber.One);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (int i = 0; i < rack.size(); i++) {
@@ -159,7 +153,7 @@ public class Referee {
 	
 	public void processSubtractives() {
 		ArrayList<Tile> rack = null;
-		rack = _scrabbleGame.getPlayerOneRack();
+		rack = _scrabbleGame.getRackFor(PlayerNumber.One);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (int i = 0; i < rack.size(); i++) {
@@ -169,7 +163,7 @@ public class Referee {
 			}
 			_playerOneScore = _playerOneScore - sum;
 		}
-		rack = _scrabbleGame.getPlayerTwoRack();
+		rack = _scrabbleGame.getRackFor(PlayerNumber.Two);
 		if (rack.size() > 0) {
 			int sum = 0;
 			for (int i = 0; i < rack.size(); i++) {

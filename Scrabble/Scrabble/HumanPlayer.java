@@ -2,10 +2,10 @@ package Scrabble;
 
 public class HumanPlayer implements Playable {
 	private Word _newestWord;
-	private String _playerNumber;
+	private PlayerNumber _playerNumber;
 	private ScrabbleGame _scrabbleGame;
 
-	public HumanPlayer(String playerNumber, ScrabbleGame scrabbleGame) {
+	HumanPlayer(PlayerNumber playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 	}
@@ -14,7 +14,7 @@ public class HumanPlayer implements Playable {
 		return "HUMAN";
 	}
 
-	public String getPlayerNumber() {
+	public PlayerNumber getPlayerNumber() {
 		return _playerNumber;
 	}
 
