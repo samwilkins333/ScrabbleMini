@@ -1,11 +1,10 @@
 package Scrabble;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
+
 import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
-import java.util.Scanner;
+
 import java.io.*;
 import java.util.stream.Collectors;
 
@@ -155,27 +154,17 @@ public class ScrabbleGame {
 	}
 
 	public Referee getReferee() {
-		if (_referee != null) {
-			return _referee;
-		} else {
-			return null;
-		}
+		return _referee;
 	}
 
 	Boolean getIsShiftDown() {
 		return _organizer.getIsShiftDown();
 	}
 
-	void resetRackOne() {
-		for (int i = 0; i < _playerOneRack.size(); i++) {
-			_playerOneRack.get(i).reset();
-		}
-	}
-
-	void resetRackTwo() {
-		for (int i = 0; i < _playerTwoRack.size(); i++) {
-			_playerTwoRack.get(i).reset();
-		}
+	void resetRack(PlayerNumber number) {
+		ArrayList<Tile> rack = number == PlayerNumber.One ? _playerOneRack : _playerTwoRack;
+		List<Tile> toMove = rack.stream().filter(Tile::isOnBoard).collect(Collectors.toList());
+		for (Tile tile : toMove) tile.reset(true);
 	}
 
 	private void setUpSpecialBoardSquares() {
@@ -1385,14 +1374,14 @@ public class ScrabbleGame {
 					if (move == 1) {
 						for (int k = 0; k < 15; k++) {
 							if (_tileArray[k][y] == null) {
-								thisTile.placeAtSquare(k, y);
+								thisTile.placeAtSquare(k, y, true);
 								break;
 							}
 						}
 					} else if (move == -1) {
 						for (int k = 0; k < 15; k++) {
 							if (_tileArray[x][k] == null) {
-								thisTile.placeAtSquare(x, k);
+								thisTile.placeAtSquare(x, k, true);
 								break;
 							}
 						}
@@ -1432,7 +1421,8 @@ public class ScrabbleGame {
 		
 		@Override
 		public void handle(ActionEvent event) {
-			_thisTile.placeAtSquare(_x, _y);
+			_thisTile.toFront();
+			_thisTile.placeAtSquare(_x, _y, true);
 			event.consume();
 		}
 

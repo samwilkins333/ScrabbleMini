@@ -597,30 +597,20 @@ public class Word {
 
 	public void clear() {
 		ArrayList<Tile> tilesOnBoard = _scrabbleGame.getTilesOnBoard();
-		for (int i = 0; i < _tiles.size(); i++) {
-			Tile thisTile = _tiles.get(i);
-			if (!thisTile.isAddedToBoard()) {
-				thisTile.setIsOnBoard(false);
-				thisTile.setIsPartOfNewestWord(false);
-				thisTile.stopOverlapFlash();
-				thisTile.setToOpaque();
-				thisTile.resetShadow();
-				tilesOnBoard.remove(thisTile);
-			}
+		for (Tile thisTile : _tiles) {
+			if (thisTile.isAddedToBoard()) continue;
+
+			thisTile.setIsOnBoard(false);
+			thisTile.setIsPartOfNewestWord(false);
+			thisTile.stopOverlapFlash();
+			thisTile.setToOpaque();
+			thisTile.resetShadow();
+			tilesOnBoard.remove(thisTile);
 		}
-//		System.out.printf("\n%s tiles on board\n\n", tilesOnBoard.size());
-		if (_tiles != null) {
-			_tiles.clear();
-		}
-		if (_horizontalCrosses != null) {
-			_horizontalCrosses.clear();
-		}
-		if (_verticalCrosses != null) {
-			_verticalCrosses.clear();
-		}
-		if (_allCrosses != null) {
-			_allCrosses.clear();
-		}
+		if (_tiles != null) _tiles.clear();
+		if (_horizontalCrosses != null) _horizontalCrosses.clear();
+		if (_verticalCrosses != null) _verticalCrosses.clear();
+		if (_allCrosses != null) _allCrosses.clear();
 	}
 
 	void removeTileFromWord(Tile tile) {
@@ -714,7 +704,7 @@ public class Word {
 		
 		@Override
 		public void handle(ActionEvent event) {
-			_thisTile.placeAtSquare(_x, _y);
+			_thisTile.placeAtSquare(_x, _y, true);
 			event.consume();
 		}
 

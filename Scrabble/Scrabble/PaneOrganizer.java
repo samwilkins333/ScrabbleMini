@@ -1219,9 +1219,9 @@ public class PaneOrganizer {
 					System.out.println(_playerTwoType);
 				}
 			} else if (keyPressed == KeyCode.C) { // Quits game with "Q"
-				_scrabbleGame.getReferee().getCurrentPlayer().getNewestWord().clear();
-				_scrabbleGame.resetRackOne();
-				_scrabbleGame.resetRackTwo();
+				Playable currentPlayer = _scrabbleGame.getReferee().getCurrentPlayer();
+				_scrabbleGame.resetRack(currentPlayer.getPlayerNumber());
+				currentPlayer.getNewestWord().clear();
 				System.out.printf("There are %s tiles on the board\n", _scrabbleGame.getTilesOnBoard().size());
 			}
 			event.consume();
