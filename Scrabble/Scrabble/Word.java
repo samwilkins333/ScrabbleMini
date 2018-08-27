@@ -664,11 +664,8 @@ public class Word {
 	void arrangeTilesOnBoard() {
 		double delay = 0;
 		ArrayList<Tile> tilesOnBoard = _scrabbleGame.getTilesOnBoard();
-		for (int i = 0; i < _tiles.size(); i++) {
-			Tile thisTile = _tiles.get(i);
-			if (!tilesOnBoard.contains(thisTile)) {
-				tilesOnBoard.add(thisTile);
-			}
+		for (Tile thisTile : _tiles) {
+			if (!tilesOnBoard.contains(thisTile)) tilesOnBoard.add(thisTile);
 		}
 		int x = 0;
 		int y = 0;
@@ -683,9 +680,9 @@ public class Word {
 			}
 			System.out.printf("Checking for placement at %s, %s\n", x, y);
 			if (!_scrabbleGame.boardSquareOccupiedAt(x, y)) {
-				tileInt = tileInt + 1;
+				tileInt++;
 				Tile thisTile = _tiles.get(tileInt);
-				delay = delay + Constants.PLACEMENT_DURATION;
+				delay += Constants.PLACEMENT_DURATION;
 				PauseTransition delayPlacement = new PauseTransition(Duration.seconds(delay));
 				delayPlacement.setOnFinished(new PlaceHandler(x, y, thisTile));
 				delayPlacement.play();

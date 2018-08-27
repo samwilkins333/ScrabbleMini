@@ -7,6 +7,8 @@ import javafx.scene.effect.*;
 import javafx.event.*;
 import javafx.scene.input.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import javafx.animation.*;
 import javafx.util.Duration;
 
@@ -209,12 +211,6 @@ public class Tile {
 		this.setUpOverlapFlash();
 		this.setUpDraggable();
 	}
-
-	public Tile(int x, int y, String letter) {
-		_xIndex = x;
-		_yIndex = y;
-		_letter = letter;
-	}
 	
 	void fadeOut() {
 		FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), _tileViewer);
@@ -225,14 +221,6 @@ public class Tile {
 
 	private void addRoot() {
 		_root = _scrabbleGame.getRoot();
-	}
-
-	public Boolean getIsFirstLetter() {
-		return _isFirstLetter;
-	}
-
-	public void setIsFirstLetter(Boolean status) {
-		_isFirstLetter = status;
 	}
 
 	void isAddedToBoard(Boolean status) {
@@ -260,19 +248,13 @@ public class Tile {
 	}
 
 	private void setUpDraggable() {
-		// _tileViewer.addEventHandler(MouseEvent.MOUSE_DRAGGED, new DragHandler());
-		// _draggableTile.getChildren().add(_tileViewer);
 		_tileViewer.setOnMousePressed(this.pressMouse());
 		_tileViewer.setOnMouseDragged(this.dragMouse());
 		_tileViewer.setOnMouseReleased(this.releaseMouse());
 	}
 
-	private Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
-		Boolean result = false;
-		if (check >= lowerBounds && check <= upperBounds && check2 >= lowerBounds && check2 <= upperBounds) {
-			result = true;
-		}
-		return result;
+	private Boolean areValidIndices(int[] numbers) {
+		return Arrays.stream(numbers).allMatch(n -> n >= 0 && n <= 15);
 	}
 
 	private void toFront() {
@@ -304,37 +286,33 @@ public class Tile {
 	}
 
 	private EventHandler<MouseEvent> pressMouse() {
-		EventHandler<MouseEvent> mousePressHandler = new EventHandler<MouseEvent>() {
+		return event -> {
+			if (Tile.this.isDraggable()) {
+				Tile.this.toFront();
+				_overlapFlash.stop();
+				_overlapScale.stop();
+				_tileViewer.setScaleX(1);
+				_tileViewer.setScaleY(1);
+				_tileViewer.setOpacity(1.0);
+				_tileViewer.setEffect(_pieceShadow);
+				_snappedX = false;
+				_snappedY = false;
+				if (event.getButton() == MouseButton.PRIMARY) {
+					// _tileViewer.setFitWidth(Constants.GRID_FACTOR);
+					// get the current mouse coordinates according to the scene.
+					_mouseDragX = event.getSceneX();
+					_mouseDragY = event.getSceneY();
 
-			public void handle(MouseEvent event) {
-				if (Tile.this.isDraggable()) {
-					Tile.this.toFront();
-					_overlapFlash.stop();
-					_overlapScale.stop();
-					_tileViewer.setScaleX(1);
-					_tileViewer.setScaleY(1);
-					_tileViewer.setOpacity(1.0);
-					_tileViewer.setEffect(_pieceShadow);
-					_snappedX = false;
-					_snappedY = false;
-					if (event.getButton() == MouseButton.PRIMARY) {
-						// _tileViewer.setFitWidth(Constants.GRID_FACTOR);
-						// get the current mouse coordinates according to the scene.
-						_mouseDragX = event.getSceneX();
-						_mouseDragY = event.getSceneY();
-
-						// get the current coordinates of the draggable node.
-						_currentNodeX = _tileViewer.getLayoutX();
-						_currentNodeY = _tileViewer.getLayoutY();
-					}
+					// get the current coordinates of the draggable node.
+					_currentNodeX = _tileViewer.getLayoutX();
+					_currentNodeY = _tileViewer.getLayoutY();
 				}
 			}
 		};
-		return mousePressHandler;
 	}
 
 	public void addTo(Tile[][] boardArray) {
-		if (this.isBetween(0, _xIndex, _yIndex, 15)) {
+		if (this.areValidIndices(new int[] { _xIndex, _yIndex })) {
 			boardArray[_xIndex][_yIndex] = this;
 			// System.out.printf("Tile added to Array at %s, %s\n", _xIndex, _yIndex);
 		} else {
@@ -355,36 +333,32 @@ public class Tile {
 	}
 
 	private EventHandler<MouseEvent> dragMouse() {
-		EventHandler<MouseEvent> dragHandler = new EventHandler<MouseEvent>() {
+		return event -> {
+			if (Tile.this.isDraggable()) {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					// find the delta coordinates by subtracting the new mouse
+					// coordinates with the old.
+					double deltaX = event.getSceneX() - _mouseDragX;
+					double deltaY = event.getSceneY() - _mouseDragY;
 
-			public void handle(MouseEvent event) {
-				if (Tile.this.isDraggable()) {
-					if (event.getButton() == MouseButton.PRIMARY) {
-						// find the delta coordinates by subtracting the new mouse
-						// coordinates with the old.
-						double deltaX = event.getSceneX() - _mouseDragX;
-						double deltaY = event.getSceneY() - _mouseDragY;
+					// add the delta coordinates to the node coordinates.
+					_currentNodeX += deltaX;
+					_currentNodeY += deltaY;
 
-						// add the delta coordinates to the node coordinates.
-						_currentNodeX += deltaX;
-						_currentNodeY += deltaY;
+					// set the layout for the draggable node.
+					_tileViewer.setLayoutX(_currentNodeX);
+					_tileViewer.setLayoutY(_currentNodeY);
 
-						// set the layout for the draggable node.
-						_tileViewer.setLayoutX(_currentNodeX);
-						_tileViewer.setLayoutY(_currentNodeY);
-
-						// get the latest mouse coordinate.
-						_mouseDragX = event.getSceneX();
-						_mouseDragY = event.getSceneY();
-					}
+					// get the latest mouse coordinate.
+					_mouseDragX = event.getSceneX();
+					_mouseDragY = event.getSceneY();
 				}
 			}
 		};
-		return dragHandler;
 	}
 
 	private void checkOutOfBoard() {
-		Boolean status = true;
+		boolean status = true;
 		double centerX = this.getCenterX();
 		double centerY = this.getCenterY();
 		if (centerX >= Constants.X0 * Constants.GRID_FACTOR
@@ -393,7 +367,7 @@ public class Tile {
 				&& centerY < Constants.Y15 * Constants.GRID_FACTOR) {
 			status = false;
 		}
-		if (status == true) {
+		if (status) {
 			_tileViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_tileViewer.setLayoutY(_y * Constants.GRID_FACTOR + Constants.TILE_PADDING);
 			_checkViewer.setLayoutX(_x * Constants.GRID_FACTOR + Constants.TILE_PADDING);
@@ -477,11 +451,11 @@ public class Tile {
 			xMax = Constants.X15 * Constants.GRID_FACTOR;
 			break;
 		}
-		Boolean status = false;
+		boolean status = false;
 		if (this.getCenterX() >= xMin && this.getCenterX() < xMax) {
 			status = true;
 		}
-		if (status == true) {
+		if (status) {
 			_tileViewer.setLayoutX(xMin + Constants.TILE_PADDING);
 			_checkViewer.setLayoutX(xMin + Constants.TILE_PADDING);
 			_xViewer.setLayoutX(xMin + Constants.TILE_PADDING);
@@ -694,22 +668,22 @@ public class Tile {
 
 	void placeAtSquare(int x, int y) {
 		_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
-		if (this.isBetween(0, x, y, 15)) {
-			_tileViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_tileViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_checkViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_checkViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_minusViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_minusViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_xViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_xViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
-			_isOnBoard = true;
-			if (!_tilesOnBoard.contains(Tile.this)) {
-				_tilesOnBoard.add(Tile.this);
-			}
-			_xIndex = x;
-			_yIndex = y;
-		}
+		if (!this.areValidIndices(new int[] { x, y })) return;
+
+		_tileViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_tileViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_checkViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_checkViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_minusViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_minusViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_xViewer.setLayoutX((Constants.ZEROETH_COLUMN_OFFSET + x) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_xViewer.setLayoutY((Constants.ZEROETH_ROW_OFFSET + y) * Constants.GRID_FACTOR + Constants.TILE_PADDING);
+		_isOnBoard = true;
+
+		if (!_tilesOnBoard.contains(Tile.this)) _tilesOnBoard.add(Tile.this);
+
+		_xIndex = x;
+		_yIndex = y;
 	}
 
 	private void setUpFlash() {
