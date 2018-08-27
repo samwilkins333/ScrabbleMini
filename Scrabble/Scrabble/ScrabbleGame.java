@@ -596,7 +596,7 @@ public class ScrabbleGame {
 		InputStream dictionaryText = this.getClass().getResourceAsStream("dictionary.txt");
 		_scanner = new Scanner(dictionaryText);
 		while (_scanner.hasNext()) {
-			_dictionary.add(_scanner.next());
+			_dictionary.add(_scanner.next().toUpperCase());
 		}
 	}
 
