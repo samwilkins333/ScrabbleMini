@@ -95,27 +95,27 @@ public class ComputerPlayer implements Playable {
 	
 	private Word getBestFirstWord() {
 		_rack = _scrabbleGame.getRackAsString();
-		_validWords = new ArrayList<Word>();
-		_validStrings = new ArrayList<String>();
+		_validWords = new ArrayList<>();
+		_validStrings = new ArrayList<>();
 		int orientationRand = (int) (Math.random() * 3);
-		String orientation = "";
+		Orientation orientation = null;
 		int value = 0;
 		_validStrings = _scrabbleGame.validPermutationsOf(_rack);
-		for (int i = 0; i < _validStrings.size(); i++) {
-			String thisString = _validStrings.get(i);
+		for (String thisString : _validStrings) {
 			Word bestWord = null;
 			for (int j = 0; j <= thisString.length() - 1; j++) {
-				Word thisWord = null;
+				Word thisWord;
 				int x = -1;
 				int y = -1;
 				switch (orientationRand) {
 					case 0:
-						orientation = "HORIZONTAL";
+						orientation = Orientation.Horizontal;
 						x = 7 - j;
 						y = 7;
 						break;
-					case 1: case 2:
-						orientation = "VERTICAL";
+					case 1:
+					case 2:
+						orientation = Orientation.Vertical;
 						x = 7;
 						y = 7 - j;
 						break;
@@ -146,22 +146,22 @@ public class ComputerPlayer implements Playable {
 
 	private Word getBestWord() {
 		_rack = _scrabbleGame.getRackAsString();
-		_validWords = new ArrayList<Word>();
-		_validStrings = new ArrayList<String>();
+		_validWords = new ArrayList<>();
+		_validStrings = new ArrayList<>();
 		Tile[][] realBoard = _scrabbleGame.getTileArray();
 		
 		_numHooksTested = 0;
 		for (int y = 0; y < 15; y++) {
-			_precedingKernels = new HashMap<String, String>();
-			_succeedingKernels = new HashMap<String, String>();
+			_precedingKernels = new HashMap<>();
+			_succeedingKernels = new HashMap<>();
 			_scrabbleGame.mapKernelsForRow(y, _precedingKernels, _succeedingKernels);
 			for (int x = 0; x < realBoard[1].length; x++) {
 				if (Constants.PRINT_STATUS) {
 					//system.out.printf("Checking = %s, %s\n", x, y);
 				}
 				if (x + 1 <= 14 && realBoard[x][y] == null && realBoard[x + 1][y] != null && realBoard[x + 1][y].isAddedToBoard()) {
-					_prefixCrosses = new HashMap<Integer, HashMap<String, Integer>>();
-					_suffixCrosses = new HashMap<Integer, HashMap<String, Integer>>();
+					_prefixCrosses = new HashMap<>();
+					_suffixCrosses = new HashMap<>();
 					_numHooksTested = _numHooksTested + 1;
 					//system.out.printf("\n\nTESTING HORIZONTAL HOOK #%s\n\n\n", _numHooksTested);
 					int numPrefixSlots = _scrabbleGame.getNumPrefixSlots(x, y, "HORIZONTAL");
@@ -172,9 +172,9 @@ public class ComputerPlayer implements Playable {
 					}
 					_firstXkernel = x + 1;
 					_firstYkernel = y;
-					_prefixes = new ArrayList<String>();
-					_suffixes = new ArrayList<String>();
-					_specificSuffixes = new HashMap<String, ArrayList<String>>();
+					_prefixes = new ArrayList<>();
+					_suffixes = new ArrayList<>();
+					_specificSuffixes = new HashMap<>();
 					int numSuffixSlots = _scrabbleGame.getNumSuffixSlots(x + _kernel.length() + 1, y, "HORIZONTAL");
 					this.analyzeHorizontalPrefixCrosses(x, y, numPrefixSlots);
 					this.analyzeHorizontalSuffixCrosses(x + _kernel.length() + 1, y, numSuffixSlots);
@@ -182,7 +182,7 @@ public class ComputerPlayer implements Playable {
 					_scrabbleGame.collectSuffixes(_rack, _suffixes, numSuffixSlots, _invalidLettersAndSuffixIndices);
 					for (int i = 0; i < _prefixes.size(); i++) {
 						String thisPrefix = _prefixes.get(i);
-						ArrayList<String> newSuffixes = new ArrayList<String>(); 
+						ArrayList<String> newSuffixes = new ArrayList<>();
 						String shortenedRack = _rack;
 						for (int j = 0; j < thisPrefix.length(); j++) {
 							String letter = String.valueOf(thisPrefix.charAt(j));
@@ -340,16 +340,16 @@ public class ComputerPlayer implements Playable {
 		//int temp = _numHooksTested;
 		_numHooksTested = 0;
 		for (int x = 0; x < 15; x++) {
-			_precedingKernels = new HashMap<String, String>();
-			_succeedingKernels = new HashMap<String, String>();
+			_precedingKernels = new HashMap<>();
+			_succeedingKernels = new HashMap<>();
 			_scrabbleGame.mapKernelsForColumn(x, _precedingKernels, _succeedingKernels);
 			for (int y = 0; y < realBoard.length; y++) {
 				if (Constants.PRINT_STATUS) {
 					//system.out.printf("Checking = %s, %s\n", x, y);
 				}
 				if (y + 1 <= 14 && realBoard[x][y] == null && realBoard[x][y + 1] != null && realBoard[x][y + 1].isAddedToBoard()) {
-					_prefixCrosses = new HashMap<Integer, HashMap<String, Integer>>();
-					_suffixCrosses = new HashMap<Integer, HashMap<String, Integer>>();
+					_prefixCrosses = new HashMap<>();
+					_suffixCrosses = new HashMap<>();
 					_numHooksTested = _numHooksTested + 1;
 					//system.out.printf("\n\nTESTING VERTICAL HOOK #%s\n\n\n", _numHooksTested);
 					int numPrefixSlots = _scrabbleGame.getNumPrefixSlots(x, y, "VERTICAL");
@@ -360,9 +360,9 @@ public class ComputerPlayer implements Playable {
 					}
 					_firstXkernel = x;
 					_firstYkernel = y + 1;
-					_prefixes = new ArrayList<String>();
-					_suffixes = new ArrayList<String>();
-					_specificSuffixes = new HashMap<String, ArrayList<String>>();
+					_prefixes = new ArrayList<>();
+					_suffixes = new ArrayList<>();
+					_specificSuffixes = new HashMap<>();
 					int numSuffixSlots = _scrabbleGame.getNumSuffixSlots(x, y + _kernel.length() + 1, "VERTICAL");
 					this.analyzeVerticalPrefixCrosses(x, y, numPrefixSlots);
 					this.analyzeVerticalSuffixCrosses(x, y + _kernel.length() + 1, numSuffixSlots);
@@ -370,7 +370,7 @@ public class ComputerPlayer implements Playable {
 					_scrabbleGame.collectSuffixes(_rack, _suffixes, numSuffixSlots, _invalidLettersAndSuffixIndices);
 					for (int i = 0; i < _prefixes.size(); i++) {
 						String thisPrefix = _prefixes.get(i);
-						ArrayList<String> newSuffixes = new ArrayList<String>(); 
+						ArrayList<String> newSuffixes = new ArrayList<>();
 						String shortenedRack = _rack;
 						for (int j = 0; j < thisPrefix.length(); j++) {
 							String letter = String.valueOf(thisPrefix.charAt(j));
@@ -548,7 +548,7 @@ public class ComputerPlayer implements Playable {
 			return bestWord;
 		} else {
 			int i = 1;
-			ArrayList<Word> topTier = new ArrayList<Word>(); 
+			ArrayList<Word> topTier = new ArrayList<>();
 			while (i < _validWords.size() && _validWords.get(i).getValue() == bestValue) {
 				topTier.add(_validWords.get(i));
 				i++;
@@ -570,18 +570,18 @@ public class ComputerPlayer implements Playable {
 
 	private void analyzeHorizontalPrefixCrosses(int x, int y, int numPrefixSlots) {
 		//system.out.printf("ANALYZING PREFIX CROSSES for Hook %s at %s\n", _numHooksTested, y);
-		_invalidLettersAndPrefixIndices = new HashMap<Integer, ArrayList<String>>();
+		_invalidLettersAndPrefixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
 		String upperCross = "";
 		String lowerCross = "";
 		int vertical = 0;
 		int horizontal = 0;
 		while (x - horizontal >= 0 && horizontal < numPrefixSlots) {
-			HashMap<String, Integer> letterToValue = new HashMap<String, Integer>();
+			HashMap<String, Integer> letterToValue = new HashMap<>();
 			upperCross = "";
 			lowerCross = "";
 			//system.out.printf("Prefix slot #%s\n", horizontal + 1);
-			ArrayList<String> invalidLetters = new ArrayList<String>();
+			ArrayList<String> invalidLetters = new ArrayList<>();
 			vertical = 1;
 			while (y - vertical >= 0 && tileArray[x - horizontal][y - vertical] != null) {
 				upperCross = tileArray[x - horizontal][y - vertical].getLetter() + upperCross;
@@ -594,7 +594,7 @@ public class ComputerPlayer implements Playable {
 			}
 			//system.out.printf("At %s, %s, cross = %s + __ + %s\n", x - horizontal, y, upperCross, lowerCross);
 			if (upperCross == "" && lowerCross == "") {
-				_invalidLettersAndPrefixIndices.put(horizontal + 1, new ArrayList<String>());
+				_invalidLettersAndPrefixIndices.put(horizontal + 1, new ArrayList<>());
 				//system.out.printf("Don't worry about prefix crosses at %s, %s\n", x - horizontal, y);
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -629,18 +629,18 @@ public class ComputerPlayer implements Playable {
 	
 	private void analyzeVerticalPrefixCrosses(int x, int y, int numPrefixSlots) {
 		//system.out.printf("ANALYZING PREFIX CROSSES for Hook %s at %s\n", _numHooksTested, y);
-		_invalidLettersAndPrefixIndices = new HashMap<Integer, ArrayList<String>>();
+		_invalidLettersAndPrefixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
 		String leftCross = "";
 		String rightCross = "";
 		int horizontal = 0;
 		int vertical = 0;
 		while (y - vertical >= 0 && vertical < numPrefixSlots) {
-			HashMap<String, Integer> letterToValue = new HashMap<String, Integer>();
+			HashMap<String, Integer> letterToValue = new HashMap<>();
 			leftCross = "";
 			rightCross = "";
 			//system.out.printf("Prefix slot #%s\n", vertical + 1);
-			ArrayList<String> invalidLetters = new ArrayList<String>();
+			ArrayList<String> invalidLetters = new ArrayList<>();
 			horizontal = 1;
 			while (x - horizontal >= 0 && tileArray[x - horizontal][y - vertical] != null) {
 				leftCross = tileArray[x - horizontal][y - vertical].getLetter() + leftCross;
@@ -653,7 +653,7 @@ public class ComputerPlayer implements Playable {
 			}
 			//system.out.printf("At %s, %s, cross = %s + __ + %s\n", x, y - vertical, leftCross, rightCross);
 			if (leftCross == "" && rightCross == "") {
-				_invalidLettersAndPrefixIndices.put(vertical + 1, new ArrayList<String>());
+				_invalidLettersAndPrefixIndices.put(vertical + 1, new ArrayList<>());
 				//system.out.printf("Don't worry about prefix crosses at %s, %s\n", x, y - vertical);
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -688,18 +688,18 @@ public class ComputerPlayer implements Playable {
 	
 	private void analyzeHorizontalSuffixCrosses(int x, int y, int numSuffixSlots) {
 		//system.out.printf("ANALYZING SUFFIX CROSSES for Hook %s at %s\n", _numHooksTested, y);
-		_invalidLettersAndSuffixIndices = new HashMap<Integer, ArrayList<String>>();
+		_invalidLettersAndSuffixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
 		String upperCross = "";
 		String lowerCross = "";
 		int vertical = 0;
 		int horizontal = 0;
 		while (x + horizontal <= 14 && horizontal < numSuffixSlots) {
-			HashMap<String, Integer> letterToValue = new HashMap<String, Integer>();
+			HashMap<String, Integer> letterToValue = new HashMap<>();
 			upperCross = "";
 			lowerCross = "";
 			//system.out.printf("Suffix slot #%s\n", horizontal + 1);
-			ArrayList<String> invalidLetters = new ArrayList<String>();
+			ArrayList<String> invalidLetters = new ArrayList<>();
 			vertical = 1;
 			while (y - vertical >= 0 && tileArray[x + horizontal][y - vertical] != null) {
 				upperCross = tileArray[x + horizontal][y - vertical].getLetter() + upperCross;
@@ -712,7 +712,7 @@ public class ComputerPlayer implements Playable {
 			}
 			//system.out.printf("At %s, %s, cross = %s + __ + %s\n", x + horizontal, y, upperCross, lowerCross);
 			if (upperCross == "" && lowerCross == "") {
-				_invalidLettersAndSuffixIndices.put(horizontal + 1, new ArrayList<String>());
+				_invalidLettersAndSuffixIndices.put(horizontal + 1, new ArrayList<>());
 				//system.out.printf("Don't worry about suffix crosses at %s, %s\n", x + horizontal, y);
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -747,18 +747,18 @@ public class ComputerPlayer implements Playable {
 	
 	private void analyzeVerticalSuffixCrosses(int x, int y, int numSuffixSlots) {
 		//system.out.printf("ANALYZING SUFFIX CROSSES for Hook %s at %s\n", _numHooksTested, x);
-		_invalidLettersAndSuffixIndices = new HashMap<Integer, ArrayList<String>>();
+		_invalidLettersAndSuffixIndices = new HashMap<>();
 		Tile[][] tileArray = _scrabbleGame.getTileArray();
 		String leftCross = "";
 		String rightCross = "";
 		int horizontal = 0;
 		int vertical = 0;
 		while (y + vertical <= 14 && vertical < numSuffixSlots) {
-			HashMap<String, Integer> letterToValue = new HashMap<String, Integer>();
+			HashMap<String, Integer> letterToValue = new HashMap<>();
 			leftCross = "";
 			rightCross = "";
 			//system.out.printf("Suffix slot #%s\n", vertical + 1);
-			ArrayList<String> invalidLetters = new ArrayList<String>();
+			ArrayList<String> invalidLetters = new ArrayList<>();
 			horizontal = 1;
 			while (x - horizontal >= 0 && tileArray[x - horizontal][y + vertical] != null) {
 				leftCross = tileArray[x - horizontal][y + vertical].getLetter() + leftCross;
@@ -771,7 +771,7 @@ public class ComputerPlayer implements Playable {
 			}
 			//system.out.printf("At %s, %s, cross = %s + __ + %s\n", x, y + vertical, leftCross, rightCross);
 			if (leftCross == "" && rightCross == "") {
-				_invalidLettersAndSuffixIndices.put(vertical + 1, new ArrayList<String>());
+				_invalidLettersAndSuffixIndices.put(vertical + 1, new ArrayList<>());
 				//system.out.printf("Don't worry about suffix crosses at %s, %s\n", x, y + vertical);
 				for (int i = 0; i < _rack.length(); i++) {
 					String letter = String.valueOf(_rack.charAt(i));
@@ -805,7 +805,7 @@ public class ComputerPlayer implements Playable {
 	}
 
 	private void sortValidWords() {
-		ArrayList<Word> temp = new ArrayList<Word>();
+		ArrayList<Word> temp = new ArrayList<>();
 		int size = _validWords.size();
 		for (int i = 0; i < size; i++) {
 			Word highestWord = null;

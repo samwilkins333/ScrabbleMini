@@ -1114,22 +1114,20 @@ public class ScrabbleGame {
 		return _dictionary.contains(string);
 	}
 
-	int getValueFromString(String validWord, int firstXIndex, int firstYIndex, String id) {
+	int getValueFromString(String validWord, int firstXIndex, int firstYIndex, Orientation orientation) {
 		int wordValue = 0;
 		int x = 0;
 		int y = 0;
 		int isOnADoubleWordScore = 1;
 		int isOnATripleWordScore = 1;
+		boolean isHorizontal =  orientation == Orientation.Horizontal;
 		for (int i = 0; i < validWord.length(); i++) {
 			String currentLetter = String.valueOf(validWord.charAt(i));
 			int letterValue = Constants.VALUES.get(currentLetter);
-			if (id == "HORIZONTAL") {
-				x = firstXIndex + i;
-				y = firstYIndex;
-			} else if (id == "VERTICAL") {
-				x = firstXIndex;
-				y = firstYIndex + i;
-			}
+
+			x = isHorizontal ? firstXIndex + i : firstXIndex;
+			y = isHorizontal ? firstYIndex : firstYIndex + i;
+
 			if (this.isBetween(0, x, y, 14)) {
 				BoardSquare thisSquare = _boardArray[x][y];
 				if (thisSquare.is2W() && thisSquare.isAlreadyPlayed() == false) {
