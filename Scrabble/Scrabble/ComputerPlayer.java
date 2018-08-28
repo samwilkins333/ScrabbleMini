@@ -217,7 +217,7 @@ public class ComputerPlayer implements Playable {
 								if (prefixExtended == true) {
 									actualFirstX = actualFirstX - precedingKernel.length();
 								}
-								int value = _scrabbleGame.getValueFromString(concat, actualFirstX, _firstYkernel, "HORIZONTAL");
+								int value = _scrabbleGame.getValueFromString(concat, actualFirstX, _firstYkernel, Orientation.Horizontal);
 								if (prefix.length() == 7) {
 									value = value + 50;
 								}
@@ -229,7 +229,7 @@ public class ComputerPlayer implements Playable {
 									value = value + _prefixCrosses.get(numLet).get(letter);
 									numLet = numLet + 1;
 								}
-								Word validWord = new Word(concat, prefix, value, originalValue, "HORIZONTAL", actualFirstX, _firstYkernel, prefixExtended, suffixExtended);
+								Word validWord = new Word(concat, prefix, value, originalValue, Orientation.Horizontal, actualFirstX, _firstYkernel, prefixExtended, suffixExtended);
 								validWord.addKernelTiles(kernelTiles);
 								_validWords.add(validWord);
 								_validStrings.add(concat);
@@ -256,7 +256,7 @@ public class ComputerPlayer implements Playable {
 							
 							if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
 								//system.out.printf("Suffix %s: %s\n", _concatInt, suffix);
-								int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, _firstYkernel, "HORIZONTAL");
+								int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, _firstYkernel, Orientation.Horizontal);
 								if (suffix.length() == 7) {
 									value = value + 50;
 								}
@@ -268,7 +268,7 @@ public class ComputerPlayer implements Playable {
 									value = value + _suffixCrosses.get(numLet).get(letter);
 									numLet = numLet + 1;
 								}
-								Word validWord = new Word(concat, suffix, value, originalValue, "HORIZONTAL", _firstXkernel, _firstYkernel, prefixExtended, suffixExtended);
+								Word validWord = new Word(concat, suffix, value, originalValue, Orientation.Horizontal, _firstXkernel, _firstYkernel, prefixExtended, suffixExtended);
 								validWord.addKernelTiles(kernelTiles);
 								_validWords.add(validWord);
 								_validStrings.add(concat);
@@ -307,7 +307,7 @@ public class ComputerPlayer implements Playable {
 									if (prefixExtended == true) {
 										actualFirstX = actualFirstX - precedingKernel.length();
 									}
-									int value = _scrabbleGame.getValueFromString(concat, actualFirstX, _firstYkernel, "HORIZONTAL");
+									int value = _scrabbleGame.getValueFromString(concat, actualFirstX, _firstYkernel, Orientation.Horizontal);
 									if (combo.length() == 7) {
 										value = value + 50;
 									}
@@ -326,7 +326,7 @@ public class ComputerPlayer implements Playable {
 										value = value + _suffixCrosses.get(numLet).get(letter);
 										numLet = numLet + 1;
 									}
-									Word validWord = new Word(concat, combo, value, originalValue, "HORIZONTAL", actualFirstX, _firstYkernel, prefixExtended, suffixExtended);
+									Word validWord = new Word(concat, combo, value, originalValue, Orientation.Horizontal, actualFirstX, _firstYkernel, prefixExtended, suffixExtended);
 									validWord.addKernelTiles(kernelTiles);
 									_validWords.add(validWord);
 									_validStrings.add(concat);
@@ -404,7 +404,7 @@ public class ComputerPlayer implements Playable {
 								if (prefixExtended == true) {
 									actualFirstY = actualFirstY - precedingKernel.length();
 								}
-								int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, actualFirstY, "VERTICAL");
+								int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, actualFirstY, Orientation.Vertical);
 								if (prefix.length() == 7) {
 									value = value + 50;
 								}
@@ -416,7 +416,7 @@ public class ComputerPlayer implements Playable {
 									value = value + _prefixCrosses.get(numLet).get(letter);
 									numLet = numLet + 1;
 								}
-								Word validWord = new Word(concat, prefix, value, originalValue, "VERTICAL", _firstXkernel, actualFirstY, prefixExtended, suffixExtended);
+								Word validWord = new Word(concat, prefix, value, originalValue, Orientation.Vertical, _firstXkernel, actualFirstY, prefixExtended, suffixExtended);
 								validWord.addKernelTiles(kernelTiles);
 								_validWords.add(validWord);
 								_validStrings.add(concat);
@@ -443,7 +443,7 @@ public class ComputerPlayer implements Playable {
 							
 							if (_scrabbleGame.dictionaryContains(concat) && !_validStrings.contains(concat)) {
 								//system.out.printf("Suffix %s: %s\n", _concatInt, suffix);
-								int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, _firstYkernel, "VERTICAL");
+								int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, _firstYkernel, Orientation.Vertical);
 								if (suffix.length() == 7) {
 									value = value + 50;
 								}
@@ -455,7 +455,7 @@ public class ComputerPlayer implements Playable {
 									value = value + _suffixCrosses.get(numLet).get(letter);
 									numLet = numLet + 1;
 								}
-								Word validWord = new Word(concat, suffix, value, originalValue, "VERTICAL", _firstXkernel, _firstYkernel, prefixExtended, suffixExtended);
+								Word validWord = new Word(concat, suffix, value, originalValue, Orientation.Vertical, _firstXkernel, _firstYkernel, prefixExtended, suffixExtended);
 								validWord.addKernelTiles(kernelTiles);
 								_validWords.add(validWord);
 								_validStrings.add(concat);
@@ -494,7 +494,7 @@ public class ComputerPlayer implements Playable {
 									if (prefixExtended == true) {
 										actualFirstY = actualFirstY - precedingKernel.length();
 									}
-									int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, actualFirstY, "VERTICAL");
+									int value = _scrabbleGame.getValueFromString(concat, _firstXkernel, actualFirstY, Orientation.Vertical);
 									if (combo.length() == 7) {
 										value = value + 50;
 									}
@@ -513,7 +513,7 @@ public class ComputerPlayer implements Playable {
 										value = value + _suffixCrosses.get(numLet).get(letter);
 										numLet = numLet + 1;
 									}
-									Word validWord = new Word(concat, combo, value, originalValue, "VERTICAL", _firstXkernel, actualFirstY, prefixExtended, suffixExtended);
+									Word validWord = new Word(concat, combo, value, originalValue, Orientation.Vertical, _firstXkernel, actualFirstY, prefixExtended, suffixExtended);
 									validWord.addKernelTiles(kernelTiles);
 									_validWords.add(validWord);
 									_validStrings.add(concat);
@@ -612,7 +612,7 @@ public class ComputerPlayer implements Playable {
 						//system.out.printf("INVALID: Adding %s and 0 to inner HashMap\n", toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x - horizontal, y - upperCross.length(), "VERTICAL");
+						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x - horizontal, y - upperCross.length(), Orientation.Vertical);
 						//system.out.printf("%s forms %s - CAN be played at %s, %s with a value of %s\n", toCheck, verticalConcat, x - horizontal, y, crossValue);
 						//system.out.printf("VALID: Adding %s and %s to inner HashMap\n", toCheck, crossValue);
 						letterToValue.put(toCheck, crossValue);
@@ -671,7 +671,7 @@ public class ComputerPlayer implements Playable {
 						//system.out.printf("INVALID: Adding %s and 0 to inner HashMap\n", toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y, "HORIZONTAL");
+						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y, Orientation.Horizontal);
 						//system.out.printf("%s forms %s - CAN be played at %s, %s with a value of %s\n", toCheck, horizontalConcat, x, y - vertical, crossValue);
 						//system.out.printf("VALID: Adding %s and %s to inner HashMap\n", toCheck, crossValue);
 						letterToValue.put(toCheck, crossValue);
@@ -730,7 +730,7 @@ public class ComputerPlayer implements Playable {
 						//system.out.printf("INVALID: Adding %s and 0 to inner HashMap\n", toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x + horizontal, y - upperCross.length(), "VERTICAL");
+						int crossValue = _scrabbleGame.getValueFromString(verticalConcat, x + horizontal, y - upperCross.length(), Orientation.Vertical);
 						//system.out.printf("%s forms %s - CAN be played at %s, %s with a value of %s\n", toCheck, verticalConcat, x + horizontal, y, crossValue);
 						//system.out.printf("VALID: Adding %s and %s to inner HashMap\n", toCheck, crossValue);
 						letterToValue.put(toCheck, crossValue);
@@ -789,7 +789,7 @@ public class ComputerPlayer implements Playable {
 						//system.out.printf("INVALID: Adding %s and 0 to inner HashMap\n", toCheck);
 						letterToValue.put(toCheck, 0);
 					} else {
-						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y + vertical, "HORIZONTAL");
+						int crossValue = _scrabbleGame.getValueFromString(horizontalConcat, x - leftCross.length(), y + vertical, Orientation.Horizontal);
 						//system.out.printf("%s forms %s - CAN be played at %s, %s with a value of %s\n", toCheck, horizontalConcat, x, y + vertical, crossValue);
 						//system.out.printf("VALID: Adding %s and %s to inner HashMap\n", toCheck, crossValue);
 						letterToValue.put(toCheck, crossValue);

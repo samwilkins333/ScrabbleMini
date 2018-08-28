@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="dc535c14-9aff-47a5-937e-9502eff4984d" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -26,12 +25,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="4500" />
+          <entry key="java" value="4515" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="4500" />
+          <entry key="JAVA" value="4515" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -54,11 +53,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="52">
-              <caret line="1129" column="12" selection-start-line="1129" selection-start-column="12" selection-end-line="1129" selection-end-column="12" />
+              <caret line="1129" selection-start-line="1129" selection-end-line="1129" />
               <folding>
                 <element signature="e#4201#4202#0" expanded="true" />
                 <element signature="e#4223#4224#0" expanded="true" />
@@ -130,11 +129,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="355">
-              <caret line="122" column="51" selection-start-line="122" selection-start-column="51" selection-end-line="122" selection-end-column="51" />
+            <state relative-caret-position="290">
+              <caret line="799" column="36" lean-forward="true" selection-start-line="799" selection-start-column="36" selection-end-line="799" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -269,8 +268,8 @@
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Orientation.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java" />
       </list>
     </option>
   </component>
@@ -328,7 +327,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535480725571" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535484530086" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -388,12 +387,12 @@
       <workItem from="1534884123147" duration="499000" />
       <workItem from="1535008111005" duration="35000" />
       <workItem from="1535008984769" duration="344000" />
-      <workItem from="1535361562080" duration="15652000" />
+      <workItem from="1535361562080" duration="15848000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21374000" />
+    <option name="totallyTimeSpent" value="21570000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -657,21 +656,21 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="355">
-          <caret line="122" column="51" selection-start-line="122" selection-start-column="51" selection-end-line="122" selection-end-column="51" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="52">
-          <caret line="1129" column="12" selection-start-line="1129" selection-start-column="12" selection-end-line="1129" selection-end-column="12" />
+          <caret line="1129" selection-start-line="1129" selection-end-line="1129" />
           <folding>
             <element signature="e#4201#4202#0" expanded="true" />
             <element signature="e#4223#4224#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ComputerPlayer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="799" column="36" lean-forward="true" selection-start-line="799" selection-start-column="36" selection-end-line="799" selection-end-column="36" />
         </state>
       </provider>
     </entry>
