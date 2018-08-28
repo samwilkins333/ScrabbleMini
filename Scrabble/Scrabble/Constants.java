@@ -110,6 +110,7 @@ public class Constants {
 	static final String HANDWRITING = ClassLoader.getSystemResource("Fonts/domesticmanners.ttf").toExternalForm();
 		
 	static final double PLACEMENT_DURATION = 0.6;
+	static final double DRAG_ANIMATION_DURATION = 0.3;
 	static final boolean PRINT_STATUS = false;
 	static final double FLASH_SPACING_DURATION = 0.6;
 	static final double AI_ROTATE_DURATION = 0.1;

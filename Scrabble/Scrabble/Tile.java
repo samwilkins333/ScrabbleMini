@@ -260,11 +260,6 @@ public class Tile {
 		return Arrays.stream(numbers).allMatch(n -> n >= 0 && n <= 15);
 	}
 
-	void toFront() {
-		_boardPane.getChildren().remove(_tileViewer);
-		_boardPane.getChildren().add(_tileViewer);
-	}
-
 	private Boolean isDraggable() {
 		if (!_scrabbleGame.gameIsPlaying() || _scrabbleGame.getReferee().isThinking()) return false;
 
@@ -291,7 +286,7 @@ public class Tile {
 	private EventHandler<MouseEvent> pressMouse() {
 		return event -> {
 			if (Tile.this.isDraggable()) {
-				Tile.this.toFront();
+				_tileViewer.toFront();
 				_overlapFlash.stop();
 				_overlapScale.stop();
 				_tileViewer.setScaleX(1);
@@ -331,13 +326,14 @@ public class Tile {
 		int targetHorizontal = _x * GRID_FACTOR + TILE_PADDING;
 		int targetVertical = _y * GRID_FACTOR + TILE_PADDING;
 
-		System.out.printf("%s, %s => by %s, by %s\n", _x, _y, targetHorizontal - _tileViewer.getLayoutX(), targetVertical - _tileViewer.getLayoutY());
-
 		if (animate) {
-			toFront();
-			TranslateTransition dragSim = new TranslateTransition(Duration.seconds(PLACEMENT_DURATION), _tileViewer);
+			_tileViewer.toFront();
+
+			TranslateTransition dragSim = new TranslateTransition(Duration.seconds(DRAG_ANIMATION_DURATION), _tileViewer);
+
 			dragSim.setByX(targetHorizontal - _tileViewer.getLayoutX());
 			dragSim.setByY(targetVertical - _tileViewer.getLayoutY());
+			dragSim.setOnFinished(resetLayout(_tileViewer, targetHorizontal,targetVertical));
 			dragSim.play();
 		} else {
 			_tileViewer.setLayoutX(targetHorizontal);
@@ -348,6 +344,15 @@ public class Tile {
 		_yIndex = -1;
 
 		_isOnBoard = false;
+	}
+
+	private EventHandler<ActionEvent> resetLayout(ImageView viewer, int targetHorizontal, int targetVertical) {
+		return event -> {
+			viewer.setTranslateX(0);
+			viewer.setTranslateY(0);
+			viewer.setLayoutX(targetHorizontal);
+			viewer.setLayoutY(targetVertical);
+		};
 	}
 
 	private EventHandler<MouseEvent> dragMouse() {
@@ -408,67 +413,67 @@ public class Tile {
 		int xMin = 0;
 		int xMax = 0;
 		switch (id) {
-		case 0:
-			xMin = X0 * GRID_FACTOR;
-			xMax = X1 * GRID_FACTOR;
-			break;
-		case 1:
-			xMin = X1 * GRID_FACTOR;
-			xMax = X2 * GRID_FACTOR;
-			break;
-		case 2:
-			xMin = X2 * GRID_FACTOR;
-			xMax = X3 * GRID_FACTOR;
-			break;
-		case 3:
-			xMin = X3 * GRID_FACTOR;
-			xMax = X4 * GRID_FACTOR;
-			break;
-		case 4:
-			xMin = X4 * GRID_FACTOR;
-			xMax = X5 * GRID_FACTOR;
-			break;
-		case 5:
-			xMin = X5 * GRID_FACTOR;
-			xMax = X6 * GRID_FACTOR;
-			break;
-		case 6:
-			xMin = X6 * GRID_FACTOR;
-			xMax = X7 * GRID_FACTOR;
-			break;
-		case 7:
-			xMin = X7 * GRID_FACTOR;
-			xMax = X8 * GRID_FACTOR;
-			break;
-		case 8:
-			xMin = X8 * GRID_FACTOR;
-			xMax = X9 * GRID_FACTOR;
-			break;
-		case 9:
-			xMin = X9 * GRID_FACTOR;
-			xMax = X10 * GRID_FACTOR;
-			break;
-		case 10:
-			xMin = X10 * GRID_FACTOR;
-			xMax = X11 * GRID_FACTOR;
-			break;
-		case 11:
-			xMin = X11 * GRID_FACTOR;
-			xMax = X12 * GRID_FACTOR;
-			break;
-		case 12:
-			xMin = X12 * GRID_FACTOR;
-			xMax = X13 * GRID_FACTOR;
-			break;
-		case 13:
-			xMin = X13 * GRID_FACTOR;
-			xMax = X14 * GRID_FACTOR;
-			break;
-		case 14:
-			xMin = X14 * GRID_FACTOR;
-			xMax = X15 * GRID_FACTOR;
-			break;
-		}
+			case 0:
+				xMin = X0 * GRID_FACTOR;
+				xMax = X1 * GRID_FACTOR;
+				break;
+			case 1:
+				xMin = X1 * GRID_FACTOR;
+				xMax = X2 * GRID_FACTOR;
+				break;
+			case 2:
+				xMin = X2 * GRID_FACTOR;
+				xMax = X3 * GRID_FACTOR;
+				break;
+			case 3:
+				xMin = X3 * GRID_FACTOR;
+				xMax = X4 * GRID_FACTOR;
+				break;
+			case 4:
+				xMin = X4 * GRID_FACTOR;
+				xMax = X5 * GRID_FACTOR;
+				break;
+			case 5:
+				xMin = X5 * GRID_FACTOR;
+				xMax = X6 * GRID_FACTOR;
+				break;
+			case 6:
+				xMin = X6 * GRID_FACTOR;
+				xMax = X7 * GRID_FACTOR;
+				break;
+			case 7:
+				xMin = X7 * GRID_FACTOR;
+				xMax = X8 * GRID_FACTOR;
+				break;
+			case 8:
+				xMin = X8 * GRID_FACTOR;
+				xMax = X9 * GRID_FACTOR;
+				break;
+			case 9:
+				xMin = X9 * GRID_FACTOR;
+				xMax = X10 * GRID_FACTOR;
+				break;
+			case 10:
+				xMin = X10 * GRID_FACTOR;
+				xMax = X11 * GRID_FACTOR;
+				break;
+			case 11:
+				xMin = X11 * GRID_FACTOR;
+				xMax = X12 * GRID_FACTOR;
+				break;
+			case 12:
+				xMin = X12 * GRID_FACTOR;
+				xMax = X13 * GRID_FACTOR;
+				break;
+			case 13:
+				xMin = X13 * GRID_FACTOR;
+				xMax = X14 * GRID_FACTOR;
+				break;
+			case 14:
+				xMin = X14 * GRID_FACTOR;
+				xMax = X15 * GRID_FACTOR;
+				break;
+			}
 		boolean status = false;
 		if (this.getCenterX() >= xMin && this.getCenterX() < xMax) {
 			status = true;
@@ -486,67 +491,67 @@ public class Tile {
 		int yMin = 0;
 		int yMax = 0;
 		switch (id) {
-		case 0:
-			yMin = Y0 * GRID_FACTOR;
-			yMax = Y1 * GRID_FACTOR;
-			break;
-		case 1:
-			yMin = Y1 * GRID_FACTOR;
-			yMax = Y2 * GRID_FACTOR;
-			break;
-		case 2:
-			yMin = Y2 * GRID_FACTOR;
-			yMax = Y3 * GRID_FACTOR;
-			break;
-		case 3:
-			yMin = Y3 * GRID_FACTOR;
-			yMax = Y4 * GRID_FACTOR;
-			break;
-		case 4:
-			yMin = Y4 * GRID_FACTOR;
-			yMax = Y5 * GRID_FACTOR;
-			break;
-		case 5:
-			yMin = Y5 * GRID_FACTOR;
-			yMax = Y6 * GRID_FACTOR;
-			break;
-		case 6:
-			yMin = Y6 * GRID_FACTOR;
-			yMax = Y7 * GRID_FACTOR;
-			break;
-		case 7:
-			yMin = Y7 * GRID_FACTOR;
-			yMax = Y8 * GRID_FACTOR;
-			break;
-		case 8:
-			yMin = Y8 * GRID_FACTOR;
-			yMax = Y9 * GRID_FACTOR;
-			break;
-		case 9:
-			yMin = Y9 * GRID_FACTOR;
-			yMax = Y10 * GRID_FACTOR;
-			break;
-		case 10:
-			yMin = Y10 * GRID_FACTOR;
-			yMax = Y11 * GRID_FACTOR;
-			break;
-		case 11:
-			yMin = Y11 * GRID_FACTOR;
-			yMax = Y12 * GRID_FACTOR;
-			break;
-		case 12:
-			yMin = Y12 * GRID_FACTOR;
-			yMax = Y13 * GRID_FACTOR;
-			break;
-		case 13:
-			yMin = Y13 * GRID_FACTOR;
-			yMax = Y14 * GRID_FACTOR;
-			break;
-		case 14:
-			yMin = Y14 * GRID_FACTOR;
-			yMax = Y15 * GRID_FACTOR;
-			break;
-		}
+			case 0:
+				yMin = Y0 * GRID_FACTOR;
+				yMax = Y1 * GRID_FACTOR;
+				break;
+			case 1:
+				yMin = Y1 * GRID_FACTOR;
+				yMax = Y2 * GRID_FACTOR;
+				break;
+			case 2:
+				yMin = Y2 * GRID_FACTOR;
+				yMax = Y3 * GRID_FACTOR;
+				break;
+			case 3:
+				yMin = Y3 * GRID_FACTOR;
+				yMax = Y4 * GRID_FACTOR;
+				break;
+			case 4:
+				yMin = Y4 * GRID_FACTOR;
+				yMax = Y5 * GRID_FACTOR;
+				break;
+			case 5:
+				yMin = Y5 * GRID_FACTOR;
+				yMax = Y6 * GRID_FACTOR;
+				break;
+			case 6:
+				yMin = Y6 * GRID_FACTOR;
+				yMax = Y7 * GRID_FACTOR;
+				break;
+			case 7:
+				yMin = Y7 * GRID_FACTOR;
+				yMax = Y8 * GRID_FACTOR;
+				break;
+			case 8:
+				yMin = Y8 * GRID_FACTOR;
+				yMax = Y9 * GRID_FACTOR;
+				break;
+			case 9:
+				yMin = Y9 * GRID_FACTOR;
+				yMax = Y10 * GRID_FACTOR;
+				break;
+			case 10:
+				yMin = Y10 * GRID_FACTOR;
+				yMax = Y11 * GRID_FACTOR;
+				break;
+			case 11:
+				yMin = Y11 * GRID_FACTOR;
+				yMax = Y12 * GRID_FACTOR;
+				break;
+			case 12:
+				yMin = Y12 * GRID_FACTOR;
+				yMax = Y13 * GRID_FACTOR;
+				break;
+			case 13:
+				yMin = Y13 * GRID_FACTOR;
+				yMax = Y14 * GRID_FACTOR;
+				break;
+			case 14:
+				yMin = Y14 * GRID_FACTOR;
+				yMax = Y15 * GRID_FACTOR;
+				break;
+			}
 		boolean status = false;
 		if (this.getCenterY() >= yMin && this.getCenterY() < yMax) {
 			status = true;
@@ -562,88 +567,102 @@ public class Tile {
 
 	private EventHandler<MouseEvent> releaseMouse() {
 		return event -> {
-			if (Tile.this.isDraggable()) {
-				// System.out.printf("Clicked tile released at %s, %s\n", _xIndex, _yIndex);
-				_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
-				Tile.this.checkOutOfBoard();
-				for (int c = 0; c < 15; c++) {
-					if (!_snappedX) {
-						Tile.this.checkColumn(c);
-						if (_snappedX) {
-							_xIndex = c;
-							// System.out.printf("Index X = %s\n", _xIndex);
-						}
-					} else {
-						break;
-					}
-				}
-				for (int r = 0; r < 15; r++) {
-					if (!_snappedY) {
-						Tile.this.checkRow(r);
-						if (_snappedY) {
-							_yIndex = r;
-							// System.out.printf("Index Y = %s\n", _yIndex);
-						}
-					} else {
-						break;
-					}
-				}
-				if (_scrabbleGame.boardSquareOccupiedAt(_xIndex, _yIndex) || event.getClickCount() == 2) {
-					_tileViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
-					_tileViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
-					_checkViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
-					_checkViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
-					_xViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
-					_xViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
-					_minusViewer.setLayoutX(_x * GRID_FACTOR + TILE_PADDING);
-					_minusViewer.setLayoutY(_y * GRID_FACTOR + TILE_PADDING);
-					_overlapFlash.stop();
-					_overlapScale.stop();
-					_tileViewer.setScaleX(1);
-					_tileViewer.setScaleY(1);
-					_tileViewer.setOpacity(1.0);
-					_tileViewer.setEffect(_pieceShadow);
-					_snappedX = true;
-					_snappedY = true;
-					_isOnBoard = false;
-					_xIndex = -1;
-					_yIndex = -1;
-					_tilesOnBoard.remove(Tile.this);
-				}
-				if (_newestWord.containsTileAt(Tile.this, _xIndex, _yIndex)) {
-					_overlapFlash.play();
-					_overlapScale.play();
-					_tileViewer.setEffect(null);
-				}
-				if (_isOnBoard && !_partOfNewestWord) {
-					_newestWord.addTileToWord(Tile.this);
-					if (!_tilesOnBoard.contains(Tile.this)) {
-						_tilesOnBoard.add(Tile.this);
-					}
-					_partOfNewestWord = true;
-				} else if (!_isOnBoard && _partOfNewestWord) {
-					_newestWord.removeTileFromWord(Tile.this);
-					if (_tilesOnBoard.contains(Tile.this)) {
-						_tilesOnBoard.remove(Tile.this);
-					}
-					_partOfNewestWord = false;
-				}
-				// System.out.printf("\n%s tiles on board\n\n", tilesOnBoard.size());
-				// System.out.printf("Index X = %s, Index y = %s\n", _xIndex, _yIndex);
-				_newestWord.printTileListContents(_newestWord.getTiles());
-				_newestWord.checkAddedTiles();
-				if (_newestWord.containsOnlyAddedTiles()) {
-					_newestWord.clear();
-				}
-				// _newestWord.updateValue();
-				_newestWord.printAllTileLists();
-				System.out.printf("There are %s tiles on the board\n", _tilesOnBoard.size());
-			}
+			if (!Tile.this.isDraggable()) return;
+
+			_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
+
+			checkOutOfBoard();
+			snapTile();
+			checkResetConditions(event);
+			checkOverlap();
+			updateWordMemberStatus();
+
+			_newestWord.printTileListContents(_newestWord.getTiles());
+			_newestWord.checkAddedTiles();
+
+			if (_newestWord.containsOnlyAddedTiles()) _newestWord.clear();
 		};
 	}
 
-	void setToOpaque() {
+	private void updateWordMemberStatus() {
+		// Add tile to newest word if it's been played on the board but hasn't yet been added
+		if (_isOnBoard && !_partOfNewestWord) {
+			_newestWord.addTileToWord(this);
+			_tilesOnBoard.add(this);
+		// Conversely, if it's been removed from the board, remove it from the current word
+		} else if (!_isOnBoard && _partOfNewestWord) {
+			_newestWord.removeTileFromWord(Tile.this);
+			_tilesOnBoard.remove(this);
+		}
+	}
+
+	private void checkOverlap() {
+		// Plays scaling and flickering animation if human player drops a piece on another unplayed piece
+		if (!_newestWord.containsTileAt(Tile.this, _xIndex, _yIndex)) return;
+
+		_overlapFlash.play();
+		_overlapScale.play();
+		_tileViewer.setEffect(null); // Avoids double drop shadow rendering
+	}
+
+	private void checkResetConditions(MouseEvent event) {
+		// Only resets if the user drops a piece on an already played piece or double clicks an unplayed piece
+		if (!_scrabbleGame.boardSquareOccupiedAt(_xIndex, _yIndex) && event.getClickCount() != 2) return;
+
+		int targetHorizontal = _x * GRID_FACTOR + TILE_PADDING;
+		int targetVertical = _y * GRID_FACTOR + TILE_PADDING;
+
+		_tileViewer.setLayoutX(targetHorizontal);
+		_tileViewer.setLayoutY(targetVertical);
+
+		_checkViewer.setLayoutX(targetHorizontal);
+		_checkViewer.setLayoutY(targetVertical);
+
+		_xViewer.setLayoutX(targetHorizontal);
+		_xViewer.setLayoutY(targetVertical);
+
+		_minusViewer.setLayoutX(targetHorizontal);
+		_minusViewer.setLayoutY(targetVertical);
+
+		_overlapFlash.stop();
+		_overlapScale.stop();
+
+		_tileViewer.setScaleX(1);
+		_tileViewer.setScaleY(1);
+
 		_tileViewer.setOpacity(1.0);
+		_tileViewer.setEffect(_pieceShadow);
+
+		_snappedX = true;
+		_snappedY = true;
+
+		_isOnBoard = false;
+
+		_xIndex = -1;
+		_yIndex = -1;
+
+		_tilesOnBoard.remove(Tile.this);
+	}
+
+	/*
+	 * For both rows and columns, iterates until layout falls within a particular range and
+	 * snaps the tile to appropriate grid cell
+	 */
+	private void snapTile() {
+		// Snap columns
+		for (int col = 0; col < 15; col++) {
+			if (_snappedX) break;
+
+			Tile.this.checkColumn(col);
+			if (_snappedX) _xIndex = col;
+		}
+		// Snap rows
+		for (int row = 0; row < 15; row++) {
+			if (_snappedY) break;
+
+			Tile.this.checkRow(row);
+			if (_snappedY) _yIndex = row;
+		}
 	}
 
 	private void refreshPlayerInfo() {
@@ -689,9 +708,10 @@ public class Tile {
 
 		if (animate) {
 			tileComponents.forEach(view -> {
-				TranslateTransition dragSim = new TranslateTransition(Duration.seconds(PLACEMENT_DURATION), view);
+				TranslateTransition dragSim = new TranslateTransition(Duration.seconds(DRAG_ANIMATION_DURATION), view);
 				dragSim.setByX(targetHorizontal - view.getLayoutX());
 				dragSim.setByY(targetVertical - view.getLayoutY());
+				dragSim.setOnFinished(resetLayout(view, targetHorizontal, targetVertical));
 				dragSim.play();
 			});
 		} else {

@@ -1,0 +1,5 @@
+package Scrabble;
+
+class Util {
+
+}

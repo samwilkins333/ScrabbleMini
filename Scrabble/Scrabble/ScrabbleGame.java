@@ -1421,7 +1421,7 @@ public class ScrabbleGame {
 		
 		@Override
 		public void handle(ActionEvent event) {
-			_thisTile.toFront();
+			_thisTile.getTileViewer().toFront();
 			_thisTile.placeAtSquare(_x, _y, true);
 			event.consume();
 		}

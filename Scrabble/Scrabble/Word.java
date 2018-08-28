@@ -317,6 +317,7 @@ public class Word {
 
 	void addTileToWord(Tile tile) {
 		_tiles.add(tile);
+		tile.setIsPartOfNewestWord(true);
 	}
 
 	private void readTiles(String id) {
@@ -603,7 +604,7 @@ public class Word {
 			thisTile.setIsOnBoard(false);
 			thisTile.setIsPartOfNewestWord(false);
 			thisTile.stopOverlapFlash();
-			thisTile.setToOpaque();
+			thisTile.getTileViewer().setOpacity(1);
 			thisTile.resetShadow();
 			tilesOnBoard.remove(thisTile);
 		}
@@ -615,6 +616,7 @@ public class Word {
 
 	void removeTileFromWord(Tile tile) {
 		_tiles.remove(tile);
+		tile.setIsPartOfNewestWord(false);
 	}
 
 	private void updateValue(int bonus) {
