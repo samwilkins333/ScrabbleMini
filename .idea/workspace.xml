@@ -2,17 +2,20 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="dc535c14-9aff-47a5-937e-9502eff4984d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Util.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/swilkinss2012.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dictionaries/swilkinss2012.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Orientation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Constants.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Constants.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Constants.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/ScrabbleGame$PlaceHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/ScrabbleGame$PlaceHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/ScrabbleGame.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/ScrabbleGame.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Tile$RemoveIconsHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Tile$RemoveIconsHandler.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Tile.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Tile.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Word$1.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Word$AddHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Word$CrossHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Word$PlaceHandler.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/ScrabbleMini/Scrabble/Word.class" beforeDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -35,22 +38,22 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="java" value="3680" />
+          <entry key="java" value="4365" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="JAVA" value="3680" />
+          <entry key="JAVA" value="4365" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="java" value="20" />
+          <entry key="java" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="JAVA" value="20" />
+          <entry key="JAVA" value="21" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.spring.boot.run.usages" />
@@ -66,8 +69,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="1425" selection-start-line="1425" selection-end-line="1425" />
+            <state relative-caret-position="163">
+              <caret line="576" selection-start-line="576" selection-end-line="576" />
               <folding>
                 <element signature="e#4201#4202#0" expanded="true" />
                 <element signature="e#4223#4224#0" expanded="true" />
@@ -100,11 +103,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Tile.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="140">
-              <caret line="665" column="5" selection-start-line="665" selection-start-column="5" selection-end-line="665" selection-end-column="5" />
+            <state relative-caret-position="161">
+              <caret line="699" column="35" selection-start-line="699" selection-start-column="35" selection-end-line="699" selection-end-column="35" />
               <folding>
                 <element signature="e#6106#6107#0" expanded="true" />
                 <element signature="e#6176#6177#0" expanded="true" />
@@ -112,28 +115,28 @@
                 <element signature="e#6371#6372#0" expanded="true" />
                 <element signature="e#8413#8414#0" expanded="true" />
                 <element signature="e#8444#8445#0" expanded="true" />
-                <element signature="e#24831#24832#0" expanded="true" />
-                <element signature="e#24857#24858#0" expanded="true" />
-                <element signature="e#25082#25083#0" expanded="true" />
-                <element signature="e#25179#25180#0" expanded="true" />
-                <element signature="e#25194#25195#0" expanded="true" />
-                <element signature="e#25291#25292#0" expanded="true" />
-                <element signature="e#25311#25312#0" expanded="true" />
-                <element signature="e#25332#25333#0" expanded="true" />
-                <element signature="e#25352#25353#0" expanded="true" />
-                <element signature="e#25373#25374#0" expanded="true" />
-                <element signature="e#25403#25404#0" expanded="true" />
-                <element signature="e#25428#25429#0" expanded="true" />
-                <element signature="e#25454#25455#0" expanded="true" />
-                <element signature="e#25474#25475#0" expanded="true" />
-                <element signature="e#25497#25498#0" expanded="true" />
-                <element signature="e#25529#25530#0" expanded="true" />
-                <element signature="e#25559#25560#0" expanded="true" />
-                <element signature="e#25580#25581#0" expanded="true" />
-                <element signature="e#25769#25770#0" expanded="true" />
-                <element signature="e#25811#25812#0" expanded="true" />
-                <element signature="e#26639#26640#0" expanded="true" />
-                <element signature="e#26663#26664#0" expanded="true" />
+                <element signature="e#22768#22769#0" expanded="true" />
+                <element signature="e#22794#22795#0" expanded="true" />
+                <element signature="e#22979#22980#0" expanded="true" />
+                <element signature="e#23056#23057#0" expanded="true" />
+                <element signature="e#23071#23072#0" expanded="true" />
+                <element signature="e#23148#23149#0" expanded="true" />
+                <element signature="e#23168#23169#0" expanded="true" />
+                <element signature="e#23189#23190#0" expanded="true" />
+                <element signature="e#23209#23210#0" expanded="true" />
+                <element signature="e#23230#23231#0" expanded="true" />
+                <element signature="e#23260#23261#0" expanded="true" />
+                <element signature="e#23285#23286#0" expanded="true" />
+                <element signature="e#23311#23312#0" expanded="true" />
+                <element signature="e#23331#23332#0" expanded="true" />
+                <element signature="e#23354#23355#0" expanded="true" />
+                <element signature="e#23386#23387#0" expanded="true" />
+                <element signature="e#23416#23417#0" expanded="true" />
+                <element signature="e#23437#23438#0" expanded="true" />
+                <element signature="e#23626#23627#0" expanded="true" />
+                <element signature="e#23668#23669#0" expanded="true" />
+                <element signature="e#24336#24337#0" expanded="true" />
+                <element signature="e#24360#24361#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -185,11 +188,32 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="200">
-              <caret line="608" column="42" lean-forward="true" selection-start-line="608" selection-start-column="42" selection-end-line="608" selection-end-column="42" />
+            <state relative-caret-position="251">
+              <caret line="581" column="24" selection-start-line="581" selection-start-column="24" selection-end-line="581" selection-end-column="24" />
+              <folding>
+                <element signature="e#1811#1812#0" expanded="true" />
+                <element signature="e#1837#1838#0" expanded="true" />
+                <element signature="e#10532#10533#0" expanded="true" />
+                <element signature="e#10556#10557#0" expanded="true" />
+                <element signature="e#16685#16686#0" expanded="true" />
+                <element signature="e#16705#16706#0" expanded="true" />
+                <element signature="e#16792#16793#0" expanded="true" />
+                <element signature="e#16814#16815#0" expanded="true" />
+                <element signature="e#16840#16841#0" expanded="true" />
+                <element signature="e#16860#16861#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Orientation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
             </state>
           </provider>
         </entry>
@@ -199,8 +223,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Enum" />
         <option value="Class" />
+        <option value="Enum" />
       </list>
     </option>
   </component>
@@ -223,6 +247,8 @@
       <find>animate</find>
       <find>tofront</find>
       <find>toFront</find>
+      <find>_word...</find>
+      <find>read</find>
     </findStrings>
     <replaceStrings>
       <replace>INDIEFLOWE</replace>
@@ -245,8 +271,9 @@
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Util.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Constants.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java" />
-        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Orientation.java" />
         <option value="$PROJECT_DIR$/Scrabble/Scrabble/Tile.java" />
+        <option value="$PROJECT_DIR$/Scrabble/Scrabble/Word.java" />
       </list>
     </option>
   </component>
@@ -304,7 +331,7 @@
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535441891275" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1535451236104" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -364,12 +391,12 @@
       <workItem from="1534884123147" duration="499000" />
       <workItem from="1535008111005" duration="35000" />
       <workItem from="1535008984769" duration="344000" />
-      <workItem from="1535361562080" duration="11481000" />
+      <workItem from="1535361562080" duration="15158000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="17203000" />
+    <option name="totallyTimeSpent" value="20880000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1440" height="900" extended-state="0" />
@@ -384,7 +411,7 @@
       <window_info id="Learn" order="6" weight="0.3297568" />
       <window_info id="Favorites" order="7" side_tool="true" weight="0.3297568" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info active="true" anchor="bottom" id="Find" order="1" visible="true" weight="0.32650602" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.32650602" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.32791328" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.35301206" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -394,7 +421,7 @@
       <window_info anchor="bottom" id="Database Changes" order="8" show_stripe_button="false" />
       <window_info anchor="bottom" id="Terminal" order="9" weight="0.32891566" />
       <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
-      <window_info anchor="bottom" id="Messages" order="11" weight="0.32650602" />
+      <window_info active="true" anchor="bottom" id="Messages" order="11" visible="true" weight="0.32650602" />
       <window_info anchor="bottom" id="Inspection Results" order="12" weight="0.32891566" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -485,28 +512,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="1223" column="47" lean-forward="true" selection-start-line="1223" selection-start-column="47" selection-end-line="1223" selection-end-column="47" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4527#4528#0" expanded="true" />
-            <element signature="e#4560#4561#0" expanded="true" />
-            <element signature="e#4588#4589#0" expanded="true" />
-            <element signature="e#4608#4609#0" expanded="true" />
-            <element signature="e#29725#29726#0" expanded="true" />
-            <element signature="e#29750#29751#0" expanded="true" />
-            <element signature="e#33269#33270#0" expanded="true" />
-            <element signature="e#33295#33296#0" expanded="true" />
-            <element signature="e#33327#33328#0" expanded="true" />
-            <element signature="e#33347#33348#0" expanded="true" />
-            <element signature="e#51221#51222#0" expanded="true" />
-            <element signature="e#51251#51252#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk-9.0.1.jdk/Contents/Home/lib/src.zip!/javafx.graphics/javafx/scene/Parent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="170">
@@ -579,8 +584,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/ScrabbleGame.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="1425" selection-start-line="1425" selection-end-line="1425" />
+        <state relative-caret-position="163">
+          <caret line="576" selection-start-line="576" selection-end-line="576" />
           <folding>
             <element signature="e#4201#4202#0" expanded="true" />
             <element signature="e#4223#4224#0" expanded="true" />
@@ -588,17 +593,39 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Orientation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="608" column="42" lean-forward="true" selection-start-line="608" selection-start-column="42" selection-end-line="608" selection-end-column="42" />
+        <state relative-caret-position="75">
+          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/PaneOrganizer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="1223" column="47" lean-forward="true" selection-start-line="1223" selection-start-column="47" selection-end-line="1223" selection-end-column="47" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4527#4528#0" expanded="true" />
+            <element signature="e#4560#4561#0" expanded="true" />
+            <element signature="e#4588#4589#0" expanded="true" />
+            <element signature="e#4608#4609#0" expanded="true" />
+            <element signature="e#29725#29726#0" expanded="true" />
+            <element signature="e#29750#29751#0" expanded="true" />
+            <element signature="e#33269#33270#0" expanded="true" />
+            <element signature="e#33295#33296#0" expanded="true" />
+            <element signature="e#33327#33328#0" expanded="true" />
+            <element signature="e#33347#33348#0" expanded="true" />
+            <element signature="e#51221#51222#0" expanded="true" />
+            <element signature="e#51251#51252#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Tile.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="140">
-          <caret line="665" column="5" selection-start-line="665" selection-start-column="5" selection-end-line="665" selection-end-column="5" />
+        <state relative-caret-position="161">
+          <caret line="699" column="35" selection-start-line="699" selection-start-column="35" selection-end-line="699" selection-end-column="35" />
           <folding>
             <element signature="e#6106#6107#0" expanded="true" />
             <element signature="e#6176#6177#0" expanded="true" />
@@ -606,28 +633,47 @@
             <element signature="e#6371#6372#0" expanded="true" />
             <element signature="e#8413#8414#0" expanded="true" />
             <element signature="e#8444#8445#0" expanded="true" />
-            <element signature="e#24831#24832#0" expanded="true" />
-            <element signature="e#24857#24858#0" expanded="true" />
-            <element signature="e#25082#25083#0" expanded="true" />
-            <element signature="e#25179#25180#0" expanded="true" />
-            <element signature="e#25194#25195#0" expanded="true" />
-            <element signature="e#25291#25292#0" expanded="true" />
-            <element signature="e#25311#25312#0" expanded="true" />
-            <element signature="e#25332#25333#0" expanded="true" />
-            <element signature="e#25352#25353#0" expanded="true" />
-            <element signature="e#25373#25374#0" expanded="true" />
-            <element signature="e#25403#25404#0" expanded="true" />
-            <element signature="e#25428#25429#0" expanded="true" />
-            <element signature="e#25454#25455#0" expanded="true" />
-            <element signature="e#25474#25475#0" expanded="true" />
-            <element signature="e#25497#25498#0" expanded="true" />
-            <element signature="e#25529#25530#0" expanded="true" />
-            <element signature="e#25559#25560#0" expanded="true" />
-            <element signature="e#25580#25581#0" expanded="true" />
-            <element signature="e#25769#25770#0" expanded="true" />
-            <element signature="e#25811#25812#0" expanded="true" />
-            <element signature="e#26639#26640#0" expanded="true" />
-            <element signature="e#26663#26664#0" expanded="true" />
+            <element signature="e#22768#22769#0" expanded="true" />
+            <element signature="e#22794#22795#0" expanded="true" />
+            <element signature="e#22979#22980#0" expanded="true" />
+            <element signature="e#23056#23057#0" expanded="true" />
+            <element signature="e#23071#23072#0" expanded="true" />
+            <element signature="e#23148#23149#0" expanded="true" />
+            <element signature="e#23168#23169#0" expanded="true" />
+            <element signature="e#23189#23190#0" expanded="true" />
+            <element signature="e#23209#23210#0" expanded="true" />
+            <element signature="e#23230#23231#0" expanded="true" />
+            <element signature="e#23260#23261#0" expanded="true" />
+            <element signature="e#23285#23286#0" expanded="true" />
+            <element signature="e#23311#23312#0" expanded="true" />
+            <element signature="e#23331#23332#0" expanded="true" />
+            <element signature="e#23354#23355#0" expanded="true" />
+            <element signature="e#23386#23387#0" expanded="true" />
+            <element signature="e#23416#23417#0" expanded="true" />
+            <element signature="e#23437#23438#0" expanded="true" />
+            <element signature="e#23626#23627#0" expanded="true" />
+            <element signature="e#23668#23669#0" expanded="true" />
+            <element signature="e#24336#24337#0" expanded="true" />
+            <element signature="e#24360#24361#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Scrabble/Scrabble/Word.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="251">
+          <caret line="581" column="24" selection-start-line="581" selection-start-column="24" selection-end-line="581" selection-end-column="24" />
+          <folding>
+            <element signature="e#1811#1812#0" expanded="true" />
+            <element signature="e#1837#1838#0" expanded="true" />
+            <element signature="e#10532#10533#0" expanded="true" />
+            <element signature="e#10556#10557#0" expanded="true" />
+            <element signature="e#16685#16686#0" expanded="true" />
+            <element signature="e#16705#16706#0" expanded="true" />
+            <element signature="e#16792#16793#0" expanded="true" />
+            <element signature="e#16814#16815#0" expanded="true" />
+            <element signature="e#16840#16841#0" expanded="true" />
+            <element signature="e#16860#16861#0" expanded="true" />
           </folding>
         </state>
       </provider>

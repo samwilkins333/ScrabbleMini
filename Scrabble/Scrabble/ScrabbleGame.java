@@ -1374,14 +1374,14 @@ public class ScrabbleGame {
 					if (move == 1) {
 						for (int k = 0; k < 15; k++) {
 							if (_tileArray[k][y] == null) {
-								thisTile.placeAtSquare(k, y, true);
+								thisTile.placeAtSquare(k, y);
 								break;
 							}
 						}
 					} else if (move == -1) {
 						for (int k = 0; k < 15; k++) {
 							if (_tileArray[x][k] == null) {
-								thisTile.placeAtSquare(x, k, true);
+								thisTile.placeAtSquare(x, k);
 								break;
 							}
 						}
@@ -1422,7 +1422,7 @@ public class ScrabbleGame {
 		@Override
 		public void handle(ActionEvent event) {
 			_thisTile.getTileViewer().toFront();
-			_thisTile.placeAtSquare(_x, _y, true);
+			_thisTile.placeAtSquare(_x, _y);
 			event.consume();
 		}
 

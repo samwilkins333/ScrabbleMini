@@ -567,7 +567,7 @@ public class Tile {
 
 	private EventHandler<MouseEvent> releaseMouse() {
 		return event -> {
-			if (!Tile.this.isDraggable()) return;
+			if (!isDraggable()) return;
 
 			_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 
@@ -577,8 +577,8 @@ public class Tile {
 			checkOverlap();
 			updateWordMemberStatus();
 
-			_newestWord.printTileListContents(_newestWord.getTiles());
 			_newestWord.checkAddedTiles();
+			_newestWord.printTileListContents(_newestWord.getTiles());
 
 			if (_newestWord.containsOnlyAddedTiles()) _newestWord.clear();
 		};
@@ -697,7 +697,7 @@ public class Tile {
 		_boardPane.getChildren().add(_tileViewer);
 	}
 
-	void placeAtSquare(int x, int y, boolean animate) {
+	void placeAtSquare(int x, int y) {
 		_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
 		if (!this.areValidIndices(new int[] { x, y })) return;
 
@@ -706,20 +706,13 @@ public class Tile {
 
 		List<ImageView> tileComponents = Arrays.asList(_tileViewer, _checkViewer, _minusViewer, _xViewer);
 
-		if (animate) {
-			tileComponents.forEach(view -> {
-				TranslateTransition dragSim = new TranslateTransition(Duration.seconds(DRAG_ANIMATION_DURATION), view);
-				dragSim.setByX(targetHorizontal - view.getLayoutX());
-				dragSim.setByY(targetVertical - view.getLayoutY());
-				dragSim.setOnFinished(resetLayout(view, targetHorizontal, targetVertical));
-				dragSim.play();
-			});
-		} else {
-			tileComponents.forEach(view -> {
-				view.setLayoutX(targetHorizontal);
-				view.setLayoutY(targetVertical);
-			});
-		}
+		tileComponents.forEach(view -> {
+			TranslateTransition dragSim = new TranslateTransition(Duration.seconds(DRAG_ANIMATION_DURATION), view);
+			dragSim.setByX(targetHorizontal - view.getLayoutX());
+			dragSim.setByY(targetVertical - view.getLayoutY());
+			dragSim.setOnFinished(resetLayout(view, targetHorizontal, targetVertical));
+			dragSim.play();
+		});
 
 		_isOnBoard = true;
 
