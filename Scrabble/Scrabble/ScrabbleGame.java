@@ -14,6 +14,8 @@ import javafx.event.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 
+import static Scrabble.Util.*;
+
 public class ScrabbleGame {
 	private PaneOrganizer _organizer;
 	private Pane _root;
@@ -28,9 +30,6 @@ public class ScrabbleGame {
 	private ArrayList<BoardSquare> _doubleWordScores;
 	private ArrayList<BoardSquare> _tripleLetterScores;
 	private ArrayList<BoardSquare> _tripleWordScores;
-	private Word _playerOneBest;
-	private Word _playerTwoBest;
-	private ArrayList<FadeTransition> _fadeIns;
 	private ArrayList<FadeTransition> _fadeOuts;
 	private Tile[][] _tileArray;
 	private ArrayList<Tile> _tilesOnBoard;
@@ -53,7 +52,6 @@ public class ScrabbleGame {
 		_boardArray = new BoardSquare[15][15];
 		_dictionary = new HashSet<>();
 		_fadeOuts = new ArrayList<>();
-		_fadeIns = new ArrayList<>();
 		_tilesOnBoard = new ArrayList<>();
 		_doubleLetterScores = new ArrayList<>();
 		_doubleWordScores = new ArrayList<>();
@@ -906,11 +904,8 @@ public class ScrabbleGame {
 	}
 
 	void addTileToBoardArrayAt(Tile tile, int x, int y) {
-		if (this.isBetween(0, x, y, 14)) {
-			_tileArray[x][y] = tile;
-		} else {
-			//system.out.printf("Cannot add %s tile at %s, %s\n", tile.getLetter(), x, y);
-		}
+		if (!areValidIndices(new int[]{x, y})) return;
+		_tileArray[x][y] = tile;
 	}
 
 	ArrayList<Tile> getTilesOnBoard() {
@@ -918,85 +913,17 @@ public class ScrabbleGame {
 	}
 
 	Boolean boardSquareOccupiedAt(int x, int y) {
-		if (this.isBetween(0, x, y, 14)) {
-			if (_tileArray[x][y] != null) {
-				return true;
-			} else {
-				return false;
-			}
-		} else {
-			return false;
-		}
-	}
-
-	private Boolean isBetween(int lowerBounds, int check, int check2, int upperBounds) {
-		Boolean result = false;
-		if (check >= lowerBounds && check <= upperBounds && check2 >= lowerBounds && check2 <= upperBounds) {
-			result = true;
-		}
-		return result;
+		if (!areValidIndices(new int[] { x, y })) return false;
+		return _tileArray[x][y] != null;
 	}
 
 	Tile getTileFromArrayAt(int x, int y) {
-		Tile selection = _tileArray[x][y];
-		return selection;
+		return _tileArray[x][y];
 	}
 
 	Tile[][] getTileArray() {
 		return _tileArray;
 	}
-
-	public void animateWords() {
-		if (_playerOneBest != null) {
-			for (int i = 0; i < _playerOneBest.getTiles().size(); i++) {
-				Tile thisTile = _playerOneBest.getTiles().get(i);
-				FadeTransition fadeOut = new FadeTransition(Duration.seconds(Constants.FADE_OUT_DURATION),
-						thisTile.getTileViewer());
-				fadeOut.setFromValue(1.0);
-				fadeOut.setToValue(0.0);
-				FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FADE_IN_DURATION),
-						thisTile.getTileViewer());
-				fadeIn.setFromValue(0.0);
-				fadeIn.setToValue(1.0);
-				_fadeOuts.add(fadeOut);
-				_fadeIns.add(fadeIn);
-			}
-		}
-		if (_playerTwoBest != null) {
-			for (int i = 0; i < _playerTwoBest.getTiles().size(); i++) {
-				Tile thisTile = _playerTwoBest.getTiles().get(i);
-				FadeTransition fadeOut = new FadeTransition(Duration.seconds(Constants.FADE_OUT_DURATION),
-						thisTile.getTileViewer());
-				fadeOut.setFromValue(1.0);
-				fadeOut.setToValue(0.0);
-				FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FADE_IN_DURATION),
-						thisTile.getTileViewer());
-				fadeIn.setFromValue(0.0);
-				fadeIn.setToValue(1.0);
-				_fadeOuts.add(fadeOut);
-				_fadeIns.add(fadeIn);
-			}
-		}
-	}
-
-//	public void addWordsToBoard() {
-//		if (_playerOneBest != null) {
-//			for (int i = 0; i < _playerOneBest.getTiles().size(); i++) {
-//				Tile thisTile = _playerOneBest.getTiles().get(i);
-//				thisTile.placeAtSquare(i, 0);
-//				thisTile.addTo(_tileArray);
-//				thisTile.addTo(_tilesOnBoard);
-//			}
-//		}
-//		if (_playerTwoBest != null) {
-//			for (int i = 0; i < _playerTwoBest.getTiles().size(); i++) {
-//				Tile thisTile = _playerTwoBest.getTiles().get(i);
-//				thisTile.placeAtSquare(i, 1);
-//				thisTile.addTo(_tileArray);
-//				thisTile.addTo(_tilesOnBoard);
-//			}
-//		}
-//	}
 	
 	void aiSequence(int func, String id) {
 		switch (func) {
@@ -1036,59 +963,24 @@ public class ScrabbleGame {
 		}
 	}
 
-	public void playFadeOuts() {
-		for (int i = 0; i < _fadeOuts.size(); i++) {
-			_fadeOuts.get(i).play();
-		}
-	}
-
-	public void playFadeIns() {
-		for (int i = 0; i < _fadeIns.size(); i++) {
-			_fadeIns.get(i).play();
-		}
-	}
-
-	// *** @AI ***
-	public void printValues() {
-		if (_playerOneBest != null) {
-			//system.out.printf("%s yields %s points\n", _playerOneBest.getLetters(), _playerOneBest.getValue());
-		}
-		if (_playerTwoBest != null) {
-			//system.out.printf("%s yields %s points\n", _playerTwoBest.getLetters(), _playerTwoBest.getValue());
-		}
-	}
-
-	void collectAdjacents(String id, Tile thisTile, ArrayList<Tile> tiles) {
+	void collectAdjacents(Orientation orientation, Tile thisTile, ArrayList<Tile> tiles) {
 		int x = thisTile.getXIndex();
 		int y = thisTile.getYIndex();
 		int i = 1;
-		if (!tiles.contains(thisTile)) {
-			tiles.add(thisTile);
-		}
-		// //system.out.printf("Added %s tile to %s cross\n", thisTile.getLetter(), id);
-		if (id == "HORIZONTALLY") {
+		if (!tiles.contains(thisTile)) tiles.add(thisTile);
+		if (orientation == Orientation.Horizontal) {
 			while (x - i >= 0 && _tileArray[x - i][y] != null && _tileArray[x - i][y].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to horizontal cross\n", _tileArray[x -
-				// i][y].getLetter());
-				if (!tiles.contains(_tileArray[x - i][y])) {
-					tiles.add(_tileArray[x - i][y]);
-				}
+				if (!tiles.contains(_tileArray[x - i][y])) tiles.add(_tileArray[x - i][y]);
 				i++;
 			}
 			i = 1;
 			while (x + i <= 14 && _tileArray[x + i][y] != null && _tileArray[x + i][y].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to horizontal cross\n", _tileArray[x +
-				// i][y].getLetter());
-				if (!tiles.contains(_tileArray[x + i][y])) {
-					tiles.add(_tileArray[x + i][y]);
-				}
+				if (!tiles.contains(_tileArray[x + i][y])) tiles.add(_tileArray[x + i][y]);
 				i++;
 			}
-		} else if (id == "VERTICALLY") {
+		} else if (orientation == Orientation.Vertical) {
 			i = 1;
 			while (y - i >= 0 && _tileArray[x][y - i] != null && _tileArray[x][y - i].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to vertical cross\n", _tileArray[x][y -
-				// i].getLetter());
 				if (!tiles.contains(_tileArray[x][y - i])) {
 					tiles.add(_tileArray[x][y - i]);
 				}
@@ -1096,8 +988,6 @@ public class ScrabbleGame {
 			}
 			i = 1;
 			while (y + i <= 14 && _tileArray[x][y + i] != null && _tileArray[x][y + i].isAddedToBoard()) {
-				// //system.out.printf("Adding %s tile to vertical cross\n", _tileArray[x][y +
-				// i].getLetter());
 				if (!tiles.contains(_tileArray[x][y + i])) {
 					tiles.add(_tileArray[x][y + i]);
 				}
@@ -1128,16 +1018,16 @@ public class ScrabbleGame {
 			x = isHorizontal ? firstXIndex + i : firstXIndex;
 			y = isHorizontal ? firstYIndex : firstYIndex + i;
 
-			if (this.isBetween(0, x, y, 14)) {
+			if (areValidIndices(new int[]{x, y})) {
 				BoardSquare thisSquare = _boardArray[x][y];
-				if (thisSquare.is2W() && thisSquare.isAlreadyPlayed() == false) {
+				if (thisSquare.is2W() && !thisSquare.isAlreadyPlayed()) {
 					isOnADoubleWordScore = isOnADoubleWordScore * 2;
-				} else if (thisSquare.is3W() && thisSquare.isAlreadyPlayed() == false) {
+				} else if (thisSquare.is3W() && !thisSquare.isAlreadyPlayed()) {
 					isOnATripleWordScore = isOnATripleWordScore * 3;
 				} else if (thisSquare.isNormal()) {
-				} else if (thisSquare.is2L() && thisSquare.isAlreadyPlayed() == false) {
+				} else if (thisSquare.is2L() && !thisSquare.isAlreadyPlayed()) {
 					letterValue = letterValue * 2;
-				} else if (thisSquare.is3L() && thisSquare.isAlreadyPlayed() == false) {
+				} else if (thisSquare.is3L() && !thisSquare.isAlreadyPlayed()) {
 					letterValue = letterValue * 3;
 				}
 			} else {

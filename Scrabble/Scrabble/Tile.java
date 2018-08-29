@@ -14,6 +14,7 @@ import javafx.animation.*;
 import javafx.util.Duration;
 
 import static Scrabble.Constants.*;
+import static Scrabble.Util.*;
 
 public class Tile {
 	private int _value;
@@ -256,10 +257,6 @@ public class Tile {
 		_tileViewer.setOnMouseReleased(this.releaseMouse());
 	}
 
-	private Boolean areValidIndices(int[] numbers) {
-		return Arrays.stream(numbers).allMatch(n -> n >= 0 && n <= 15);
-	}
-
 	private Boolean isDraggable() {
 		if (!_scrabbleGame.gameIsPlaying() || _scrabbleGame.getReferee().isThinking()) return false;
 
@@ -310,7 +307,7 @@ public class Tile {
 	}
 
 	public void addTo(Tile[][] boardArray) {
-		if (this.areValidIndices(new int[] { _xIndex, _yIndex })) {
+		if (areValidIndices(new int[] { _xIndex, _yIndex })) {
 			boardArray[_xIndex][_yIndex] = this;
 			// System.out.printf("Tile added to Array at %s, %s\n", _xIndex, _yIndex);
 		} else {
@@ -699,7 +696,7 @@ public class Tile {
 
 	void placeAtSquare(int x, int y) {
 		_tilesOnBoard = _scrabbleGame.getTilesOnBoard();
-		if (!this.areValidIndices(new int[] { x, y })) return;
+		if (!areValidIndices(new int[] { x, y })) return;
 
 		int targetHorizontal = (ZEROETH_COLUMN_OFFSET + x) * GRID_FACTOR + TILE_PADDING;
 		int targetVertical = (ZEROETH_ROW_OFFSET + y) * GRID_FACTOR + TILE_PADDING;

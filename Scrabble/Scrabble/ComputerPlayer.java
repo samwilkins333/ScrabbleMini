@@ -34,11 +34,11 @@ public class ComputerPlayer implements Playable {
 	private PauseTransition _delayAIRemoval;
 	private int _numBlankSlots;
 
-	public ComputerPlayer(PlayerNumber playerNumber, ScrabbleGame scrabbleGame) {
+	ComputerPlayer(PlayerNumber playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 		_concatInt = 0;
-		this.setUpDelay();
+		setUpDelay();
 	}	
 
 	private void setUpDelay() {
@@ -797,7 +797,7 @@ public class ComputerPlayer implements Playable {
 				}
 				_invalidLettersAndSuffixIndices.put(vertical + 1, invalidLetters);
 			}
-			vertical = vertical + 1;
+			vertical++;
 			_suffixCrosses.put(vertical, letterToValue);
 			//system.out.printf("Adding key at %s to outer HashMap (Suffix), now w size %s\n", vertical, _suffixCrosses.size());
 		}
