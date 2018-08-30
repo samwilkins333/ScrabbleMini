@@ -22,7 +22,6 @@ public class Tile {
 	private int _y;
 	private String _letter;
 	private ImageView _tileViewer;
-	private Pane _boardPane;
 	private double _currentNodeX;
 	private double _currentNodeY;
 	private double _mouseDragX;
@@ -215,11 +214,11 @@ public class Tile {
 		this.setUpOverlapFlash();
 		this.setUpDraggable();
 	}
-	
-	void fadeOut() {
-		FadeTransition fadeOut = new FadeTransition(Duration.seconds(1), _tileViewer);
-		fadeOut.setFromValue(1.0);
-		fadeOut.setToValue(0.0);
+
+	void fade(Direction direction, double duration) {
+		FadeTransition fadeOut = new FadeTransition(Duration.seconds(duration), _tileViewer);
+		fadeOut.setFromValue(direction == Direction.In ? 0 : 1);
+		fadeOut.setToValue(direction == Direction.In ? 1 : 0);
 		fadeOut.play();
 	}
 
@@ -684,14 +683,17 @@ public class Tile {
 		_x = (int) x;
 		_y = (int) y;
 		_scrabbleGame = thisGame;
+
 		this.setUpFlash();
+
 		_flashable = true;
+
 		this.addRoot();
-		_boardPane = boardPane;
+
 		_playerAffiliation = playerAffiliation;
 		_tileViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
 		_tileViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
-		_boardPane.getChildren().add(_tileViewer);
+		boardPane.getChildren().add(_tileViewer);
 	}
 
 	void placeAtSquare(int x, int y) {
@@ -735,7 +737,7 @@ public class Tile {
 		_addedFlash.setToValue(0.0);
 		_addedFlash.setAutoReverse(false);
 		_addedFlash.setCycleCount(1);
-		_addedFlash.setOnFinished(new RemoveIconsHandler("ADDED"));
+		_addedFlash.setOnFinished(RemoveIconsHandler(Outcome.Added));
 
 		_xViewer = new ImageView(new Image("Images/Interaction Feedback/redx.png"));
 		_xViewer.setFitWidth(GRID_FACTOR - (TILE_PADDING * 2));
@@ -752,7 +754,7 @@ public class Tile {
 		_failedFlash.setToValue(0.0);
 		_failedFlash.setAutoReverse(false);
 		_failedFlash.setCycleCount(1);
-		_failedFlash.setOnFinished(new RemoveIconsHandler("FAILED"));
+		_failedFlash.setOnFinished(RemoveIconsHandler(Outcome.Failed));
 
 		_minusViewer = new ImageView(new Image("Images/Interaction Feedback/yellowminus.png"));
 		_minusViewer.setFitWidth(GRID_FACTOR - (TILE_PADDING * 2));
@@ -769,47 +771,47 @@ public class Tile {
 		_partialFlash.setToValue(0.0);
 		_partialFlash.setAutoReverse(false);
 		_partialFlash.setCycleCount(1);
-		_partialFlash.setOnFinished(new RemoveIconsHandler("PARTIAL"));
+		_partialFlash.setOnFinished(RemoveIconsHandler(Outcome.Partial));
 	}
 
-	void playFlash(String id) {
-		if (id == "ADDED" && _flashable == true) {
-			_root.getChildren().add(_checkViewer);
-			_addedFlash.play();
-			_flashable = false;
-		} else if (id == "FAILED" && _flashable == true) {
-			_root.getChildren().add(_xViewer);
-			_failedFlash.play();
-			_flashable = false;
-		} else if (id == "PARTIAL" && _flashable == true) {
-			_root.getChildren().add(_minusViewer);
-			_partialFlash.play();
-			_flashable = false;
+	void playFlash(Outcome outcome) {
+		if (!_flashable) return;
+		switch (outcome) {
+			case Added:
+				_root.getChildren().add(_checkViewer);
+				_addedFlash.play();
+				break;
+			case Partial:
+				_root.getChildren().add(_minusViewer);
+				_partialFlash.play();
+				break;
+			case Failed:
+				_root.getChildren().add(_xViewer);
+				_failedFlash.play();
+				break;
 		}
+
+		_flashable = false;
 	}
 
-	private class RemoveIconsHandler implements EventHandler<ActionEvent> {
-		private String _id;
+	private EventHandler<ActionEvent> RemoveIconsHandler(Outcome outcome) {
+		return event -> {
 
-		RemoveIconsHandler(String id) {
-			_id = id;
-		}
-
-		@Override
-		public void handle(ActionEvent event) {
-			if (_id == "ADDED") {
-				_root.getChildren().remove(_checkViewer);
-				_flashable = true;
-			} else if (_id == "FAILED") {
-				_root.getChildren().remove(_xViewer);
-				_flashable = true;
-			} else if (_id == "PARTIAL") {
-				_root.getChildren().remove(_minusViewer);
-				_flashable = true;
+			switch (outcome) {
+				case Added:
+					_root.getChildren().remove(_checkViewer);
+					break;
+				case Partial:
+					_root.getChildren().remove(_minusViewer);
+					break;
+				case Failed:
+					_root.getChildren().remove(_xViewer);
+					break;
 			}
-			event.consume();
-		}
 
+			_flashable = true;
+			event.consume();
+		};
 	}
 
 	void setLoc(int x, int y) {
@@ -827,7 +829,7 @@ public class Tile {
 
 		_xViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
 		_xViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
-		
+
 		_xIndex = -1;
 		_yIndex = -1;
 	}

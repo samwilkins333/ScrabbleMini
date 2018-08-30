@@ -3,16 +3,16 @@ package Scrabble;
 import java.util.HashMap;
 import javafx.scene.paint.Color;
 
-public class Constants {
+class Constants {
 	
 	Constants() {
 		this.setUpValues();
 	}
 	
-	static final String PLAYER_ONE_START_STATE = "COMPUTER";
-	static final String PLAYER_TWO_START_STATE = "HUMAN";
+	static final PlayerType PLAYER_ONE_START_STATE = PlayerType.AI;
+	static final PlayerType PLAYER_TWO_START_STATE = PlayerType.Human;
 	
-	static final HashMap<String, Integer> VALUES = new HashMap<String, Integer>();
+	static final HashMap<String, Integer> VALUES = new HashMap<>();
 
 	private void setUpValues() {
 		VALUES.put("A", 1);
@@ -54,15 +54,12 @@ public class Constants {
 	static final Color TRIPLE_WORD_SCORE = Color.web("#FF9900"); //ORANGE
 	static final Color TRIPLE_LETTER_SCORE = Color.web("#00CC00"); //GREEN
 	static final Color SHADOW_FILL = Color.web("#000000"); //GREY
-	static final double FADE_OUT_DURATION = 0.4;
-	static final double FADE_IN_DURATION = 0.4;
 	static final int ZEROETH_ROW_OFFSET = 3;
 	static final int ZEROETH_COLUMN_OFFSET = 13;
 	static final int COLLECTION_VERTICAL_OFFSET = 7;
 	static final int COLLECTION_ONE_HORIZONTAL_OFFSET = ZEROETH_COLUMN_OFFSET - 2;
 	static final int COLLECTION_TWO_HORIZONTAL_OFFSET = ZEROETH_COLUMN_OFFSET + 16;
 	static final double LABEL_ANIMATION = 0.3;
-	static final double FADED_TILE_OPACITY = 0.0;
 	static final double FEEDBACK_FLASH_DURATION = 0.5;
 	static final double DRAW_INTERVAL = 0.7;
 	static final double SCORE_FADE_DURATION = 0.08;

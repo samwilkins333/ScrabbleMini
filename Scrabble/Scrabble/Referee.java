@@ -6,6 +6,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+import static Scrabble.Util.*;
+
 public class Referee {
 	private ScrabbleGame _scrabbleGame;
 	private Playable _playerOne;
@@ -91,88 +93,50 @@ public class Referee {
 
 		@Override
 		public void handle(ActionEvent event) {
-			ArrayList<Tile> rackOne = _scrabbleGame.getRackFor(PlayerNumber.One);
-			ArrayList<Tile> rackTwo = _scrabbleGame.getRackFor(PlayerNumber.Two);
-			if (rackOne.size() > 0) {
-				for (int i = 0; i < rackOne.size(); i++) {
-					 rackOne.get(i).fadeOut();
-				}
-			}
-			if (rackTwo.size() > 0) {
-				for (int i = 0; i < rackTwo.size(); i++) {
-					 rackTwo.get(i).fadeOut();
-				}
-			}
+			_scrabbleGame.fadeRacks(PlayerNumber.One, Direction.Out);
+			_scrabbleGame.fadeRacks(PlayerNumber.Two, Direction.Out);
 			_scrabbleGame.displayOutcome(Referee.this.checkWinner());
 			event.consume();
 		}
 
 	}
-	
+
+	/*
+	 * At end of game, adds the sum of the values of any remaining tile pieces
+	 */
 	private void processAdditives() {
-		ArrayList<Tile> rack = null;
-		rack = _scrabbleGame.getRackFor(PlayerNumber.Two);
-		if (rack.size() > 0) {
-			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("ADDED");
-			}
-			_playerOneScore = _playerOneScore + sum;
-		}
-		rack = _scrabbleGame.getRackFor(PlayerNumber.One);
-		if (rack.size() > 0) {
-			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("ADDED");
-			}
-			_playerTwoScore = _playerTwoScore + sum;
-		}
+		_scrabbleGame.getRackFor(PlayerNumber.Two).forEach(t -> {
+			_playerOneScore += t.getValue();
+			t.playFlash(Outcome.Added);
+		});
+
+		_scrabbleGame.getRackFor(PlayerNumber.One).forEach(t -> {
+			_playerTwoScore += t.getValue();
+			t.playFlash(Outcome.Added);
+		});
+
 		_scrabbleGame.getOrganizer().updateScore();
+
 		PauseTransition subs = new PauseTransition(Duration.seconds(0.8));
-		subs.setOnFinished(new SubsHandler());
+		subs.setOnFinished(event -> processSubtractives());
 		subs.play();
 	}
 	
 	private void processSubtractives() {
-		ArrayList<Tile> rack = null;
-		rack = _scrabbleGame.getRackFor(PlayerNumber.One);
-		if (rack.size() > 0) {
-			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("FAILED");
-			}
-			_playerOneScore = _playerOneScore - sum;
-		}
-		rack = _scrabbleGame.getRackFor(PlayerNumber.Two);
-		if (rack.size() > 0) {
-			int sum = 0;
-			for (int i = 0; i < rack.size(); i++) {
-				Tile thisTile = rack.get(i);
-				sum = sum + thisTile.getValue();
-				thisTile.playFlash("FAILED");
-			}
-			_playerTwoScore = _playerTwoScore - sum;
-		}
+		_scrabbleGame.getRackFor(PlayerNumber.One).forEach(t -> {
+			_playerOneScore -= t.getValue();
+			t.playFlash(Outcome.Failed);
+		});
+
+		_scrabbleGame.getRackFor(PlayerNumber.Two).forEach(t -> {
+			_playerTwoScore -= t.getValue();
+			t.playFlash(Outcome.Failed);
+		});
+
 		_scrabbleGame.getOrganizer().updateScore();
 		PauseTransition end = new PauseTransition(Duration.seconds(0.8));
 		end.setOnFinished(new EndGameHandler());
 		end.play();
-	}
-	
-	private class SubsHandler implements EventHandler<ActionEvent> {
-
-		@Override
-		public void handle(ActionEvent event) {
-			Referee.this.processSubtractives();
-			event.consume();
-		}
-
 	}
 
 	void nextMove() {
@@ -180,18 +144,16 @@ public class Referee {
 		_scrabbleGame.updateAlreadyPlayed();
 		_scrabbleGame.resetEnterInt();
 		System.out.printf("There are %s tiles on the board\n", _scrabbleGame.getTilesOnBoard().size());
-		if (_scrabbleGame.tileBagIsEmpty() && this.currentRackIsEmpty()) {
+		if (_scrabbleGame.tileBagIsEmpty() && currentRackIsEmpty()) {
 			_scrabbleGame.pauseGamePlay();
 			_thinking = false;
 			_scrabbleGame.getOrganizer().displayScoreLabels();
+
 			_scrabbleGame.shiftTiles(PlayerNumber.One);
 			_scrabbleGame.shiftTiles(PlayerNumber.Two);
-			if (_currentPlayer == _playerOne) {
-				_scrabbleGame.fadeRacks(PlayerNumber.Two, Direction.In);
-			} else if (_currentPlayer == _playerTwo) {
-				_scrabbleGame.fadeRacks(PlayerNumber.One, Direction.In);
-			}
-			this.processAdditives();
+			_scrabbleGame.fadeRacks(invert(_currentPlayer.getPlayerNumber()), Direction.In);
+
+			processAdditives();
 			System.out.println("GAME OVER!!!!");
 			gameOver = true;
 		}

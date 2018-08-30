@@ -6,6 +6,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.layout.*;
 
 import java.io.*;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javafx.animation.*;
@@ -109,17 +110,7 @@ public class ScrabbleGame {
 
 	void fadeRacks(PlayerNumber player, Direction dir) {
 		ArrayList<Tile> tileList = (player == PlayerNumber.One) ? _playerOneRack : _playerTwoRack;
-
-		boolean fadeIn = dir == Direction.In;
-		double to = (fadeIn) ? 1 : FADED_TILE_OPACITY;
-		double from = (fadeIn) ? FADED_TILE_OPACITY : 1;
-
-		for (Tile thisTile : tileList) {
-			FadeTransition fade = new FadeTransition(Duration.seconds(0.5), thisTile.getTileViewer());
-			fade.setFromValue(from);
-			fade.setToValue(to);
-			fade.play();
-		}
+		tileList.forEach(t -> t.fade(dir, 0.5));
 	}
 
 	private void setUpBoard() {
@@ -841,37 +832,27 @@ public class ScrabbleGame {
 		int isOnADoubleWordScore = 1;
 		int isOnATripleWordScore = 1;
 		int wordValue = 0;
-		for (int i = 0; i < tiles.size(); i++) {
-			Tile thisTile = tiles.get(i);
+		for (Tile thisTile : tiles) {
 			int x = thisTile.getXIndex();
 			int y = thisTile.getYIndex();
 			int letterValue = 0;
 			BoardSquare thisSquare = _boardArray[x][y];
 			if (thisSquare.is2W()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					isOnADoubleWordScore *= 2;
-					//system.out.println("IS ON A DOUBLE WORD SCORE");
-				}
+				if (!thisSquare.isAlreadyPlayed()) isOnADoubleWordScore *= 2;
 				letterValue = thisTile.getValue();
 			} else if (thisSquare.is3W()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					//system.out.println("IS ON A TRIPLE WORD SCORE");
-					isOnATripleWordScore *= 3;
-				}
+				if (!thisSquare.isAlreadyPlayed()) isOnATripleWordScore *= 3;
 				letterValue = thisTile.getValue();
 			} else if (thisSquare.isNormal()) {
-				//system.out.println("IS NORMAL");
 				letterValue = thisTile.getValue();
 			} else if (thisSquare.is2L()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					//system.out.println("IS ON A DOUBLE LETTER SCORE");
+				if (!thisSquare.isAlreadyPlayed()) {
 					letterValue = thisTile.getValue() * 2;
 				} else {
 					letterValue = thisTile.getValue();
 				}
 			} else if (thisSquare.is3L()) {
-				if (thisSquare.isAlreadyPlayed() == false) {
-					//system.out.println("IS ON A TRIPLE LETTER SCORE");
+				if (!thisSquare.isAlreadyPlayed()) {
 					letterValue = thisTile.getValue() * 3;
 				} else {
 					letterValue = thisTile.getValue();
@@ -884,12 +865,8 @@ public class ScrabbleGame {
 	}
 
 	void updateAlreadyPlayed() {
-		for (int i = 0; i < _tilesOnBoard.size(); i++) {
-			Tile thisTile = _tilesOnBoard.get(i);
-			int x = thisTile.getXIndex();
-			int y = thisTile.getYIndex();
-			_boardArray[x][y].setAlreadyPlayed(true);
-		}
+		for (Tile thisTile : _tilesOnBoard)
+			_boardArray[thisTile.getXIndex()][thisTile.getYIndex()].setAlreadyPlayed(true);
 	}
 
 	void addTileToBoardArrayAt(Tile tile, int x, int y) {

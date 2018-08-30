@@ -1,7 +1,9 @@
 package Scrabble;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.stream.Collectors;
 //import java.util.HashSet;
 //import java.util.Set;
 
@@ -10,7 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
-public class ComputerPlayer implements Playable {
+public class AIPlayer implements Playable {
 	private Word _newestWord;
 	private PlayerNumber _playerNumber;
 	private ScrabbleGame _scrabbleGame;
@@ -34,7 +36,7 @@ public class ComputerPlayer implements Playable {
 	private PauseTransition _delayAIRemoval;
 	private int _numBlankSlots;
 
-	ComputerPlayer(PlayerNumber playerNumber, ScrabbleGame scrabbleGame) {
+	AIPlayer(PlayerNumber playerNumber, ScrabbleGame scrabbleGame) {
 		_scrabbleGame = scrabbleGame;
 		_playerNumber = playerNumber;
 		_concatInt = 0;
@@ -805,35 +807,12 @@ public class ComputerPlayer implements Playable {
 	}
 
 	private void sortValidWords() {
-		ArrayList<Word> temp = new ArrayList<>();
-		int size = _validWords.size();
-		for (int i = 0; i < size; i++) {
-			Word highestWord = null;
-			for (int j = 0; j < _validWords.size(); j++) {
-				Word thisWord = _validWords.get(j);
-				if (j == 0) {
-					highestWord = thisWord;
-				} else if (j > 0) {
-					if (thisWord.getValue() >= highestWord.getValue()) {
-						highestWord = thisWord;
-					}
-				}
-			}
-			_validWords.remove(highestWord);
-			temp.add(highestWord);
-		}
-		_validWords.addAll(temp);
+		_validWords = (ArrayList<Word>) _validWords.stream().sorted(Comparator.comparingInt(Word::getValue).reversed()).collect(Collectors.toList());
 	}
 
 	private void printValidWords() {
-		//system.out.println("");
-		if (_validWords.size() == 0) {
-			//system.out.println("NO VALID WORDS CAN BE CREATED");
-		} else {
-			for (int i = 0; i < _validWords.size(); i++) {
-				_validWords.get(i).printInfo();
-			}
-		}
+		if (_validWords.isEmpty()) return;
+		for (Word _validWord : _validWords) _validWord.printInfo();
 	}
 	
 	public PlayerNumber getPlayerNumber() {
