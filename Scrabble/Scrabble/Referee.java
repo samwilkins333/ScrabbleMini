@@ -19,7 +19,7 @@ public class Referee {
 	private boolean _thinking;
 	private boolean _firstMoveMade;
 
-	public Referee(ScrabbleGame scrabbleGame, Playable playerOne, Playable playerTwo) {
+	Referee(ScrabbleGame scrabbleGame, Playable playerOne, Playable playerTwo) {
 		_scrabbleGame = scrabbleGame;
 		_playerOne = playerOne;
 		_playerTwo = playerTwo;
@@ -34,7 +34,7 @@ public class Referee {
 		this.nextMove();
 	}
 
-	public void incrementWordsPlayedBy(int num) {
+	void incrementWordsPlayedBy(int num) {
 		if (_currentPlayer == _playerOne) {
 			_wordsPlayed1 = _wordsPlayed1 + num;
 		} else if (_currentPlayer == _playerTwo) {
@@ -42,7 +42,7 @@ public class Referee {
 		}
 	}
 
-	public int getNumWordsPlayed() {
+	int getNumWordsPlayed() {
 		if (_currentPlayer == _playerOne) {
 			return _wordsPlayed1;
 		} else {
@@ -50,36 +50,22 @@ public class Referee {
 		}
 	}
 
-	public void addToScore(int wordValue) {
-		if (_currentPlayer == _playerOne) {
-			_playerOneScore = _playerOneScore + wordValue;
-		} else {
-			_playerTwoScore = _playerTwoScore + wordValue;
-		}
+	void addToScore(int wordValue) {
+		if (_currentPlayer == _playerOne)
+			_playerOneScore += wordValue;
+		else
+			_playerTwoScore += wordValue;
 	}
 
-	public int getPlayerScore() {
-		if (_currentPlayer == _playerOne) {
-			return _playerOneScore;
-		} else {
-			return _playerTwoScore;
-		}
+	private boolean currentRackIsEmpty() {
+		return _scrabbleGame.getRackFor(_currentPlayer.getPlayerNumber()).isEmpty();
 	}
 	
-	public boolean currentRackIsEmpty() {
-		if (_currentPlayer == _playerOne && _scrabbleGame.getRackFor(PlayerNumber.One).size() == 0) {
-			return true;
-		} else if (_currentPlayer == _playerTwo && _scrabbleGame.getRackFor(PlayerNumber.Two).size() == 0) {
-			return true;
-		}
-		return false;
-	}
-	
-	public ArrayList<Tile> getCurrentPlayerRack() {
+	ArrayList<Tile> getCurrentPlayerRack() {
 		return _scrabbleGame.getRackFor(_currentPlayer.getPlayerNumber());
 	}
 	
-	public String checkWinner() {
+	private String checkWinner() {
 		if (_playerOneScore > _playerTwoScore) {
 			return "PLAYER ONE";
 		} else if (_playerOneScore < _playerTwoScore) {
@@ -89,11 +75,11 @@ public class Referee {
 		}
 	}
 
-	public int getPlayerOneScore() {
+	int getPlayerOneScore() {
 		return _playerOneScore;
 	}
 
-	public int getPlayerTwoScore() {
+	int getPlayerTwoScore() {
 		return _playerTwoScore;
 	}
 	
@@ -123,7 +109,7 @@ public class Referee {
 
 	}
 	
-	public void processAdditives() {
+	private void processAdditives() {
 		ArrayList<Tile> rack = null;
 		rack = _scrabbleGame.getRackFor(PlayerNumber.Two);
 		if (rack.size() > 0) {
@@ -151,7 +137,7 @@ public class Referee {
 		subs.play();
 	}
 	
-	public void processSubtractives() {
+	private void processSubtractives() {
 		ArrayList<Tile> rack = null;
 		rack = _scrabbleGame.getRackFor(PlayerNumber.One);
 		if (rack.size() > 0) {
@@ -189,7 +175,7 @@ public class Referee {
 
 	}
 
-	public void nextMove() {
+	void nextMove() {
 		boolean gameOver = false;
 		_scrabbleGame.updateAlreadyPlayed();
 		_scrabbleGame.resetEnterInt();
@@ -198,44 +184,44 @@ public class Referee {
 			_scrabbleGame.pauseGamePlay();
 			_thinking = false;
 			_scrabbleGame.getOrganizer().displayScoreLabels();
-			_scrabbleGame.shiftTiles("PLAYER ONE");
-			_scrabbleGame.shiftTiles("PLAYER TWO");
+			_scrabbleGame.shiftTiles(PlayerNumber.One);
+			_scrabbleGame.shiftTiles(PlayerNumber.Two);
 			if (_currentPlayer == _playerOne) {
-				_scrabbleGame.fadeRacks(2, "IN");
+				_scrabbleGame.fadeRacks(PlayerNumber.Two, Direction.In);
 			} else if (_currentPlayer == _playerTwo) {
-				_scrabbleGame.fadeRacks(1, "IN");
+				_scrabbleGame.fadeRacks(PlayerNumber.One, Direction.In);
 			}
 			this.processAdditives();
 			System.out.println("GAME OVER!!!!");
 			gameOver = true;
 		}
-		if (gameOver == false) {
+		if (!gameOver) {
 			_moveInt = _moveInt + 1;
 			if (_moveInt == 1 || _moveInt == 2) {
 				_scrabbleGame.rotateBag();
 			}
 			_scrabbleGame.setEnterable(true);
 			if (_currentPlayer == _playerOne) {
-				_scrabbleGame.fadeRacks(2, "IN");
+				_scrabbleGame.fadeRacks(PlayerNumber.Two, Direction.In);
 				if (_moveInt > 1) {
-					_scrabbleGame.fadeRacks(1, "OUT");		
+					_scrabbleGame.fadeRacks(PlayerNumber.One, Direction.Out);
 				}
 				_currentPlayer = _playerTwo;
-				_scrabbleGame.shiftTiles("PLAYER TWO");
+				_scrabbleGame.shiftTiles(PlayerNumber.Two);
 				_scrabbleGame.manageDraw("PLAYER TWO");
 			} else if (_currentPlayer == _playerTwo) {
-				_scrabbleGame.fadeRacks(1, "IN");
+				_scrabbleGame.fadeRacks(PlayerNumber.One, Direction.In);
 				if (_moveInt > 1) {
-					_scrabbleGame.fadeRacks(2, "OUT");		
+					_scrabbleGame.fadeRacks(PlayerNumber.Two, Direction.Out);
 				}
 				_currentPlayer = _playerOne;
-				_scrabbleGame.shiftTiles("PLAYER ONE");
+				_scrabbleGame.shiftTiles(PlayerNumber.One);
 				_scrabbleGame.manageDraw("PLAYER ONE");
 			}
-			if (_currentPlayer.getPlayerType() == "HUMAN") {
+			if (_currentPlayer.getPlayerType() == PlayerType.Human) {
 				_thinking = false;
 				_currentPlayer.makeMove();
-			} else if (_currentPlayer.getPlayerType() == "COMPUTER") {
+			} else if (_currentPlayer.getPlayerType() == PlayerType.AI) {
 				_thinking = true;
 				_scrabbleGame.aiSequence(1, null);
 				PauseTransition delayNextTurn = new PauseTransition(Duration.seconds(0.7 * 7));
@@ -255,23 +241,19 @@ public class Referee {
 
 	}
 
-	public Playable getCurrentPlayer() {
+	Playable getCurrentPlayer() {
 		return _currentPlayer;
 	}
 
-	public String currentPlayer() {
-		if (_currentPlayer == _playerOne) {
-			return "PLAYER ONE";
-		} else {
-			return "PLAYER TWO";
-		}
+	PlayerNumber currentPlayer() {
+		return (_currentPlayer == _playerOne) ? PlayerNumber.One : PlayerNumber.Two;
 	}
 
-	public boolean firstMoveMade() {
+	boolean firstMoveMade() {
 		return _firstMoveMade;
 	}
 
-	public void setFirstMoveIsMade() {
+	void setFirstMoveIsMade() {
 		_firstMoveMade = true;
 	}
 

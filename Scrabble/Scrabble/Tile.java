@@ -815,14 +815,19 @@ public class Tile {
 	void setLoc(int x, int y) {
 		_x = x;
 		_y = y;
+
 		_tileViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
 		_tileViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
+
 		_checkViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
 		_checkViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
+
 		_minusViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
 		_minusViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
+
 		_xViewer.setLayoutX(x * GRID_FACTOR + TILE_PADDING);
 		_xViewer.setLayoutY(y * GRID_FACTOR + TILE_PADDING);
+		
 		_xIndex = -1;
 		_yIndex = -1;
 	}

@@ -10,8 +10,8 @@ public class HumanPlayer implements Playable {
 		_playerNumber = playerNumber;
 	}
 
-	public String getPlayerType() {
-		return "HUMAN";
+	public PlayerType getPlayerType() {
+		return PlayerType.Human;
 	}
 
 	public PlayerNumber getPlayerNumber() {

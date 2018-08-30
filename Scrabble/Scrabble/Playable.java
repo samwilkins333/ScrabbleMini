@@ -3,7 +3,7 @@ package Scrabble;
 public interface Playable {
 
 	void makeMove();
-	String getPlayerType();
+	PlayerType getPlayerType();
 	PlayerNumber getPlayerNumber();
 	Word getNewestWord();
 

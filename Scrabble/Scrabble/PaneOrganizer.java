@@ -114,7 +114,7 @@ public class PaneOrganizer {
 	private TranslateTransition _moveI2;
 	private TranslateTransition _moveI2Check;
 
-	public PaneOrganizer(App appClass, Stage appStage) {
+	PaneOrganizer(App appClass, Stage appStage) {
 		_root = new Pane();
 		@SuppressWarnings("unused")
 		Constants constants = new Constants();
@@ -156,15 +156,15 @@ public class PaneOrganizer {
 
 	}
 
-	public Boolean getDisplayMultipliers() {
+	Boolean getDisplayMultipliers() {
 		return _displayMultipliers;
 	}
 
-	public void rotateBag() {
+	void rotateBag() {
 		_rtBag.play();
 	}
 
-	public void addScrollPane() {
+	private void addScrollPane() {
 		_scorePane = new Pane();
 		_scorePane.setFocusTraversable(false);
 		_scorePane.setVisible(false);
@@ -444,7 +444,7 @@ public class PaneOrganizer {
 	private class TileRemover implements EventHandler<ActionEvent> {
 		private Tile _toRemove;
 
-		public TileRemover(Tile toRemove) {
+		TileRemover(Tile toRemove) {
 			_toRemove = toRemove;
 		}
 
@@ -502,7 +502,7 @@ public class PaneOrganizer {
 	private class TogglePlayer implements EventHandler<MouseEvent> {
 		private int _id;
 
-		public TogglePlayer(int id) {
+		TogglePlayer(int id) {
 			_id = id;
 		}
 
@@ -554,7 +554,7 @@ public class PaneOrganizer {
 	private class PlayFadeHandler implements EventHandler<ActionEvent> {
 		private FadeTransition _fade;
 
-		public PlayFadeHandler(FadeTransition fade) {
+		PlayFadeHandler(FadeTransition fade) {
 			_fade = fade;
 		}
 
@@ -594,12 +594,12 @@ public class PaneOrganizer {
 
 	}
 
-	public void displayScoreLabels() {
+	void displayScoreLabels() {
 		_playerOneScore.setOpacity(1.0);
 		_playerOneScore.setOpacity(2.0);
 	}
 
-	public void updateScore() {
+	void updateScore() {
 		int digitmult = 0;
 		int oneScore = _referee.getPlayerOneScore();
 		if (oneScore > 9 && _oneScore <= 9) {
@@ -624,7 +624,7 @@ public class PaneOrganizer {
 		_playerTwoScore.setText(String.valueOf(twoScore));
 	}
 
-	public void updateLabels() {
+	private void updateLabels() {
 		if (_playedWords.size() > 0) {
 			for (int i = 0; i < _playedWords.size(); i++) {
 				_playedWords.get(i).setTextFill(Constants.GRAPHITE);
@@ -632,7 +632,7 @@ public class PaneOrganizer {
 		}
 	}
 
-	public void addAIGraphics() {
+	private void addAIGraphics() {
 		_accept = new Image("Images/AI/aiaccept.png");
 		_reject = new Image("Images/AI/aireject.png");
 		_thinking = new Image("Images/AI/aithinking.png");
@@ -682,7 +682,7 @@ public class PaneOrganizer {
 		_circleFade.setToValue(0.0);
 	}
 
-	public void fadeInAI() {
+	void fadeInAI() {
 		FadeTransition aiFade = new FadeTransition(Duration.seconds(0.05), _aiViewer);
 		aiFade.setFromValue(0.0);
 		aiFade.setToValue(1.0);
@@ -692,7 +692,7 @@ public class PaneOrganizer {
 		_aiExpand.play();
 	}
 
-	public void showAIOutcome(String id) {
+	void showAIOutcome(String id) {
 		if (id == "ACCEPT") {
 			_aiCircle.setFill(Constants.GREEN);
 			_aiShrink.stop();
@@ -716,7 +716,7 @@ public class PaneOrganizer {
 		}
 	}
 
-	public void fadeOutAI() {
+	void fadeOutAI() {
 		_aiShrink.play();
 	}
 
@@ -776,7 +776,7 @@ public class PaneOrganizer {
 
 	}
 
-	public void addPostIts() {
+	private void addPostIts() {
 		_postItOneViewer = new ImageView(new Image("Images/Main Theme and GUI/greenpostit.png"));
 		_postItOneViewer.setCache(true);
 		_postItOneViewer.setPreserveRatio(true);
@@ -879,7 +879,7 @@ public class PaneOrganizer {
 	private class HighlightHandler implements EventHandler<ActionEvent> {
 		private String _winner;
 
-		public HighlightHandler(String winner) {
+		HighlightHandler(String winner) {
 			_winner = winner;
 		}
 
@@ -898,7 +898,7 @@ public class PaneOrganizer {
 
 	}
 
-	public void addBag() {
+	private void addBag() {
 		_bagViewer = new ImageView(new Image("Images/Main Theme and GUI/bag.png"));
 		_bagViewer.setCache(true);
 		_bagViewer.setPreserveRatio(true);
@@ -945,7 +945,7 @@ public class PaneOrganizer {
 		_root.getChildren().add(_specsViewer);
 	}
 
-	public void setUpDesk() {
+	private void setUpDesk() {
 		// Rectangle backgroundRect = new Rectangle(13 * Constants.GRID_FACTOR, 3 *
 		// Constants.GRID_FACTOR, Constants.GRID_FACTOR * 15, Constants.GRID_FACTOR *
 		// 15);
@@ -980,7 +980,7 @@ public class PaneOrganizer {
 		_enterable = status;
 	}
 
-	public void resetEnterInt() {
+	void resetEnterInt() {
 		_enterInt = 1;
 	}
 
@@ -994,18 +994,13 @@ public class PaneOrganizer {
 			} else if (keyPressed == KeyCode.ESCAPE) { // Quits game with "Q"
 				if (_referee != null
 						&& _referee.getCurrentPlayer()
-								.getPlayerType() == "HUMAN" /* && _referee.firstMoveMade() != false */
+								.getPlayerType() == PlayerType.Human /* && _referee.firstMoveMade() != false */
 						&& event.isMetaDown()) {
 					_referee.nextMove();
 				}
 			} else if (keyPressed == KeyCode.SPACE) { // Quits game with "Q"
-				if (_referee != null && _referee.getCurrentPlayer().getPlayerType() == "HUMAN") {
-					if (_referee.currentPlayer() == "PLAYER ONE") {
-						_scrabbleGame.shuffleRack(1);
-					} else if (_referee.currentPlayer() == "PLAYER TWO") {
-						_scrabbleGame.shuffleRack(2);
-					}
-				}
+				if (_referee != null && _referee.getCurrentPlayer().getPlayerType() == PlayerType.Human)
+					_scrabbleGame.shuffleRack(_referee.currentPlayer() == PlayerNumber.One ? 1 : 2);
 			} else if (keyPressed == KeyCode.ENTER && _enterable == true) {
 				System.out.printf("ENTER INT FROM THE TOP 1017 = %s\n", _enterInt);
 				if (_enterInt == 0) {
@@ -1085,9 +1080,9 @@ public class PaneOrganizer {
 						value.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() - 1));
 						value.setLayoutX(315 - 15 - 25 * digitmult);
 
-						if (_referee.currentPlayer() == "PLAYER ONE") {
+						if (_referee.currentPlayer() == PlayerNumber.One) {
 							_wordContainer1.getChildren().addAll(word, value);
-						} else if (_referee.currentPlayer() == "PLAYER TWO") {
+						} else if (_referee.currentPlayer() == PlayerNumber.Two) {
 							_wordContainer2.getChildren().addAll(word, value);
 						}
 						ArrayList<Word> crosses = newestWord.getAllCrosses();
@@ -1115,9 +1110,9 @@ public class PaneOrganizer {
 							newCrossValue
 									.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 							newCrossValue.setLayoutX(315 - 15 - 25 * digitmult);
-							if (_referee.currentPlayer() == "PLAYER ONE") {
+							if (_referee.currentPlayer() == PlayerNumber.One) {
 								_wordContainer1.getChildren().addAll(newCrossWord, newCrossValue);
-							} else if (_referee.currentPlayer() == "PLAYER TWO") {
+							} else if (_referee.currentPlayer() == PlayerNumber.Two) {
 								_wordContainer2.getChildren().addAll(newCrossWord, newCrossValue);
 							}
 						}
@@ -1128,9 +1123,9 @@ public class PaneOrganizer {
 						line.setStrokeWidth(3);
 						line.setStrokeLineCap(StrokeLineCap.ROUND);
 						line.setOpacity(0.7);
-						if (_referee.currentPlayer() == "PLAYER ONE") {
+						if (_referee.currentPlayer() == PlayerNumber.One) {
 							_wordContainer1.getChildren().add(line);
-						} else if (_referee.currentPlayer() == "PLAYER TWO") {
+						} else if (_referee.currentPlayer() == PlayerNumber.Two) {
 							_wordContainer2.getChildren().add(line);
 						}
 						PaneOrganizer.this.updateScore();
@@ -1229,7 +1224,7 @@ public class PaneOrganizer {
 
 	}
 
-	public void addWordAI(Word newestWord) {
+	void addWordAI(Word newestWord) {
 		// system.out.printf("ADDING TO BOARD on enterInt %s\n", _enterInt);
 		newestWord.addToBoardAI();
 		_referee.incrementWordsPlayedBy(1);
@@ -1255,9 +1250,9 @@ public class PaneOrganizer {
 		value.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() - 1));
 		value.setLayoutX(315 - 15 - 25 * digitmult);
 
-		if (_referee.currentPlayer() == "PLAYER ONE") {
+		if (_referee.currentPlayer() == PlayerNumber.One) {
 			_wordContainer1.getChildren().addAll(word, value);
-		} else if (_referee.currentPlayer() == "PLAYER TWO") {
+		} else if (_referee.currentPlayer() == PlayerNumber.Two) {
 			_wordContainer2.getChildren().addAll(word, value);
 		}
 
@@ -1287,9 +1282,9 @@ public class PaneOrganizer {
 				newCrossValue.setFont(Font.loadFont(Constants.HANDWRITING, Constants.FONT_SIZE_WORD_LIST));
 				newCrossValue.setLayoutY(-3 + (Constants.GRID_FACTOR - 4) * (_referee.getNumWordsPlayed() + i));
 				newCrossValue.setLayoutX(315 - 15 - 25 * digitmult);
-				if (_referee.currentPlayer() == "PLAYER ONE") {
+				if (_referee.currentPlayer() == PlayerNumber.One) {
 					_wordContainer1.getChildren().addAll(newCrossWord, newCrossValue);
-				} else if (_referee.currentPlayer() == "PLAYER TWO") {
+				} else if (_referee.currentPlayer() == PlayerNumber.Two) {
 					_wordContainer2.getChildren().addAll(newCrossWord, newCrossValue);
 				}
 			}
@@ -1307,9 +1302,9 @@ public class PaneOrganizer {
 		line.setStrokeWidth(3);
 		line.setStrokeLineCap(StrokeLineCap.ROUND);
 		line.setOpacity(0.7);
-		if (_referee.currentPlayer() == "PLAYER ONE") {
+		if (_referee.currentPlayer() == PlayerNumber.One) {
 			_wordContainer1.getChildren().add(line);
-		} else if (_referee.currentPlayer() == "PLAYER TWO") {
+		} else if (_referee.currentPlayer() == PlayerNumber.Two) {
 			_wordContainer2.getChildren().add(line);
 		}
 		PaneOrganizer.this.updateScore();
@@ -1321,7 +1316,7 @@ public class PaneOrganizer {
 		private Word _word;
 		private String _id;
 
-		public PlayFlashHandler(Word word, String id) {
+		PlayFlashHandler(Word word, String id) {
 			_word = word;
 			_id = id;
 		}
@@ -1337,7 +1332,7 @@ public class PaneOrganizer {
 	private class ScorePaneHandler implements EventHandler<MouseEvent> {
 		private String _id;
 
-		public ScorePaneHandler(String id) {
+		ScorePaneHandler(String id) {
 			_id = id;
 		}
 
@@ -1430,7 +1425,7 @@ public class PaneOrganizer {
 
 	}
 
-	public Boolean getIsShiftDown() {
+	Boolean getIsShiftDown() {
 		return _isShiftDown;
 	}
 
@@ -1471,7 +1466,7 @@ public class PaneOrganizer {
 		_appClass.start(_stage);
 	}
 
-	public void manageDraw(String id) {
+	void manageDraw(String id) {
 		_justFilled = false;
 		if (_scrabbleGame.getRackFor(PlayerNumber.One).size() < 7 && id == "PLAYER ONE") {
 			_scrabbleGame.refillRackOne();
@@ -1504,12 +1499,12 @@ public class PaneOrganizer {
 
 	}
 
-	public void moveHi(String winner) {
+	void moveHi(String winner) {
 		_moveHi.setOnFinished(new HighlightHandler(winner));
 		_moveHi.play();
 	}
 
-	public void removeBag() {
+	void removeBag() {
 		TranslateTransition removeBag = new TranslateTransition(Duration.seconds(3), _bagViewer);
 		removeBag.setByX(-375);
 		removeBag.setByY(100);

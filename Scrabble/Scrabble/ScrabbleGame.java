@@ -14,6 +14,7 @@ import javafx.event.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.Image;
 
+import static Scrabble.Constants.*;
 import static Scrabble.Util.*;
 
 public class ScrabbleGame {
@@ -30,39 +31,42 @@ public class ScrabbleGame {
 	private ArrayList<BoardSquare> _doubleWordScores;
 	private ArrayList<BoardSquare> _tripleLetterScores;
 	private ArrayList<BoardSquare> _tripleWordScores;
-	private ArrayList<FadeTransition> _fadeOuts;
 	private Tile[][] _tileArray;
 	private ArrayList<Tile> _tilesOnBoard;
 	private ArrayList<BoardSquare> _specialSquares;
 	private ImageView _diamondViewer;
 	private Boolean _gameIsPlaying;
 	private Referee _referee;
-	private ArrayList<Tile> _endGame;
 	private boolean _autoReset;
 
 	ScrabbleGame(PaneOrganizer organizer, Pane root, Pane boardPane) {
 		_organizer = organizer;
 		_root = root;
+		_tileBag = new TileBag(this);
+		_dictionary = new HashSet<>();
+
 		_boardPane = boardPane;
 		_labelPane = new Pane();
-		_tileBag = new TileBag(this);
-		_tileArray = new Tile[15][15];
+
 		_playerOneRack = new ArrayList<>();
 		_playerTwoRack = new ArrayList<>();
+
 		_boardArray = new BoardSquare[15][15];
-		_dictionary = new HashSet<>();
-		_fadeOuts = new ArrayList<>();
+		_tileArray = new Tile[15][15];
+
 		_tilesOnBoard = new ArrayList<>();
 		_doubleLetterScores = new ArrayList<>();
 		_doubleWordScores = new ArrayList<>();
 		_tripleLetterScores = new ArrayList<>();
 		_tripleWordScores = new ArrayList<>();
 		_specialSquares = new ArrayList<>();
+
 		_gameIsPlaying = false;
 		_autoReset = false;
-		this.setUpBoard();
-		this.setUpTiles();
-		this.setUpDictionary();
+
+		setUpBoard();
+		setUpTiles();
+		setUpDictionary();
 	}
 
 	public Pane getRoot() {
@@ -70,12 +74,7 @@ public class ScrabbleGame {
 	}
 
 	String getRackAsString() {
-		if (_referee.currentPlayer() == "PLAYER ONE") {
-			return this.tilesToString(_playerOneRack);
-		} else {
-			return this.tilesToString(_playerTwoRack);
-		}
-	}
+		return tilesToString(_referee.getCurrentPlayerRack()); }
 	
 	boolean tileBagIsEmpty() {
 		return _tileBag.isEmpty();
@@ -90,8 +89,7 @@ public class ScrabbleGame {
 	}
 
     ArrayList<Tile> getRackFor(PlayerNumber number) {
-		return number == PlayerNumber.One ? _playerOneRack : _playerTwoRack;
-	}
+		return number == PlayerNumber.One ? _playerOneRack : _playerTwoRack; }
 
 	void manageDraw(String id) {
 		_organizer.manageDraw(id);
@@ -109,24 +107,14 @@ public class ScrabbleGame {
 		_gameIsPlaying = false;
 	}
 
-	void fadeRacks(int player, String direction) {
-		ArrayList<Tile> tileList = null;
-		double from = 0;
-		double to = 0;
-		if (player == 1) {
-			tileList = _playerOneRack;
-		} else if (player == 2) {
-			tileList = _playerTwoRack;
-		}
-		if (direction == "IN") {
-			from = Constants.FADED_TILE_OPACITY;
-			to = 1.0;
-		} else if (direction == "OUT") {
-			from = 1.0;
-			to = Constants.FADED_TILE_OPACITY;
-		}
-		for (int i = 0; i < tileList.size(); i++) {
-			Tile thisTile = tileList.get(i);
+	void fadeRacks(PlayerNumber player, Direction dir) {
+		ArrayList<Tile> tileList = (player == PlayerNumber.One) ? _playerOneRack : _playerTwoRack;
+
+		boolean fadeIn = dir == Direction.In;
+		double to = (fadeIn) ? 1 : FADED_TILE_OPACITY;
+		double from = (fadeIn) ? FADED_TILE_OPACITY : 1;
+
+		for (Tile thisTile : tileList) {
 			FadeTransition fade = new FadeTransition(Duration.seconds(0.5), thisTile.getTileViewer());
 			fade.setFromValue(from);
 			fade.setToValue(to);
@@ -137,8 +125,8 @@ public class ScrabbleGame {
 	private void setUpBoard() {
 		for (int i = 0; i < _boardArray.length; i++) {
 			for (int j = 0; j < _boardArray[1].length; j++) {
-				int xLayout = (i + Constants.ZEROETH_COLUMN_OFFSET) * Constants.GRID_FACTOR;
-				int yLayout = (j + Constants.ZEROETH_ROW_OFFSET) * Constants.GRID_FACTOR;
+				int xLayout = (i + ZEROETH_COLUMN_OFFSET) * GRID_FACTOR;
+				int yLayout = (j + ZEROETH_ROW_OFFSET) * GRID_FACTOR;
 				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, "NORMAL", _boardPane, _labelPane);
 				_boardArray[i][j] = boardSquare;
 			}
@@ -327,12 +315,12 @@ public class ScrabbleGame {
 		_diamondViewer = new ImageView(new Image("Images/Main Theme and GUI/diamond.png"));
 		_diamondViewer.setCache(true);
 		_diamondViewer.setPreserveRatio(true);
-		_diamondViewer.setFitWidth(Constants.GRID_FACTOR - 2 * Constants.TILE_PADDING);
-		_diamondViewer.setLayoutX(20 * Constants.GRID_FACTOR + 4);
-		_diamondViewer.setLayoutY(10 * Constants.GRID_FACTOR + 13);
+		_diamondViewer.setFitWidth(GRID_FACTOR - 2 * TILE_PADDING);
+		_diamondViewer.setLayoutX(20 * GRID_FACTOR + 4);
+		_diamondViewer.setLayoutY(10 * GRID_FACTOR + 13);
 		_labelPane.getChildren().add(_diamondViewer);
-		int xLayout = Constants.X7 * Constants.GRID_FACTOR;
-		int yLayout = Constants.Y7 * Constants.GRID_FACTOR;
+		int xLayout = X7 * GRID_FACTOR;
+		int yLayout = Y7 * GRID_FACTOR;
 		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, "NORMAL", _boardPane, _labelPane);
 		ghostSquare.setID("GHOST");
 		ghostSquare.setUpHoverResponse(this);
@@ -397,16 +385,16 @@ public class ScrabbleGame {
 					if (thisSquare.getID() != id) {
 						Color fromColor = null;
 						if (thisSquare.getID() == "DOUBLE LETTER SCORE") {
-							fromColor = Constants.DOUBLE_LETTER_SCORE;
+							fromColor = DOUBLE_LETTER_SCORE;
 						} else if (thisSquare.getID() == "DOUBLE WORD SCORE") {
-							fromColor = Constants.DOUBLE_WORD_SCORE;
+							fromColor = DOUBLE_WORD_SCORE;
 						} else if (thisSquare.getID() == "TRIPLE LETTER SCORE") {
-							fromColor = Constants.TRIPLE_LETTER_SCORE;
+							fromColor = TRIPLE_LETTER_SCORE;
 						} else if (thisSquare.getID() == "TRIPLE WORD SCORE") {
-							fromColor = Constants.TRIPLE_WORD_SCORE;
+							fromColor = TRIPLE_WORD_SCORE;
 						}
-						FillTransition fadeWhite = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION),
-								thisSquare.getSquare(), fromColor, Constants.BOARD_FILL);
+						FillTransition fadeWhite = new FillTransition(Duration.seconds(LABEL_ANIMATION),
+								thisSquare.getSquare(), fromColor, BOARD_FILL);
 						fadeWhite.play();
 					} else {
 						thisSquare.showText();
@@ -420,14 +408,14 @@ public class ScrabbleGame {
 		if (!_labelPane.getChildren().contains(_diamondViewer)) {
 			_labelPane.getChildren().add(_diamondViewer);
 		}
-		FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _diamondViewer);
+		FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(LABEL_ANIMATION), _diamondViewer);
 		fadeDiamond.setFromValue(0.0);
 		fadeDiamond.setToValue(1.0);
 		fadeDiamond.play();
 	}
 
 	void removeDiamond() {
-		FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION), _diamondViewer);
+		FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(LABEL_ANIMATION), _diamondViewer);
 		fadeDiamond.setFromValue(1.0);
 		fadeDiamond.setToValue(0.0);
 		fadeDiamond.play();
@@ -456,22 +444,22 @@ public class ScrabbleGame {
 					if (thisSquare.getID() != id) {
 						Color toColor = null;
 						if (thisSquare.getID() == "DOUBLE LETTER SCORE") {
-							toColor = Constants.DOUBLE_LETTER_SCORE;
+							toColor = DOUBLE_LETTER_SCORE;
 						} else if (thisSquare.getID() == "DOUBLE WORD SCORE") {
-							toColor = Constants.DOUBLE_WORD_SCORE;
+							toColor = DOUBLE_WORD_SCORE;
 						} else if (thisSquare.getID() == "TRIPLE LETTER SCORE") {
-							toColor = Constants.TRIPLE_LETTER_SCORE;
+							toColor = TRIPLE_LETTER_SCORE;
 						} else if (thisSquare.getID() == "TRIPLE WORD SCORE") {
-							toColor = Constants.TRIPLE_WORD_SCORE;
+							toColor = TRIPLE_WORD_SCORE;
 						}
-						FillTransition restoreColors = new FillTransition(Duration.seconds(Constants.LABEL_ANIMATION),
-								thisSquare.getSquare(), Constants.BOARD_FILL, toColor);
+						FillTransition restoreColors = new FillTransition(Duration.seconds(LABEL_ANIMATION),
+								thisSquare.getSquare(), BOARD_FILL, toColor);
 						restoreColors.play();
 					} else {
 						thisSquare.concealText();
 					}
 					if (id != "TRIPLE WORD SCORE") {
-						FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(Constants.LABEL_ANIMATION),
+						FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(LABEL_ANIMATION),
 								_diamondViewer);
 						fadeDiamond.setFromValue(0.0);
 						fadeDiamond.setToValue(1.0);
@@ -485,14 +473,14 @@ public class ScrabbleGame {
 	private void setUpTiles() {
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
+			tile.add(_boardPane, COLLECTION_ONE_HORIZONTAL_OFFSET, i + COLLECTION_VERTICAL_OFFSET,
 					this, PlayerNumber.One);
 			_playerOneRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
 		}
 		for (int i = 0; i < 7; i++) {
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET,
+			tile.add(_boardPane, COLLECTION_TWO_HORIZONTAL_OFFSET, i + COLLECTION_VERTICAL_OFFSET,
 					this, PlayerNumber.Two);
 			_playerTwoRack.add(tile);
 			tile.getTileViewer().setOpacity(0);
@@ -505,18 +493,18 @@ public class ScrabbleGame {
 		while (_playerOneRack.size() < 7 && !_tileBag.isEmpty()) {
 			i++;
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_ONE_HORIZONTAL_OFFSET,
-					_playerOneRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, PlayerNumber.One);
+			tile.add(_boardPane, COLLECTION_ONE_HORIZONTAL_OFFSET,
+					_playerOneRack.size() + COLLECTION_VERTICAL_OFFSET, this, PlayerNumber.One);
 			_playerOneRack.add(tile);
 			tile.hide();
-			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION),
+			FadeTransition fadeIn = new FadeTransition(Duration.seconds(FEEDBACK_FLASH_DURATION),
 					tile.getTileViewer());
 			fadeIn.setFromValue(0.0);
 			fadeIn.setToValue(1.0);
 			fadeIn.setAutoReverse(false);
 			fadeIn.setCycleCount(1);
 			PauseTransition delayFade = new PauseTransition();
-			delayFade.setDuration(Duration.seconds(Constants.DRAW_INTERVAL * i));
+			delayFade.setDuration(Duration.seconds(DRAW_INTERVAL * i));
 			delayFade.setOnFinished(new PlayFadeHandler(fadeIn));
 			delayFade.play();
 		}
@@ -530,18 +518,18 @@ public class ScrabbleGame {
 		while (_playerTwoRack.size() < 7 && _tileBag.isEmpty() != true) {
 			i++;
 			Tile tile = _tileBag.draw();
-			tile.add(_boardPane, Constants.COLLECTION_TWO_HORIZONTAL_OFFSET,
-					_playerTwoRack.size() + Constants.COLLECTION_VERTICAL_OFFSET, this, PlayerNumber.Two);
+			tile.add(_boardPane, COLLECTION_TWO_HORIZONTAL_OFFSET,
+					_playerTwoRack.size() + COLLECTION_VERTICAL_OFFSET, this, PlayerNumber.Two);
 			_playerTwoRack.add(tile);
 			tile.hide();
-			FadeTransition fadeIn = new FadeTransition(Duration.seconds(Constants.FEEDBACK_FLASH_DURATION),
+			FadeTransition fadeIn = new FadeTransition(Duration.seconds(FEEDBACK_FLASH_DURATION),
 					tile.getTileViewer());
 			fadeIn.setFromValue(0.0);
 			fadeIn.setToValue(1.0);
 			fadeIn.setAutoReverse(false);
 			fadeIn.setCycleCount(1);
 			PauseTransition delayFade = new PauseTransition();
-			delayFade.setDuration(Duration.seconds(Constants.DRAW_INTERVAL * i));
+			delayFade.setDuration(Duration.seconds(DRAW_INTERVAL * i));
 			delayFade.setOnFinished(new PlayFadeHandler(fadeIn));
 			delayFade.play();
 		}
@@ -605,6 +593,7 @@ public class ScrabbleGame {
 				collector.add(concat);
 
 			ArrayList<Integer> remainder = new ArrayList<>(indices);
+			//noinspection SuspiciousListRemoveInLoop
 			remainder.remove(i);
 
 			permutationHelper(concat, word, remainder, collector);
@@ -943,27 +932,18 @@ public class ScrabbleGame {
 		_organizer.setEnterable(status);
 	}
 
-	public void hideTiles() {
-		for (int i = 0; i < _tilesOnBoard.size(); i++) {
-			_tilesOnBoard.get(i).hide();
+	void shiftTiles(PlayerNumber player) {
+		boolean isPlayerOne = player == PlayerNumber.One;
+		ArrayList<Tile> rack = (isPlayerOne) ? _playerOneRack : _playerTwoRack;
+		if (rack.isEmpty()) return;
+
+		for (int i = 0; i < rack.size(); i++) {
+			Tile thisTile = rack.get(i);
+			thisTile.setLoc(isPlayerOne ? COLLECTION_ONE_HORIZONTAL_OFFSET : COLLECTION_TWO_HORIZONTAL_OFFSET, i + COLLECTION_VERTICAL_OFFSET);
 		}
 	}
 
-	void shiftTiles(String id) {
-		if (id == "PLAYER ONE" && _playerOneRack.size() > 0) {
-			for (int i = 0; i < _playerOneRack.size(); i++) {
-				Tile thisTile = _playerOneRack.get(i);
-				thisTile.setLoc(Constants.COLLECTION_ONE_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET);
-			}
-		} else if (id == "PLAYER TWO" && _playerTwoRack.size() > 0) {
-			for (int i = 0; i < _playerTwoRack.size(); i++) {
-				Tile thisTile = _playerTwoRack.get(i);
-				thisTile.setLoc(Constants.COLLECTION_TWO_HORIZONTAL_OFFSET, i + Constants.COLLECTION_VERTICAL_OFFSET);
-			}
-		}
-	}
-
-	void collectAdjacents(Orientation orientation, Tile thisTile, ArrayList<Tile> tiles) {
+	void collectAdjacent(Orientation orientation, Tile thisTile, ArrayList<Tile> tiles) {
 		int x = thisTile.getXIndex();
 		int y = thisTile.getYIndex();
 		int i = 1;
@@ -1013,7 +993,7 @@ public class ScrabbleGame {
 		boolean isHorizontal =  orientation == Orientation.Horizontal;
 		for (int i = 0; i < validWord.length(); i++) {
 			String currentLetter = String.valueOf(validWord.charAt(i));
-			int letterValue = Constants.VALUES.get(currentLetter);
+			int letterValue = VALUES.get(currentLetter);
 
 			x = isHorizontal ? firstXIndex + i : firstXIndex;
 			y = isHorizontal ? firstYIndex : firstYIndex + i;
@@ -1217,27 +1197,7 @@ public class ScrabbleGame {
 	void displayOutcome(String winner) {
 		_organizer.moveHi(winner);
 	}
-	
-//	private class ClearHandler implements EventHandler<ActionEvent> {
-//
-//		@Override
-//		public void handle(ActionEvent event) {
-//			ScrabbleGame.this.clearPath();
-//			event.consume();
-//		}
-//
-//	}
-	
-	private class BeginPlacementHandler implements EventHandler<ActionEvent> {
 
-		@Override
-		public void handle(ActionEvent event) {
-			ScrabbleGame.this.placeTiles();
-			event.consume();
-		}
-
-	}
-	
 	private class ResetHandler implements EventHandler<ActionEvent> {
 
 		@Override
@@ -1249,53 +1209,7 @@ public class ScrabbleGame {
 		}
 
 	}
-	
-	public void clearPath() {
-		int move = 1;
-		for (int loc = 1; loc < 14; loc++) {
-			move = move * -1;
-			for (int j = 0; j < _endGame.size(); j++) {
-				Tile thisTile = _endGame.get(j);
-				int x = thisTile.getXIndex();
-				int y = thisTile.getYIndex();
-				if (x == loc && y == loc) {
-					if (move == 1) {
-						for (int k = 0; k < 15; k++) {
-							if (_tileArray[k][y] == null) {
-								thisTile.placeAtSquare(k, y);
-								break;
-							}
-						}
-					} else if (move == -1) {
-						for (int k = 0; k < 15; k++) {
-							if (_tileArray[x][k] == null) {
-								thisTile.placeAtSquare(x, k);
-								break;
-							}
-						}
-					}
-				}
-			}
-		}
-		PauseTransition delayPlacement = new PauseTransition(Duration.seconds(2));
-		delayPlacement.setOnFinished(new BeginPlacementHandler());
-		delayPlacement.play();
-	}
-	
-	private void placeTiles() {
-		double delay = 0;
-		for (int i = 0; i < _endGame.size(); i++) {
-			Tile thisTile = _endGame.get(i);
-			delay = delay + Constants.PLACEMENT_DURATION;
-			PauseTransition delayPlacement = new PauseTransition(Duration.seconds(delay));
-			delayPlacement.setOnFinished(new PlaceHandler(i + 1, i + 1, thisTile));
-			delayPlacement.play();
-		}
-		PauseTransition delayReset = new PauseTransition(Duration.seconds(10));
-		delayReset.setOnFinished(new ResetHandler());
-		delayReset.play();
-	}
-	
+
 	private class PlaceHandler implements EventHandler<ActionEvent> {
 		private int _x;
 		private int _y;

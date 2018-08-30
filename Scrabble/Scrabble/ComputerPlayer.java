@@ -56,8 +56,8 @@ public class ComputerPlayer implements Playable {
 
 	}
 
-	public String getPlayerType() {
-		return "COMPUTER";
+	public PlayerType getPlayerType() {
+		return PlayerType.AI;
 	}
 
 	public void makeMove() {
