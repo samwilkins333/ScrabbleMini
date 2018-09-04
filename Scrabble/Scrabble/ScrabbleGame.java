@@ -1,22 +1,22 @@
 package Scrabble;
 
-import java.util.*;
-
+import javafx.animation.FadeTransition;
+import javafx.animation.FillTransition;
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.layout.*;
+import javafx.util.Duration;
 
-import java.io.*;
-import java.util.function.Consumer;
+import java.io.InputStream;
+import java.util.*;
 import java.util.stream.Collectors;
 
-import javafx.animation.*;
-import javafx.util.Duration;
-import javafx.event.*;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.Image;
-
 import static Scrabble.Constants.*;
-import static Scrabble.Util.*;
+import static Scrabble.Util.areValidIndices;
 
 public class ScrabbleGame {
 	private PaneOrganizer _organizer;
