@@ -90,7 +90,8 @@ public class ScrabbleGame {
 	}
 
     ArrayList<Tile> getRackFor(PlayerNumber number) {
-		return number == PlayerNumber.One ? _playerOneRack : _playerTwoRack; }
+		return number == PlayerNumber.One ? _playerOneRack : _playerTwoRack;
+	}
 
 	void manageDraw(String id) {
 		_organizer.manageDraw(id);
@@ -340,35 +341,25 @@ public class ScrabbleGame {
 		_tripleWordScores.add(_boardArray[0][7]);
 		_tripleWordScores.add(_boardArray[14][7]);
 
-		for (int i = 0; i < _doubleLetterScores.size(); i++) {
-			_specialSquares.add(_doubleLetterScores.get(i));
-		}
+		_specialSquares.addAll(_doubleLetterScores);
+		_specialSquares.addAll(_doubleWordScores);
+		_specialSquares.addAll(_tripleLetterScores);
+		_specialSquares.addAll(_tripleWordScores);
 
-		for (int i = 0; i < _doubleWordScores.size(); i++) {
-			_specialSquares.add(_doubleWordScores.get(i));
-		}
-
-		for (int i = 0; i < _tripleLetterScores.size(); i++) {
-			_specialSquares.add(_tripleLetterScores.get(i));
-		}
-
-		for (int i = 0; i < _tripleWordScores.size(); i++) {
-			_specialSquares.add(_tripleWordScores.get(i));
-		}
 		this.setUpHovers();
 	}
 
 	private void setUpHovers() {
-		for (int i = 0; i < _specialSquares.size(); i++) {
-			_specialSquares.get(i).setUpHoverResponse(this);
+		for (BoardSquare _specialSquare : _specialSquares) {
+			_specialSquare.setUpHoverResponse(this);
 		}
 	}
 
 	void fadeOutOtherSquares(String id) {
-		if (_organizer.getDisplayMultipliers() == false) {
+		if (!_organizer.getDisplayMultipliers()) {
 			if (id == "GHOST") {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					_specialSquares.get(i).showText();
+				for (BoardSquare _specialSquare : _specialSquares) {
+					_specialSquare.showText();
 				}
 			} else {
 				for (int i = 0; i < _specialSquares.size(); i++) {
