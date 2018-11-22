@@ -119,7 +119,7 @@ public class ScrabbleGame {
 			for (int j = 0; j < _boardArray[1].length; j++) {
 				int xLayout = (i + ZEROETH_COLUMN_OFFSET) * GRID_FACTOR;
 				int yLayout = (j + ZEROETH_ROW_OFFSET) * GRID_FACTOR;
-				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, "NORMAL", _boardPane, _labelPane);
+				BoardSquare boardSquare = new BoardSquare(xLayout, yLayout, SquareIdentity.Normal, _boardPane, _labelPane);
 				_boardArray[i][j] = boardSquare;
 			}
 		}
@@ -150,42 +150,42 @@ public class ScrabbleGame {
 		// DOUBLE LETTER SCORES (BLUE)
 
 		// Central square
-		_boardArray[6][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[6][8].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][8].setID("DOUBLE LETTER SCORE");
+		_boardArray[6][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[6][8].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][8].setID(SquareIdentity.DoubleLetterScore);
 
 		// Horizontal Outer solos
-		_boardArray[3][0].setID("DOUBLE LETTER SCORE");
-		_boardArray[11][0].setID("DOUBLE LETTER SCORE");
-		_boardArray[3][14].setID("DOUBLE LETTER SCORE");
-		_boardArray[11][14].setID("DOUBLE LETTER SCORE");
+		_boardArray[3][0].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[11][0].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[3][14].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[11][14].setID(SquareIdentity.DoubleLetterScore);
 
 		// Vertical Outer solos
-		_boardArray[0][3].setID("DOUBLE LETTER SCORE");
-		_boardArray[0][11].setID("DOUBLE LETTER SCORE");
-		_boardArray[14][3].setID("DOUBLE LETTER SCORE");
-		_boardArray[14][11].setID("DOUBLE LETTER SCORE");
+		_boardArray[0][3].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[0][11].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[14][3].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[14][11].setID(SquareIdentity.DoubleLetterScore);
 
 		// Lower blue trio
-		_boardArray[7][11].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][12].setID("DOUBLE LETTER SCORE");
-		_boardArray[6][12].setID("DOUBLE LETTER SCORE");
+		_boardArray[7][11].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][12].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[6][12].setID(SquareIdentity.DoubleLetterScore);
 
 		// Left blue trio
-		_boardArray[3][7].setID("DOUBLE LETTER SCORE");
-		_boardArray[2][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[2][8].setID("DOUBLE LETTER SCORE");
+		_boardArray[3][7].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[2][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[2][8].setID(SquareIdentity.DoubleLetterScore);
 
 		// Right blue trio
-		_boardArray[11][7].setID("DOUBLE LETTER SCORE");
-		_boardArray[12][6].setID("DOUBLE LETTER SCORE");
-		_boardArray[12][8].setID("DOUBLE LETTER SCORE");
+		_boardArray[11][7].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[12][6].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[12][8].setID(SquareIdentity.DoubleLetterScore);
 
 		// Upper blue trio
-		_boardArray[7][3].setID("DOUBLE LETTER SCORE");
-		_boardArray[6][2].setID("DOUBLE LETTER SCORE");
-		_boardArray[8][2].setID("DOUBLE LETTER SCORE");
+		_boardArray[7][3].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[6][2].setID(SquareIdentity.DoubleLetterScore);
+		_boardArray[8][2].setID(SquareIdentity.DoubleLetterScore);
 
 		_doubleLetterScores.add(_boardArray[6][6]);
 		_doubleLetterScores.add(_boardArray[6][8]);
@@ -221,28 +221,28 @@ public class ScrabbleGame {
 		// DOUBLE WORD SCORES (RED)
 
 		// Northwest
-		_boardArray[1][1].setID("DOUBLE WORD SCORE");
-		_boardArray[2][2].setID("DOUBLE WORD SCORE");
-		_boardArray[3][3].setID("DOUBLE WORD SCORE");
-		_boardArray[4][4].setID("DOUBLE WORD SCORE");
+		_boardArray[1][1].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[2][2].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[3][3].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[4][4].setID(SquareIdentity.DoubleWordScore);
 
 		// Southeast
-		_boardArray[10][10].setID("DOUBLE WORD SCORE");
-		_boardArray[11][11].setID("DOUBLE WORD SCORE");
-		_boardArray[12][12].setID("DOUBLE WORD SCORE");
-		_boardArray[13][13].setID("DOUBLE WORD SCORE");
+		_boardArray[10][10].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[11][11].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[12][12].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[13][13].setID(SquareIdentity.DoubleWordScore);
 
 		// Southwest
-		_boardArray[1][13].setID("DOUBLE WORD SCORE");
-		_boardArray[2][12].setID("DOUBLE WORD SCORE");
-		_boardArray[3][11].setID("DOUBLE WORD SCORE");
-		_boardArray[4][10].setID("DOUBLE WORD SCORE");
+		_boardArray[1][13].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[2][12].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[3][11].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[4][10].setID(SquareIdentity.DoubleWordScore);
 
 		// Northeast
-		_boardArray[13][1].setID("DOUBLE WORD SCORE");
-		_boardArray[12][2].setID("DOUBLE WORD SCORE");
-		_boardArray[11][3].setID("DOUBLE WORD SCORE");
-		_boardArray[10][4].setID("DOUBLE WORD SCORE");
+		_boardArray[13][1].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[12][2].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[11][3].setID(SquareIdentity.DoubleWordScore);
+		_boardArray[10][4].setID(SquareIdentity.DoubleWordScore);
 
 		_doubleWordScores.add(_boardArray[1][1]);
 		_doubleWordScores.add(_boardArray[2][2]);
@@ -267,22 +267,22 @@ public class ScrabbleGame {
 		// TRIPLE LETTER SCORES (GREEN)
 
 		// Central square
-		_boardArray[5][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[5][9].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][9].setID("TRIPLE LETTER SCORE");
+		_boardArray[5][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[5][9].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][9].setID(SquareIdentity.TripleLetterScore);
 
 		// Horizontal Outer Solos
-		_boardArray[1][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[1][9].setID("TRIPLE LETTER SCORE");
-		_boardArray[13][5].setID("TRIPLE LETTER SCORE");
-		_boardArray[13][9].setID("TRIPLE LETTER SCORE");
+		_boardArray[1][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[1][9].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[13][5].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[13][9].setID(SquareIdentity.TripleLetterScore);
 
 		// Vertical Outer Solos
-		_boardArray[5][1].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][1].setID("TRIPLE LETTER SCORE");
-		_boardArray[5][13].setID("TRIPLE LETTER SCORE");
-		_boardArray[9][13].setID("TRIPLE LETTER SCORE");
+		_boardArray[5][1].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][1].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[5][13].setID(SquareIdentity.TripleLetterScore);
+		_boardArray[9][13].setID(SquareIdentity.TripleLetterScore);
 
 		_tripleLetterScores.add(_boardArray[5][5]);
 		_tripleLetterScores.add(_boardArray[5][9]);
@@ -302,7 +302,7 @@ public class ScrabbleGame {
 		// TRIPLE WORD SCORES (ORANGE)
 
 		// Middle
-		_boardArray[7][7].setID("DOUBLE WORD SCORE");
+		_boardArray[7][7].setID(SquareIdentity.DoubleWordScore);
 		// _boardArray[7][7].removeLabel();
 		_diamondViewer = new ImageView(new Image("Images/Main Theme and GUI/diamond.png"));
 		_diamondViewer.setCache(true);
@@ -313,21 +313,21 @@ public class ScrabbleGame {
 		_labelPane.getChildren().add(_diamondViewer);
 		int xLayout = X7 * GRID_FACTOR;
 		int yLayout = Y7 * GRID_FACTOR;
-		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, "NORMAL", _boardPane, _labelPane);
-		ghostSquare.setID("GHOST");
+		BoardSquare ghostSquare = new BoardSquare(xLayout, yLayout, SquareIdentity.Normal, _boardPane, _labelPane);
+		ghostSquare.setID(SquareIdentity.Ghost);
 		ghostSquare.setUpHoverResponse(this);
 
 		// Corners
-		_boardArray[0][0].setID("TRIPLE WORD SCORE");
-		_boardArray[14][14].setID("TRIPLE WORD SCORE");
-		_boardArray[14][0].setID("TRIPLE WORD SCORE");
-		_boardArray[0][14].setID("TRIPLE WORD SCORE");
+		_boardArray[0][0].setID(SquareIdentity.TripleWordScore);
+		_boardArray[14][14].setID(SquareIdentity.TripleWordScore);
+		_boardArray[14][0].setID(SquareIdentity.TripleWordScore);
+		_boardArray[0][14].setID(SquareIdentity.TripleWordScore);
 
 		// Edge midpoints
-		_boardArray[7][0].setID("TRIPLE WORD SCORE");
-		_boardArray[7][14].setID("TRIPLE WORD SCORE");
-		_boardArray[0][7].setID("TRIPLE WORD SCORE");
-		_boardArray[14][7].setID("TRIPLE WORD SCORE");
+		_boardArray[7][0].setID(SquareIdentity.TripleWordScore);
+		_boardArray[7][14].setID(SquareIdentity.TripleWordScore);
+		_boardArray[0][7].setID(SquareIdentity.TripleWordScore);
+		_boardArray[14][7].setID(SquareIdentity.TripleWordScore);
 
 		_tripleWordScores.add(_boardArray[7][7]);
 
@@ -355,26 +355,39 @@ public class ScrabbleGame {
 		}
 	}
 
-	void fadeOutOtherSquares(String id) {
+	void fadeOutOtherSquares(SquareIdentity id) {
 		if (!_organizer.getDisplayMultipliers()) {
-			if (id == "GHOST") {
+			if (id == SquareIdentity.Ghost) {
 				for (BoardSquare _specialSquare : _specialSquares) {
 					_specialSquare.showText();
 				}
 			} else {
 				for (int i = 0; i < _specialSquares.size(); i++) {
 					BoardSquare thisSquare = _specialSquares.get(i);
+					SquareIdentity thisIdentity = thisSquare.getID();
+
 					if (thisSquare.getID() != id) {
 						Color fromColor = null;
-						if (thisSquare.getID() == "DOUBLE LETTER SCORE") {
-							fromColor = DOUBLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "DOUBLE WORD SCORE") {
-							fromColor = DOUBLE_WORD_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE LETTER SCORE") {
-							fromColor = TRIPLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE WORD SCORE") {
-							fromColor = TRIPLE_WORD_SCORE;
+						switch (thisIdentity) {
+
+							case Normal:
+								break;
+							case DoubleLetterScore:
+								fromColor = DOUBLE_LETTER_SCORE;
+								break;
+							case TripleLetterScore:
+								fromColor = TRIPLE_LETTER_SCORE;
+								break;
+							case DoubleWordScore:
+								fromColor = DOUBLE_WORD_SCORE;
+								break;
+							case TripleWordScore:
+								fromColor = TRIPLE_WORD_SCORE;
+								break;
+							case Ghost:
+								break;
 						}
+						assert fromColor != null;
 						FillTransition fadeWhite = new FillTransition(Duration.seconds(LABEL_ANIMATION),
 								thisSquare.getSquare(), fromColor, BOARD_FILL);
 						fadeWhite.play();
@@ -414,33 +427,46 @@ public class ScrabbleGame {
 
 	}
 
-	void fadeInOtherSquares(String id) {
-		if (_organizer.getDisplayMultipliers() == false) {
-			if (id == "GHOST") {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					_specialSquares.get(i).concealText();
+	void fadeInOtherSquares(SquareIdentity id) {
+		if (!_organizer.getDisplayMultipliers()) {
+			if (id == SquareIdentity.Ghost) {
+				for (BoardSquare _specialSquare : _specialSquares) {
+					_specialSquare.concealText();
 				}
 			} else {
-				for (int i = 0; i < _specialSquares.size(); i++) {
-					BoardSquare thisSquare = _specialSquares.get(i);
-					if (thisSquare.getID() != id) {
+				for (BoardSquare thisSquare : _specialSquares) {
+					SquareIdentity thisIdentity = thisSquare.getID();
+
+					if (thisIdentity != id) {
 						Color toColor = null;
-						if (thisSquare.getID() == "DOUBLE LETTER SCORE") {
-							toColor = DOUBLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "DOUBLE WORD SCORE") {
-							toColor = DOUBLE_WORD_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE LETTER SCORE") {
-							toColor = TRIPLE_LETTER_SCORE;
-						} else if (thisSquare.getID() == "TRIPLE WORD SCORE") {
-							toColor = TRIPLE_WORD_SCORE;
+						switch (thisIdentity) {
+
+							case Normal:
+								break;
+							case DoubleLetterScore:
+								toColor = DOUBLE_LETTER_SCORE;
+								break;
+							case TripleLetterScore:
+								toColor = TRIPLE_LETTER_SCORE;
+								break;
+							case DoubleWordScore:
+								toColor = DOUBLE_WORD_SCORE;
+								break;
+							case TripleWordScore:
+								toColor = TRIPLE_WORD_SCORE;
+								break;
+							case Ghost:
+								break;
 						}
+						assert toColor != null;
 						FillTransition restoreColors = new FillTransition(Duration.seconds(LABEL_ANIMATION),
 								thisSquare.getSquare(), BOARD_FILL, toColor);
 						restoreColors.play();
 					} else {
 						thisSquare.concealText();
 					}
-					if (id != "TRIPLE WORD SCORE") {
+
+					if (id != SquareIdentity.TripleWordScore) {
 						FadeTransition fadeDiamond = new FadeTransition(Duration.seconds(LABEL_ANIMATION),
 								_diamondViewer);
 						fadeDiamond.setFromValue(0.0);
@@ -857,7 +883,7 @@ public class ScrabbleGame {
 
 	void updateAlreadyPlayed() {
 		for (Tile thisTile : _tilesOnBoard)
-			_boardArray[thisTile.getXIndex()][thisTile.getYIndex()].setAlreadyPlayed(true);
+			_boardArray[thisTile.getXIndex()][thisTile.getYIndex()].setAlreadyPlayed();
 	}
 
 	void addTileToBoardArrayAt(Tile tile, int x, int y) {

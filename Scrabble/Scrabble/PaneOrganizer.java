@@ -1147,13 +1147,13 @@ public class PaneOrganizer {
 				_scrabbleGame.setAutoReset(!_scrabbleGame.getAutoReset());
 			} else if (keyPressed == KeyCode.M) {
 				if (!_displayMultipliers) {
-					_scrabbleGame.fadeOutOtherSquares("GHOST");
+					_scrabbleGame.fadeOutOtherSquares(SquareIdentity.Ghost);
 					_displayMultipliers = true;
 					_scrabbleGame.removeDiamond();
 					// PaneOrganizer.this.playFlash();
 				} else if (_displayMultipliers) {
 					_displayMultipliers = false;
-					_scrabbleGame.fadeInOtherSquares("GHOST");
+					_scrabbleGame.fadeInOtherSquares(SquareIdentity.Ghost);
 					_scrabbleGame.addDiamond();
 				}
 			} else if (keyPressed == KeyCode.S) {
