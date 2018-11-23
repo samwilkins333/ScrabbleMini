@@ -911,4 +911,8 @@ public class Tile {
 		return _isOnBoard;
 	}
 
+	void toFront() {
+		_tileViewer.toFront();
+	}
+
 }

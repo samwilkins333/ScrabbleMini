@@ -1151,7 +1151,7 @@ public class PaneOrganizer {
 					_displayMultipliers = true;
 					_scrabbleGame.removeDiamond();
 					// PaneOrganizer.this.playFlash();
-				} else if (_displayMultipliers) {
+				} else {
 					_displayMultipliers = false;
 					_scrabbleGame.fadeInOtherSquares(SquareIdentity.Ghost);
 					_scrabbleGame.addDiamond();

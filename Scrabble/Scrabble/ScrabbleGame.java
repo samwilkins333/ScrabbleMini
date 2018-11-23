@@ -27,6 +27,7 @@ public class ScrabbleGame {
 	private ArrayList<Tile> _playerOneRack;
 	private ArrayList<Tile> _playerTwoRack;
 	private HashSet<String> _dictionary;
+	private GADDAG _gaddag;
 	private BoardSquare[][] _boardArray;
 	private ArrayList<BoardSquare> _doubleLetterScores;
 	private ArrayList<BoardSquare> _doubleWordScores;
@@ -45,6 +46,7 @@ public class ScrabbleGame {
 		_root = root;
 		_tileBag = new TileBag(this);
 		_dictionary = new HashSet<>();
+		_gaddag = new GADDAG();
 
 		_boardPane = boardPane;
 		_labelPane = new Pane();
@@ -95,6 +97,10 @@ public class ScrabbleGame {
 
 	void manageDraw(String id) {
 		_organizer.manageDraw(id);
+	}
+
+	GADDAG getGaddag() {
+		return _gaddag;
 	}
 	
 	Boolean gameIsPlaying() {
@@ -564,7 +570,12 @@ public class ScrabbleGame {
 	private void setUpDictionary() {
 		InputStream dictionaryText = this.getClass().getResourceAsStream("dictionary.txt");
 		Scanner scanner = new Scanner(dictionaryText);
-		while (scanner.hasNext()) _dictionary.add(scanner.next().toUpperCase());
+		while (scanner.hasNext()) {
+			String next = scanner.next().toUpperCase();
+			_dictionary.add(next);
+			_gaddag.Add(next);
+		}
+
 	}
 
 	String tilesToString(ArrayList<Tile> playerRack) {
@@ -572,7 +583,7 @@ public class ScrabbleGame {
 	}
 
 	Boolean tilesToDictBool(ArrayList<Tile> tiles) {
-		Boolean status = false;
+		boolean status = false;
 		String word = this.tilesToString(tiles);
 		if (_dictionary.contains(word)) {
 			status = true;

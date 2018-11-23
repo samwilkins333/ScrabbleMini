@@ -3,6 +3,7 @@ package Scrabble;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Set;
 import java.util.stream.Collectors;
 //import java.util.HashSet;
 //import java.util.Set;
@@ -15,7 +16,7 @@ import javafx.util.Duration;
 public class AIPlayer implements Playable {
 	private Word _newestWord;
 	private PlayerNumber _playerNumber;
-	private ScrabbleGame _scrabbleGame;
+	public ScrabbleGame _scrabbleGame;
 	private String _rack;
 	private String _kernel;
 	private ArrayList<Word> _validWords;
@@ -68,6 +69,7 @@ public class AIPlayer implements Playable {
 			_newestWord = this.getBestFirstWord();
 		} else if (firstMoveMade == true) {
 			_newestWord = this.getBestWord();
+			getBestWordGaddag();
 		}
 		if (_newestWord != null) {
 			if (firstMoveMade == false) {
@@ -79,9 +81,9 @@ public class AIPlayer implements Playable {
 			_delayAIRemoval.play();
 			ArrayList<Tile> myRack = _scrabbleGame.getReferee().getCurrentPlayerRack();
 			String appropriateLetters = "";
-			if (firstMoveMade == false) {
+			if (!firstMoveMade) {
 				appropriateLetters = _newestWord.getLetters();
-			} else if (firstMoveMade == true) {
+			} else {
 				appropriateLetters = _newestWord.getNewBoardLetters();
 			}
 			ArrayList<Tile> myTransfers = _scrabbleGame.transferTilesFromRack(appropriateLetters, myRack);
@@ -144,6 +146,24 @@ public class AIPlayer implements Playable {
 		} else {
 			return null;
 		}
+	}
+
+	private void getBestWordGaddag() {
+		_rack = _scrabbleGame.getRackAsString();
+		_validWords = new ArrayList<>();
+		_validStrings = new ArrayList<>();
+		Tile[][] realBoard = _scrabbleGame.getTileArray();
+		GADDAG gaddag = _scrabbleGame.getGaddag();
+
+		ArrayList<String> res = new ArrayList<>();
+		for (int y = 0; y < 15; y++) {
+			for (int x = 0; x < 15; x++) {
+				Tile tile = realBoard[x][y];
+				if (tile == null) continue;
+				res.addAll(gaddag.containsHookWithRack(tile.getLetter(), _rack));
+			}
+		}
+		System.out.print(res);
 	}
 
 	private Word getBestWord() {

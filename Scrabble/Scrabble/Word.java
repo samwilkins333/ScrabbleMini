@@ -522,6 +522,7 @@ public class Word {
 				int targetX = x;
 				int targetY = y;
 
+				thisTile.toFront();
 				PauseTransition delayPlacement = new PauseTransition(Duration.seconds(delay));
 				delayPlacement.setOnFinished(event -> thisTile.placeAtSquare(targetX, targetY));
 				delayPlacement.play();
