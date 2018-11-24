@@ -1,9 +1,6 @@
 package Scrabble;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 //import java.util.HashSet;
 //import java.util.Set;
@@ -69,7 +66,7 @@ public class AIPlayer implements Playable {
 			_newestWord = this.getBestFirstWord();
 		} else if (firstMoveMade == true) {
 			_newestWord = this.getBestWord();
-			getBestWordGaddag();
+			//getBestWordGaddag();
 		}
 		if (_newestWord != null) {
 			if (firstMoveMade == false) {
@@ -150,20 +147,61 @@ public class AIPlayer implements Playable {
 
 	private void getBestWordGaddag() {
 		_rack = _scrabbleGame.getRackAsString();
+		String rack = _rack.toLowerCase();
 		_validWords = new ArrayList<>();
 		_validStrings = new ArrayList<>();
 		Tile[][] realBoard = _scrabbleGame.getTileArray();
-		GADDAG gaddag = _scrabbleGame.getGaddag();
+		GADDAG g = _scrabbleGame.getGaddag();
 
-		ArrayList<String> res = new ArrayList<>();
 		for (int y = 0; y < 15; y++) {
+
+			StringBuilder line = new StringBuilder();
+			StringBuilder hook = new StringBuilder();
 			for (int x = 0; x < 15; x++) {
 				Tile tile = realBoard[x][y];
-				if (tile == null) continue;
-				res.addAll(gaddag.containsHookWithRack(tile.getLetter(), _rack));
+				if (tile != null) {
+					line.append(tile.getLetter());
+					hook.append(tile.getLetter());
+					continue;
+				}
+				line.append(" ");
 			}
+			String h = hook.toString();
+			if (h.isEmpty()) continue;
+
+			h = h.toLowerCase();
+			ArrayList<String> res = new ArrayList<>(g.containsHookWithRack(h, rack));
+			//processCandidates(res, line.toString().toLowerCase());
+			System.out.printf("Candidates for line %s:\n%s\n\n", y + 1, res);
 		}
-		System.out.print(res);
+	}
+
+	private void processCandidates(ArrayList<String> res, String line) {
+		List<String> hooks = List.of(line.split("[ ]+")).stream().filter(h -> !h.isEmpty()).collect(Collectors.toList());
+		HashMap<String, Integer> prefixSpacing = new HashMap<>();
+		HashMap<String, Integer> suffixSpacing = new HashMap<>();
+
+		for (int i = 0; i < hooks.size(); i++) {
+			String h = hooks.get(i);
+			int index = line.indexOf(h);
+			prefixSpacing.put(h, index);
+			if (i + 1 < hooks.size()) {
+				suffixSpacing.put(h, line.indexOf(hooks.get(i + 1)));
+				continue;
+			}
+			suffixSpacing.put(h, 15 - index - h.length());
+		}
+
+
+		for (String candidate : res) {
+			for (String hook : hooks) {
+				int index = candidate.indexOf(hook);
+				if (index < 0) continue;
+			}
+			for (char c : line.toCharArray()) {
+			}
+
+		}
 	}
 
 	private Word getBestWord() {

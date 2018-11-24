@@ -573,7 +573,7 @@ public class ScrabbleGame {
 		while (scanner.hasNext()) {
 			String next = scanner.next().toUpperCase();
 			_dictionary.add(next);
-			_gaddag.Add(next);
+			//_gaddag.Add(next);
 		}
 
 	}

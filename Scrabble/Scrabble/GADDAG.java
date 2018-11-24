@@ -11,7 +11,7 @@ public class GADDAG {
     private Node RootNode;
 
     GADDAG() {
-        RootNode = new Node(' ');
+        RootNode = new Node(Node.Root);
     }
 
     void Add(String word) {
@@ -64,10 +64,12 @@ public class GADDAG {
 
     ArrayList<String> containsHookWithRack(String hook, String rack) {
         hook = new StringBuilder(hook.toLowerCase()).reverse().toString();
+        rack = rack.toLowerCase();
 
         HashSet<String> set = new HashSet<>();
 
         containsHookWithRackRecursive(RootNode, set, "", rack, hook);
+        System.out.println(set);
         return new ArrayList<>(set);
     }
 
@@ -84,7 +86,7 @@ public class GADDAG {
 
             char first = hook.charAt(0);
             if (node.containsKey(first)) {
-                String h = new StringBuilder(hook).delete(0, 1).toString();
+                String h = new StringBuilder(hook).delete(0, 2).toString();
                 containsHookWithRackRecursive(node.childAt(hook.charAt(0)), set, letters, rack, h);
             }
         } else {
