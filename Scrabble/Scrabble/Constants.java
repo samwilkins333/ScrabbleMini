@@ -109,7 +109,7 @@ class Constants {
 	static final double FONT_SIZE_POST_IT = 40;
 	static final double FONT_SIZE_WORD_LIST = 35;
 
-	static final String DOMESTIC_MANNERS = ClassLoader.getSystemResource("Fonts/domesticmanners.ttf").toExternalForm();
+	static final String DOMESTIC_MANNERS = ClassLoader.getSystemResource(System.getProperty("user.dir") + "Fonts/domesticmanners.ttf").toExternalForm();
 
 	static final double PLACEMENT_DURATION = 0.6;
 	static final double FLASH_SPACING_DURATION = 0.6;
